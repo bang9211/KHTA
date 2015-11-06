@@ -16,11 +16,48 @@
  */
 package infra;
 
+import infra.infraobject.Corridor;
+import java.util.ArrayList;
+
 /**
  *
  * @author soobin Jeon <j.soobin@gmail.com>, chungsan Lee <dj.zlee@gmail.com>,
  * youngtak Han <gksdudxkr@gmail.com>
  */
 public class Infra {
+    ArrayList<Corridor> corridors = new ArrayList();
     
+    public ArrayList<Corridor> getCorridors(){
+        return corridors;
+    }
+    
+    public void load(){
+        //set Corridors from DB
+        setCorridors();
+        //set Rnodes to each Corridor
+        setRnodes();
+        //preprocess Corridor objects
+        preProcessCorridor();
+    }
+
+    private void setCorridors() {
+        //Add all Corridor into the corridors List
+    }
+
+    private void setRnodes() {
+        for(Corridor cor : corridors){
+            //Search Rnodes in the DB
+            
+            //Add all Rnodes into the corridor
+            
+            //Sort Rnode
+            cor.sortAllNode();
+        }
+    }
+
+    private void preProcessCorridor() {
+        //set Rnode upstream and downstream node
+        //set Rnode upstream and downstream length
+        //do I go for it??
+    }
 }

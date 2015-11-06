@@ -26,16 +26,14 @@ import java.util.*;
  * youngtak Han <gksdudxkr@gmail.com>
  */
 public class Corridor extends InfraObject{
-    private Direction dir;
-    
-    //Road Type Code
-    protected RoadType roadtype = null;
     private ArrayList<RNode> rnodes = new ArrayList();
     private ArrayList<Station> stations = new ArrayList();
     private ArrayList<Entrance> entrances = new ArrayList();
     private ArrayList<Exit> exits = new ArrayList();
     private ArrayList<DMS> dms = new ArrayList();
     
+    private RoadType rodetype = null;
+    private Direction direction = null;
     private String shortName = null; //short name
     private String StartName = null; //Start Location Name
     private String EndName = null; //End Location Name
@@ -44,10 +42,20 @@ public class Corridor extends InfraObject{
     private int freeSpeed = -1;
     private int JamSpeed = -1;
     
-    
-    
-    public Corridor(String _id, String _name){
-        super(_id,_name);
+    public Corridor(HashMap<InfraDatas, Object> datas){
+        super(datas);
+        rodetype = (RoadType)getProperty(InfraDatas.ROADTYPE);
+        shortName =  (String)getProperty(InfraDatas.SHORTNAME);
+        StartName =  (String)getProperty(InfraDatas.STARTNAME);
+        EndName = (String)getProperty(InfraDatas.ENDNAME);
+        StartNode = (String)getProperty(InfraDatas.STARTNODE);
+        EndNode = (String)getProperty(InfraDatas.ENDNODE);
+        Integer temp;
+        temp = (Integer)getProperty(InfraDatas.FREESPEED);
+        freeSpeed = temp == null ? -1 : temp;
+        temp = (Integer)getProperty(InfraDatas.JAMSPEED);
+        JamSpeed = temp == null ? -1 : temp;
+        direction = (Direction)getProperty(InfraDatas.DIRECTION);
     }
     
     //Add RNode
@@ -101,5 +109,49 @@ public class Corridor extends InfraObject{
         Collections.sort(entrances);
         Collections.sort(exits);
         Collections.sort(dms);
+    }
+    
+    /**
+     * Data Lists for Corridor
+     */
+    
+    /**
+     * get Road Type
+     * @return RoadType
+     */
+    public RoadType getRoadType(){
+        return this.rodetype;
+    }
+    
+    public String getShortName(){
+        return this.shortName;
+    }
+    
+    public String getStartName(){
+        return this.StartName;
+    }
+    
+    public String getEndName(){
+        return this.EndName;
+    }
+    
+    public String getStartNode(){
+        return this.StartNode;
+    }
+    
+    public String getEndNode(){
+        return this.EndNode;
+    }
+    
+    public int getFreeSpeed(){
+        return this.freeSpeed;
+    }
+    
+    public int getJAMSpeed(){
+        return this.JamSpeed;
+    }
+    
+    public Direction getDirection(){
+        return this.direction;
     }
 }

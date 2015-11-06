@@ -16,9 +16,9 @@
  */
 package infra.infraobject;
 
-import infra.InfraObject;
+import infra.InfraDatas;
 import infra.type.RnodeType;
-import trafficsimulationanalysis.TempData;
+import java.util.HashMap;
 
 /**
  *
@@ -27,8 +27,8 @@ import trafficsimulationanalysis.TempData;
  */
 public class DMS extends RNode{
 
-    public DMS(TempData data) {
-        super(data);
+    public DMS(HashMap<InfraDatas,Object> datas) {
+        super(datas);
         super.nodetype = RnodeType.DMS;
     }
     

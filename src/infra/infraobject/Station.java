@@ -16,9 +16,9 @@
  */
 package infra.infraobject;
 
+import infra.InfraDatas;
 import infra.type.*;
 import java.util.*;
-import trafficsimulationanalysis.TempData;
 
 /**
  *
@@ -40,9 +40,24 @@ public class Station extends RNode{
     //Detectors must include the Mainline, Bus lane and so on
     private List<Detector> detectors = new ArrayList<Detector>();
     
-    public Station(TempData data) {
-        super(data);
+    public Station(HashMap<InfraDatas,Object> datas) {
+        super(datas);
         super.nodetype = RnodeType.STATION;
+        Integer it;
+        Double dt;
+        
+        it = (Integer)super.getProperty(InfraDatas.ORDER);
+        order = it == null ? -1 : it;
+        
+        it = (Integer)super.getProperty(InfraDatas.LENGTH);
+        Length = it == null ? -1 : it;
+        
+        dt = (Double)super.getProperty(InfraDatas.START_LOC);
+        Start_Loc = dt == null ? -1 : dt;
+        
+        dt = (Double)super.getProperty(InfraDatas.END_LOC);
+        End_Loc = dt == null ? -1 : dt;
     }
+    
     
 }

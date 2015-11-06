@@ -19,7 +19,7 @@ package trafficsimulationanalysis;
 import infra.infraobject.*;
 import java.util.ArrayList;
 import java.util.Random;
-
+import infra.InfraDatas;
 /**
  *
  * @author soobin Jeon <j.soobin@gmail.com>, chungsan Lee <dj.zlee@gmail.com>,
@@ -32,45 +32,45 @@ public class TrafficSimulationAnalysis {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        Random randomGenerator = new Random();
-        Corridor cor = new Corridor("id01","Cor01");
-        for(int i=0;i<30;i++){
-            int r = randomGenerator.nextInt(4);
-            String id = "i"+i;
-            String name = "name"+id;
-            int loc = randomGenerator.nextInt(4000);
-            RNode nrnode = null;
-            RNode exnode = null;
-//            System.out.println("r = "+r);
-            switch(r){
-                case 0:
-                case 1:
-                    nrnode = new Station(new TempData(id,name,loc));
-                    break;
-                case 2:
-                    nrnode = new Entrance(new TempData(id,name,loc));
-                    exnode = new Exit(new TempData(id+"ex",name,loc+50));
-                    break;
-                case 3:
-                    nrnode = new DMS(new TempData(id,name,loc));
-                    break;
+//        Random randomGenerator = new Random();
+//        Corridor cor = new Corridor("id01","Cor01");
+//        for(int i=0;i<30;i++){
+//            int r = randomGenerator.nextInt(4);
+//            String id = "i"+i;
+//            String name = "name"+id;
+//            int loc = randomGenerator.nextInt(4000);
+//            RNode nrnode = null;
+//            RNode exnode = null;
+////            System.out.println("r = "+r);
+//            switch(r){
+//                case 0:
+//                case 1:
+//                    nrnode = new Station(new TempData(id,name,loc));
+//                    break;
+//                case 2:
+//                    nrnode = new Entrance(new TempData(id,name,loc));
+//                    exnode = new Exit(new TempData(id+"ex",name,loc+50));
+//                    break;
+//                case 3:
+//                    nrnode = new DMS(new TempData(id,name,loc));
+//                    break;
+//            }
+//            cor.addRNode(nrnode);
+//            if(exnode != null)
+//                cor.addRNode(exnode);
+////            System.out.println("insert -> "+nrnode.toString());
+//        }
+//        cor.sortAllNode();
+//        
+//        for(RNode r : cor.getRNodes()){
+//            System.out.println(r.toString());
+//        }
+//        
+//        System.out.println("Stations");
+//        for(RNode r : cor.getStations()){
+//            System.out.println(r.toString());
+//        }
+//        
             }
-            cor.addRNode(nrnode);
-            if(exnode != null)
-                cor.addRNode(exnode);
-//            System.out.println("insert -> "+nrnode.toString());
-        }
-        cor.sortAllNode();
-        
-        for(RNode r : cor.getRNodes()){
-            System.out.println(r.toString());
-        }
-        
-        System.out.println("Stations");
-        for(RNode r : cor.getStations()){
-            System.out.println(r.toString());
-        }
-        
-    }
     
 }

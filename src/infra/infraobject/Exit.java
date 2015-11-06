@@ -16,8 +16,9 @@
  */
 package infra.infraobject;
 
+import infra.InfraDatas;
 import infra.type.RnodeType;
-import trafficsimulationanalysis.TempData;
+import java.util.HashMap;
 
 /**
  *
@@ -26,8 +27,8 @@ import trafficsimulationanalysis.TempData;
  */
 public class Exit extends RNode{
 
-    public Exit(TempData data) {
-        super(data);
+    public Exit(HashMap<InfraDatas,Object> datas) {
+        super(datas);
         super.nodetype = RnodeType.EXIT;
     }
     

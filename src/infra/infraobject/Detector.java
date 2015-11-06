@@ -16,8 +16,10 @@
  */
 package infra.infraobject;
 
+import infra.InfraDatas;
 import infra.InfraObject;
 import infra.type.*;
+import java.util.HashMap;
 
 /**
  *
@@ -26,8 +28,8 @@ import infra.type.*;
  */
 public class Detector extends InfraObject{
     private LaneType lanetype = LaneType.None;
-    public Detector(String _id, String _name) {
-        super(_id,_name);
+    public Detector(HashMap<InfraDatas,Object> datas) {
+        super(datas);
     }
     
     //기본 데이터를 가지고 있는 최종단 노드

@@ -17,6 +17,7 @@
 package infra.infraobject;
 
 import infra.Direction;
+import infra.InfraDatas;
 import infra.InfraObject;
 import infra.type.*;
 import java.util.*;
@@ -31,18 +32,16 @@ public class RNode extends InfraObject implements Comparable{
     protected int distanceToDownstreamNode = -1;
     protected int distanceToUpstreamNode = -1;
     
-    //Location
-    protected double Loc = -1;
-    
-    protected Corridor corridor = null;
-    //Direction
-    protected Direction direction = Direction.ALL;
-    
+    protected double loc = -1;
+    private Corridor corridor = null;
+    private Direction direction = Direction.ALL;
     protected RnodeType nodetype = RnodeType.NONE;
     
-    public RNode(TempData data) {
-        super(data.id,data.name);
-        Loc = data.Loc;
+    public RNode(HashMap<InfraDatas,Object> datas){
+        super(datas);
+        Double _loc = (Double)getProperty(InfraDatas.LOCATION);
+        loc = _loc == null ? -1 : _loc;
+        direction = (Direction)getProperty(InfraDatas.DIRECTION);
     }
     
     //Set Corridor
@@ -52,18 +51,46 @@ public class RNode extends InfraObject implements Comparable{
     
     @Override
     public String toString(){
-        return "ID:"+super.id+", Name : "+super.Name+", Type : "+nodetype.toString()+", Loc : "+Loc;
+        return "ID:"+super.getID()+", Name : "+super.getName()+", Type : "+nodetype.toString()+", Loc : "+loc;
     }
 
     @Override
     public int compareTo(Object o) {
         RNode comrnode = (RNode)o;
-        Double _loc = comrnode.Loc;
-        if(Loc == _loc)
+        double _loc = comrnode.getLocation();
+        if(loc == _loc)
             return 0;
-        else if(Loc > _loc)
+        else if(loc > _loc)
             return 1;
         else
             return -1;
+    }
+    
+    /**
+     * Data list
+     */
+    
+    /**
+     * get RNode Location
+     * @return double
+     */
+    public double getLocation(){
+        return loc;
+    }
+    
+   /**
+    * get Direction
+    * @return double
+    */
+    public Direction getDirection(){
+        return direction;
+    }
+    
+    public Corridor getCorridor(){
+        return corridor;
+    }
+    
+    public RnodeType getNodeType(){
+        return nodetype;
     }
 }

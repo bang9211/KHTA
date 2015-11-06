@@ -16,18 +16,36 @@
  */
 package infra;
 
+import java.util.HashMap;
+
 /**
  *
  * @author soobin Jeon <j.soobin@gmail.com>, chungsan Lee <dj.zlee@gmail.com>,
  * youngtak Han <gksdudxkr@gmail.com>
  */
 public class InfraObject {
-    protected String id;
-    protected String Name;
+    private final String id;
+    private final String name;
+    private HashMap<InfraDatas, Object> properties = new HashMap();
     
-    public InfraObject(String _id, String _name){
-        id = _id;
-        Name = _name;
+    public InfraObject(HashMap<InfraDatas, Object> _pro){
+        properties = _pro;
+        id = (String)getProperty(InfraDatas.ID);
+        name = (String)getProperty(InfraDatas.NAME);
     }
     
+    //get Property from properties
+    protected Object getProperty(InfraDatas key){
+        return properties.get(key);
+    }
+    
+    //get ID
+    public String getID(){
+        return id;
+    }
+    
+    //get NAME
+    public String getName(){
+        return name;
+    }
 }

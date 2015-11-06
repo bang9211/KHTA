@@ -16,8 +16,10 @@
  */
 package infra.infraobject;
 
+import infra.InfraDatas;
 import infra.InfraObject;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -28,8 +30,8 @@ import java.util.List;
 public class RampMeter extends InfraObject{
     private List<Detector> queue = new ArrayList<Detector>();
     private List<Detector> passage = new ArrayList<Detector>();
-    public RampMeter(String _id, String _name) {
-        super(_id, _name);
+    public RampMeter(HashMap<InfraDatas,Object> datas) {
+        super(datas);
     }
     
 }
