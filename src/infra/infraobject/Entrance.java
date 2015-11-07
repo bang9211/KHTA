@@ -28,8 +28,7 @@ import java.util.HashMap;
 public class Entrance extends RNode{
     RampMeter meter;
     public Entrance(HashMap<InfraDatas,Object> datas) {
-        super(datas);
-        super.nodetype = RnodeType.ENTRANCE;
+        super(datas,RnodeType.ENTRANCE);
     }
     
 }

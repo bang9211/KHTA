@@ -41,8 +41,7 @@ public class Station extends RNode{
     private List<Detector> detectors = new ArrayList<Detector>();
     
     public Station(HashMap<InfraDatas,Object> datas) {
-        super(datas);
-        super.nodetype = RnodeType.STATION;
+        super(datas,RnodeType.STATION);
         Integer it;
         Double dt;
         

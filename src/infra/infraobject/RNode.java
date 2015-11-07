@@ -37,8 +37,9 @@ public class RNode extends InfraObject implements Comparable{
     private Direction direction = Direction.ALL;
     protected RnodeType nodetype = RnodeType.NONE;
     
-    public RNode(HashMap<InfraDatas,Object> datas){
+    public RNode(HashMap<InfraDatas,Object> datas, RnodeType _nodetype){
         super(datas);
+        nodetype = _nodetype;
         Double _loc = (Double)getProperty(InfraDatas.LOCATION);
         loc = _loc == null ? -1 : _loc;
         direction = (Direction)getProperty(InfraDatas.DIRECTION);

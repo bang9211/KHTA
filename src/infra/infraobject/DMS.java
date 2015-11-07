@@ -28,8 +28,7 @@ import java.util.HashMap;
 public class DMS extends RNode{
 
     public DMS(HashMap<InfraDatas,Object> datas) {
-        super(datas);
-        super.nodetype = RnodeType.DMS;
+        super(datas,RnodeType.DMS);
     }
     
 }

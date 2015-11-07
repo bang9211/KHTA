@@ -17,7 +17,10 @@
 package infra;
 
 import infra.infraobject.Corridor;
+import infra.infraobject.Station;
 import java.util.ArrayList;
+import java.util.HashMap;
+import trafficsimulationanalysis.tempMySQL;
 
 /**
  *
@@ -26,33 +29,76 @@ import java.util.ArrayList;
  */
 public class Infra {
     ArrayList<Corridor> corridors = new ArrayList();
-    
+    tempMySQL sqlserver = null;
+    private static Infra infra = new Infra();
     public ArrayList<Corridor> getCorridors(){
         return corridors;
     }
     
-    public void load(){
+    public static Infra getInstance(){
+        return infra;
+    }
+    
+    /**
+     * Lod Infra Data from DB
+     * @param _sqlserver 
+     */
+    public void load(tempMySQL _sqlserver){
+        sqlserver= _sqlserver;
         //set Corridors from DB
+        System.out.println("Set Corridors....");
         setCorridors();
+        System.out.println("Corridors setting completed");
+        
         //set Rnodes to each Corridor
+        System.out.println("Set Rnodes....");
         setRnodes();
+        System.out.println("Rnodes setting completed");
+        //set RampMeter
+        //Need to addtion
+        
         //preprocess Corridor objects
         preProcessCorridor();
     }
 
+    /**
+     * Set Corridors from DB
+     */
     private void setCorridors() {
         //Add all Corridor into the corridors List
+        ArrayList<HashMap<InfraDatas, Object>> cors = sqlserver.getCorridors();
+        for(HashMap<InfraDatas, Object> c : cors){
+            Corridor ncor = new Corridor(c);
+            corridors.add(ncor);
+        }
     }
 
+    /**
+     * set RNodes
+     * - Station (Complete)
+     * - Entrance
+     * - Exit
+     * - DMS
+     */
     private void setRnodes() {
         for(Corridor cor : corridors){
             //Search Rnodes in the DB
+            //Add Station
+//            System.out.println("Cor ID " +cor.getID() + ", NAME : "+cor.getName());
+            for(HashMap<InfraDatas, Object> ss : sqlserver.getStations(cor.getID())){
+                Station ns = new Station(ss);
+                //Add all Rnodes into the corridor
+                cor.addRNode(ns);
+            }
             
-            //Add all Rnodes into the corridor
+            //Add Entrance
+            //Add Exit
+            //Add DMS
             
             //Sort Rnode
             cor.sortAllNode();
         }
+        
     }
 
     private void preProcessCorridor() {

@@ -41,6 +41,7 @@ public enum InfraDatas {
     LOCATION("location","double","loc"),
     
     //for Station(VDS)
+    COR_ID("Corridor ID","String","cor_id"),
     START_LOC("Start Location","double","startloc"),
     END_LOC("End Location","double","endloc"),
     LENGTH("Legnth","int","length"),

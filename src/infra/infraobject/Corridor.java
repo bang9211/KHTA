@@ -63,6 +63,7 @@ public class Corridor extends InfraObject{
         n.setCorridor(this);
         rnodes.add(n);
         ClassifyNodes(n);
+        
         Collections.sort(rnodes);
     }
     

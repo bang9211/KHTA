@@ -28,8 +28,7 @@ import java.util.HashMap;
 public class Exit extends RNode{
 
     public Exit(HashMap<InfraDatas,Object> datas) {
-        super(datas);
-        super.nodetype = RnodeType.EXIT;
+        super(datas,RnodeType.EXIT);
     }
     
 }
