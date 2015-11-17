@@ -21,6 +21,15 @@ import infra.infraobject.*;
 import java.util.ArrayList;
 import java.util.Random;
 import infra.InfraDatas;
+import infra.Section;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import khta.KHTAFrame;
+import khta.SectionCreation;
 /**
  *
  * @author soobin Jeon <j.soobin@gmail.com>, chungsan Lee <dj.zlee@gmail.com>,
@@ -39,8 +48,26 @@ public class TrafficSimulationAnalysis {
         Infra infra = Infra.getInstance();
         infra.load(tq);
         
-        TrafficSimulationAnalysis ta = new TrafficSimulationAnalysis();
-        ta.infratest();
+//        TrafficSimulationAnalysis ta = new TrafficSimulationAnalysis();
+//        ta.infratest();
+
+        KHTAFrame nf = new KHTAFrame(infra);
+        nf.setVisible(true);
+
+//        Section s = new Section("test");
+//        try {
+//            FileOutputStream fileOut
+//                    = new FileOutputStream("employee.ser");
+//            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+//            out.writeObject(s);
+//            out.close();
+//            fileOut.close();
+//            System.out.printf("Serialized data is saved in /tmp/employee.ser");
+//        } catch (IOException i) {
+//            i.printStackTrace();
+//        }
+
+        
     }
     
     public void infratest(){

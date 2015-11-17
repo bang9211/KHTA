@@ -29,55 +29,58 @@ import java.util.Random;
  * youngtak Han <gksdudxkr@gmail.com>
  */
 public class tempMySQL {
+
     private int seed;
     private ArrayList<HashMap<InfraDatas, Object>> Corridors = new ArrayList();
     private ArrayList<HashMap<InfraDatas, Object>> stations = new ArrayList();
     Random randomGenerator = new Random();
     private int MAX_COR = 20;
     private int MAX_STATION = 4000;
-    public tempMySQL(int _seed){
+
+    public tempMySQL(int _seed) {
         seed = _seed;
         randomGenerator.setSeed(seed);
     }
-    
-    public void setup(){
+
+    public void setup() {
         System.out.println("Setting up the Corridors");
         setCorridor();
-        System.out.println("Corridor Count : "+Corridors.size());
+        System.out.println("Corridor Count : " + Corridors.size());
         setStation();
-        System.out.println("Station Count : "+stations.size());
+        System.out.println("Station Count : " + stations.size());
     }
-    
-    public ArrayList<HashMap<InfraDatas, Object>> getCorridors(){
+
+    public ArrayList<HashMap<InfraDatas, Object>> getCorridors() {
         return Corridors;
     }
-    
-    public ArrayList<HashMap<InfraDatas, Object>> getStations(String Corid){
+
+    public ArrayList<HashMap<InfraDatas, Object>> getStations(String Corid) {
         ArrayList<HashMap<InfraDatas, Object>> selStations = new ArrayList();
-        for(HashMap<InfraDatas, Object> ss : stations){
-            String scid = (String)ss.get(InfraDatas.COR_ID);
-            if(scid.equals(Corid))
+        for (HashMap<InfraDatas, Object> ss : stations) {
+            String scid = (String) ss.get(InfraDatas.COR_ID);
+            if (scid.equals(Corid)) {
                 selStations.add(ss);
+            }
         }
         return selStations;
     }
-    
-    private void setStation(){
+
+    private void setStation() {
         //int 
         int slength = 1000;
-        for(HashMap<InfraDatas, Object> cor : Corridors){
-            String corid = (String)cor.get(InfraDatas.ID);
-            Direction dr = (Direction)cor.get(InfraDatas.DIRECTION);
+        for (HashMap<InfraDatas, Object> cor : Corridors) {
+            String corid = (String) cor.get(InfraDatas.ID);
+            Direction dr = (Direction) cor.get(InfraDatas.DIRECTION);
             int scnt = randomGenerator.nextInt(30);
             scnt = scnt < 10 ? 10 : scnt;
             int cnt = 0;
-            while(cnt ++ < scnt){
+            while (cnt++ < scnt) {
                 HashMap<InfraDatas, Object> station = new HashMap();
-                int id = cnt-1;
+                int id = cnt - 1;
                 String nid = String.valueOf(id);
-                String name = "Name_"+nid;
+                String name = "Name_" + nid + "_cor_" + corid;
                 double eloc = cnt * slength;
-                double loc = eloc - (slength/2);
+                double loc = eloc - (slength / 2);
                 double sloc = eloc - slength;
 
                 station.put(InfraDatas.ID, nid);
@@ -93,71 +96,73 @@ public class tempMySQL {
             }
         }
     }
-    
-    private void setCorridor(){
+
+    private void setCorridor() {
         int cnt = 0;
-        
-        while(cnt++ < MAX_COR){
+
+        while (cnt++ < MAX_COR) {
             int id = getID(MAX_COR, Corridors);
             String nid = String.valueOf(id);
-            String name = "Name_"+nid;
+            String name = "Name_" + nid;
             HashMap<InfraDatas, Object> corridor = new HashMap();
             corridor.put(InfraDatas.ID, String.valueOf(id));
             corridor.put(InfraDatas.NAME, name);
             corridor.put(InfraDatas.ROADTYPE, RoadType.HIGHWAY);
-            corridor.put(InfraDatas.SHORTNAME, name+"_short");
-            corridor.put(InfraDatas.STARTNAME, name+"_StartName");
-            corridor.put(InfraDatas.ENDNAME, name+"_EndName");
-            corridor.put(InfraDatas.STARTNODE, name+"_StartNode");
-            corridor.put(InfraDatas.ENDNODE, name+"_EndNode");
+            corridor.put(InfraDatas.SHORTNAME, name + "_short");
+            corridor.put(InfraDatas.STARTNAME, name + "_StartName");
+            corridor.put(InfraDatas.ENDNAME, name + "_EndName");
+            corridor.put(InfraDatas.STARTNODE, name + "_StartNode");
+            corridor.put(InfraDatas.ENDNODE, name + "_EndNode");
             corridor.put(InfraDatas.FREESPEED, 80);
             corridor.put(InfraDatas.JAMSPEED, 40);
             corridor.put(InfraDatas.DIRECTION, getDirection());
             Corridors.add(corridor);
 //            System.out.println("id : "+id + "\tCor length : "+Corridors.size());
         }
-        
+
 //        for(HashMap<InfraDatas, Object> cor : Corridors){
 //            System.out.println("CID : "+(String)cor.get(InfraDatas.ID)+
 //                    ", CNAME : "+ (String)cor.get(InfraDatas.NAME)+
 //                    ", Direction : "+ ((Direction)cor.get(InfraDatas.DIRECTION)).toString());
 //        }
     }
-    
+
 //    public ArrayList<HashMap<InfraDatas, Object>> getCorridor(){
 //        
 //    }
-    private Direction getDirection(){
+    private Direction getDirection() {
         int _id = randomGenerator.nextInt(4);
-        switch(_id){
-            case 0 : 
+        switch (_id) {
+            case 0:
                 return Direction.EB;
-            case 1: 
+            case 1:
                 return Direction.WB;
-            case 2 :
+            case 2:
                 return Direction.NB;
-            default :
+            default:
                 return Direction.SB;
         }
     }
+
     private int getID(int MAX, ArrayList<HashMap<InfraDatas, Object>> cors) {
         int id = -1;
-        while(true){
-            id = randomGenerator.nextInt(MAX+1);
-            if(cors.size() == 0)
+        while (true) {
+            id = randomGenerator.nextInt(MAX + 1);
+            if (cors.size() == 0) {
                 break;
-            else{
+            } else {
                 boolean checked = false;
-                for(HashMap<InfraDatas, Object> datas : cors){
-                    String d_id = (String)datas.get(InfraDatas.ID);
-                    if(String.valueOf(id).equals(d_id)){
+                for (HashMap<InfraDatas, Object> datas : cors) {
+                    String d_id = (String) datas.get(InfraDatas.ID);
+                    if (String.valueOf(id).equals(d_id)) {
                         checked = true;
                         break;
                     }
                 }
-                
-                if(!checked)
+
+                if (!checked) {
                     break;
+                }
             }
         }
         return id;

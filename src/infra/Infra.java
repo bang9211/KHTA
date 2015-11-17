@@ -16,11 +16,18 @@
  */
 package infra;
 
+import exception.section.RNodeCreationException;
+import exception.section.SectionCreationException;
 import infra.infraobject.Corridor;
+import infra.infraobject.RNode;
 import infra.infraobject.Station;
+import java.awt.PopupMenu;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import trafficsimulationanalysis.tempMySQL;
+import util.KHTAParam;
 
 /**
  *
@@ -30,6 +37,8 @@ import trafficsimulationanalysis.tempMySQL;
 public class Infra {
     ArrayList<Corridor> corridors = new ArrayList();
     tempMySQL sqlserver = null;
+    List<Section> sections = new ArrayList();
+    
     private static Infra infra = new Infra();
     public ArrayList<Corridor> getCorridors(){
         return corridors;
@@ -59,6 +68,11 @@ public class Infra {
         
         //preprocess Corridor objects
         preProcessCorridor();
+        
+        System.out.println("Section Loading..");
+        //Load Section
+        loadSection();
+        System.out.println("Section Load Completed");
     }
 
     /**
@@ -105,5 +119,87 @@ public class Infra {
         //set Rnode upstream and downstream node
         //set Rnode upstream and downstream length
         //do I go for it??
+    }
+
+    public Corridor getCorridors(String get) {
+        for(Corridor c : corridors){
+            if(c.getID().equals(get))
+                return c;
+        }
+        return null;
+    }
+
+    /**
+     * Create Section Data
+     * @param sname
+     * @param corid
+     * @param snid
+     * @param enid
+     * @throws SectionCreationException
+     * @throws RNodeCreationException
+     * @throws Exception 
+     */
+    public void CreateSection(String sname, String corid, String snid, String enid) throws SectionCreationException, RNodeCreationException, Exception{
+        if(hasSections(sname)){
+            throw new SectionCreationException("Section Name is already used");
+        }
+        
+        Section ns = new Section(sname, "", corid);
+        ns.createRNodes(snid, enid);
+        sections.add(ns);
+        ns.save();
+        System.out.println("Saving Section : "+ns.getName());
+        for(RNode rn : ns.getRNodes()){
+            System.out.println("RN : "+rn.getID());
+        }
+        
+    }
+
+    /**
+     * has Sections in Infra
+     * @param sname
+     * @return 
+     */
+    private boolean hasSections(String sname) {
+        if(sections.isEmpty())
+            return false;
+        else{
+            for(Section s : sections){
+                if(s.getName().equals(sname))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Load Section from the section directory
+     */
+    private void loadSection() {
+        sections.clear();
+        File file = new File(KHTAParam.SECTION_DIR);
+        File[] files = file.listFiles();
+        if(files == null) return;
+        
+        for(int i=0;i<files.length;i++){
+            Section s = Section.load(files[i].getAbsolutePath());
+            if(s == null) continue;
+            if(s != null) sections.add(s);
+            else{
+                System.err.println("\""+files[i].getName()+"\" can not be loaded to section");
+            }
+        }
+    }
+
+    /**
+     * get All Sections
+     * @return Section[]
+     */
+    public Section[] getSections() {
+        Section[] secs = new Section[sections.size()];
+        for(int i=0;i<sections.size();i++){
+            secs[i] = sections.get(i);
+        }
+        return secs;
     }
 }

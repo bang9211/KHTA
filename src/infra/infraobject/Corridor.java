@@ -155,4 +155,9 @@ public class Corridor extends InfraObject{
     public Direction getDirection(){
         return this.direction;
     }
+    
+    @Override
+    public String toString(){
+        return this.getName();
+    }
 }

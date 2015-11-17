@@ -58,5 +58,9 @@ public class Station extends RNode{
         End_Loc = dt == null ? -1 : dt;
     }
     
+    @Override
+    public String toString(){
+        return getName();
+    }
     
 }
