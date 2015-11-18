@@ -202,4 +202,17 @@ public class Infra {
         }
         return secs;
     }
+
+    /**
+     * Delete Section from infra
+     * @param ds 
+     */
+    public void deleteSection(Section ds) {
+        for(int i=0;i<sections.size();i++){
+            if(sections.get(i).getName().equals(ds.getName())){
+                sections.remove(i);
+                break;
+            }
+        }
+    }
 }

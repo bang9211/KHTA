@@ -18,11 +18,16 @@ package khta;
 
 import infra.Infra;
 import infra.infraobject.Corridor;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import version.Version;
 
 /**
  *
@@ -32,6 +37,10 @@ import javax.swing.JPanel;
 public class KHTAFrame extends javax.swing.JFrame {
 
     private Infra infra;
+    private final int width = 1000;
+    private final int height = 780;
+    
+    static KHTALoading kl = new KHTALoading(null, true);
     /**
      * Creates new form KHTAFrame
      */
@@ -42,17 +51,31 @@ public class KHTAFrame extends javax.swing.JFrame {
     public KHTAFrame(Infra _infra) {
         initComponents();
         infra = _infra;
-        this.setTitle("Korea Highway Traffic Analysis Tool");
+        this.setTitle("Korea Highway Traffic Analysis Tool v " + Version.version);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        Dimension screenSize = toolkit.getScreenSize();
+        this.setLocation((screenSize.width - width) / 2, (screenSize.height - height) / 2);
+        final KHTAFrame kf = this;
         // timer for splash window
         new Timer().schedule(new TimerTask() {
 
             @Override
             public void run() {
                 initPanels();
+//                try {
+//                    Thread.sleep(3000);
+//                } catch (InterruptedException ex) {
+//                    Logger.getLogger(KHTAFrame.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+                kf.setAlwaysOnTop(true);
+                kf.setVisible(true);
+                kl.dispose();
             }
         }, 10);
+        kl.setAlwaysOnTop(true);
+        kl.setVisible(true);
     }
 
     /**
@@ -133,7 +156,7 @@ public class KHTAFrame extends javax.swing.JFrame {
     private void initPanels(){
         initMainFrame();
         initSectionEditor();
-        this.MainTabbedPanel.setSelectedIndex(1);
+        this.MainTabbedPanel.setSelectedIndex(0);
     }
     private void initMainFrame(){
         TrafficAnalysis ta = new TrafficAnalysis(infra);

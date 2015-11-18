@@ -108,7 +108,7 @@ public class Section implements Serializable{
      * @param name
      * @return 
      */
-    private String getCacheFileName(String name) {
+    public static String getCacheFileName(String name) {
         return name;
     }
 

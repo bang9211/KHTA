@@ -18,13 +18,16 @@ package khta;
 
 import exception.section.RNodeCreationException;
 import infra.Infra;
+import infra.Section;
 import infra.infraobject.Corridor;
 import infra.infraobject.RNode;
 import infra.infraobject.Station;
+import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import util.KHTAParam;
 
 /**
@@ -69,6 +72,7 @@ public class SectionCreation extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         listSection = new javax.swing.JList();
+        btnDeleteSection = new javax.swing.JButton();
 
         setName("Section Creation"); // NOI18N
 
@@ -173,6 +177,14 @@ public class SectionCreation extends javax.swing.JPanel {
         listSection.setPreferredSize(new java.awt.Dimension(190, 30));
         jScrollPane1.setViewportView(listSection);
 
+        btnDeleteSection.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnDeleteSection.setLabel("Create Section");
+        btnDeleteSection.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteSectionActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -180,13 +192,19 @@ public class SectionCreation extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnDeleteSection)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 427, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnDeleteSection)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 427, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -243,9 +261,15 @@ public class SectionCreation extends javax.swing.JPanel {
             this.cbxStartStation.setSelectedIndex(pidx);
     }//GEN-LAST:event_cbxEndStationActionPerformed
 
+    private void btnDeleteSectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteSectionActionPerformed
+        // TODO add your handling code here:
+        deleteSection();
+    }//GEN-LAST:event_btnDeleteSectionActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCreateSection;
+    private javax.swing.JButton btnDeleteSection;
     private javax.swing.JComboBox cbxCorridorList;
     private javax.swing.JComboBox cbxEndStation;
     private javax.swing.JComboBox cbxStartStation;
@@ -279,6 +303,8 @@ public class SectionCreation extends javax.swing.JPanel {
     }
 
     private void saveSectionBtn() {
+        if(this.tbxSectionNane.getText().equals(""))
+            return;
         // timer for splash window
         new Timer().schedule(new TimerTask() {
 
@@ -316,5 +342,19 @@ public class SectionCreation extends javax.swing.JPanel {
     private void loadSection() {
         listSection.removeAll();
         listSection.setListData(infra.getSections());
+    }
+
+    private void deleteSection() {
+        if(listSection == null) return;
+        int res = JOptionPane.showConfirmDialog(this, "Delete this section?", "Confirm", JOptionPane.YES_NO_OPTION);
+        Section ss = (Section)listSection.getSelectedValue();
+        if(res == JOptionPane.YES_OPTION){
+            File cache = new File(KHTAParam.SECTION_DIR + File.separator + Section.getCacheFileName(ss.getName()));
+            cache.delete();
+            int idx = this.listSection.getSelectedIndex();
+            //this.listSection.remove(idx);
+            infra.deleteSection(ss);
+            loadSection();
+        }
     }
 }
