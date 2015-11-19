@@ -86,7 +86,7 @@ public final class DataFetcher {
         String sql;
 
         try {
-            sql = "SELECT * FROM its.corridor";
+            sql = "SELECT * FROM its.corridor ORDER BY NAME asc";
             resultSet = statement.executeQuery(sql);
 
             while (resultSet.next()) {
@@ -121,20 +121,23 @@ public final class DataFetcher {
     private void setStation() {
         //int 
         int slength = 1000;
+        /*
         for (HashMap<InfraDatas, Object> cor : corridors) {
             String corID = (String) cor.get(InfraDatas.ID);
             Direction dr = (Direction) cor.get(InfraDatas.DIRECTION);
-
+*/
             String sql;
-
+            
             try {
-                sql = "SELECT * FROM its.station";
+                sql = "SELECT * FROM its.station ORDER BY NAME asc";
                 resultSet = statement.executeQuery(sql);
-//                System.out.println("result count : "+resultSet.getRow());
+                System.out.println("result count : "+resultSet.getRow());
+                int count = 0;
                 while (resultSet.next()) {
                     //Fetch a row
+                    count ++;
                     String staID = resultSet.getString("ID");
-//                    System.out.println(staID);
+                    System.out.println(staID+", cnt : "+count);
                     String name = resultSet.getString("name");
                     double location = resultSet.getDouble("location");
                     double startLocation = resultSet.getDouble("startLocation");
@@ -177,7 +180,9 @@ public final class DataFetcher {
             } catch (SQLException ex) {
                 Logger.getLogger(DataFetcher.class.getName()).log(Level.SEVERE, null, ex);
             }
+            /*
         }
+        */
     }
     
     public ArrayList<HashMap<InfraDatas, Object>> getCorridors() {
