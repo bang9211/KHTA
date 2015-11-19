@@ -43,9 +43,9 @@ import util.DataFetcher;
  */
 public class TrafficSimulationAnalysis {
     static KHTALoading kl = new KHTALoading(null, true);
-    final static String DB_NAME = "its";
-    final static String DB_URL = "jdbc:mysql://210.115.49.40:3306/" + DB_NAME;
-    final static String USER_ID = "root";
+    final static String DB_NAME = "korex";
+    final static String DB_URL = "jdbc:mysql://210.115.49.40:3308/" + DB_NAME;
+    final static String USER_ID = "ythan";
     final static String PASSWORD = "wwwsnslab";
     /**
      * @param args the command line arguments

@@ -86,7 +86,7 @@ public final class DataFetcher {
         String sql;
 
         try {
-            sql = "SELECT * FROM its.corridor ORDER BY NAME asc";
+            sql = "SELECT * FROM korex.corridor ORDER BY NAME asc";
             resultSet = statement.executeQuery(sql);
 
             while (resultSet.next()) {
@@ -124,7 +124,7 @@ public final class DataFetcher {
         String sql;
 
         try {
-            sql = "SELECT * FROM its.station";
+            sql = "SELECT * FROM korex.station";
             resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
                 //Fetch a row
