@@ -16,7 +16,6 @@
  */
 package khta;
 
-import exception.section.RNodeCreationException;
 import infra.Infra;
 import infra.Section;
 import infra.infraobject.Corridor;
@@ -371,8 +370,6 @@ public class SectionCreation extends javax.swing.JPanel {
         try {
             infra.CreateSection(sname,corid, snid, enid);
             
-        } catch (RNodeCreationException ex) {
-            ex.printStackTrace();
         } catch (Exception ex) {
             ex.printStackTrace();
         }

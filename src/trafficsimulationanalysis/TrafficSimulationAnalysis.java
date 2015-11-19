@@ -55,8 +55,6 @@ public class TrafficSimulationAnalysis {
         final Infra infra = Infra.getInstance();
         final DataFetcher tq = new DataFetcher(DB_NAME, DB_URL, USER_ID, PASSWORD);
         
-        tq.setup();
-        
 //        TrafficSimulationAnalysis ta = new TrafficSimulationAnalysis();
 //        ta.infratest();
 
@@ -71,7 +69,7 @@ public class TrafficSimulationAnalysis {
                 } catch (InterruptedException ex) {
                     Logger.getLogger(KHTAFrame.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                //Temp MySql Setup
+                //MySql Setup
                 tq.setup();
                 
                 //Infra Load

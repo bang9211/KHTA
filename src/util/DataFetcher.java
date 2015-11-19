@@ -66,11 +66,13 @@ public final class DataFetcher {
     }
 
     public void setup() {
+        System.out.println("Connecting Database...");
         connectDatabase();
         
         System.out.println("Setting up the Corridors");
         setCorridor();
         System.out.println("Corridor Count : " + corridors.size());
+        System.out.println("Setting up the Stations");
         setStation();
         System.out.println("Station Count : " + stations.size());
         
@@ -128,10 +130,11 @@ public final class DataFetcher {
             try {
                 sql = "SELECT * FROM its.station";
                 resultSet = statement.executeQuery(sql);
-
+//                System.out.println("result count : "+resultSet.getRow());
                 while (resultSet.next()) {
                     //Fetch a row
                     String staID = resultSet.getString("ID");
+//                    System.out.println(staID);
                     String name = resultSet.getString("name");
                     double location = resultSet.getDouble("location");
                     double startLocation = resultSet.getDouble("startLocation");

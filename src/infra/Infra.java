@@ -16,8 +16,6 @@
  */
 package infra;
 
-import exception.section.RNodeCreationException;
-import exception.section.SectionCreationException;
 import infra.infraobject.Corridor;
 import infra.infraobject.RNode;
 import infra.infraobject.Station;
@@ -136,9 +134,9 @@ public class Infra {
      * @throws RNodeCreationException
      * @throws Exception 
      */
-    public void CreateSection(String sname, String corid, String snid, String enid) throws SectionCreationException, RNodeCreationException, Exception{
+    public void CreateSection(String sname, String corid, String snid, String enid) throws Exception{
         if(hasSections(sname)){
-            throw new SectionCreationException("Section Name is already used");
+            throw new Exception("Section Name is already used");
         }
         
         Section ns = new Section(sname, "", corid);

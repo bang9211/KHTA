@@ -16,7 +16,6 @@
  */
 package infra;
 
-import exception.section.RNodeCreationException;
 import infra.infraobject.Corridor;
 import infra.infraobject.RNode;
 import java.io.File;
@@ -117,9 +116,9 @@ public class Section implements Serializable{
      * @param stringList
      * @throws NoneCorridorException 
      */
-    private void setNodes(List<String> stringList) throws RNodeCreationException {
+    private void setNodes(List<String> stringList) throws Exception {
         if(corridor == null)
-            throw new RNodeCreationException("Corridor is null");
+            throw new Exception("Corridor is null");
         
         for(RNode cr : corridor.getRNodes()){
             for(String rid : stringList){
@@ -129,7 +128,7 @@ public class Section implements Serializable{
         }
         
         if(section.isEmpty())
-            throw new RNodeCreationException("RNode is empty");
+            throw new Exception("RNode is empty");
     }
     
     /**
@@ -181,9 +180,9 @@ public class Section implements Serializable{
      * @param enid
      * @throws RNodeCreationException 
      */
-    void createRNodes(String snid, String enid) throws RNodeCreationException{
+    void createRNodes(String snid, String enid) throws Exception{
         if(corridor == null)
-            throw new RNodeCreationException("Corridor is Empty");
+            throw new Exception("Corridor is Empty");
         
         boolean addstart = false;
         boolean isLast = false;
@@ -205,7 +204,7 @@ public class Section implements Serializable{
         }
         
         if(section.isEmpty())
-            throw new RNodeCreationException("RNode is empty");
+            throw new Exception("RNode is empty");
     }
     
     @Override
