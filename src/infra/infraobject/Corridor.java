@@ -34,28 +34,28 @@ public class Corridor extends InfraObject{
     
     private RoadType rodetype = null;
     private Direction direction = null;
-    private String shortName = null; //short name
-    private String StartName = null; //Start Location Name
-    private String EndName = null; //End Location Name
-    private String StartNode = null; //Start Node
-    private String EndNode = null; // End Node
-    private int freeSpeed = -1;
-    private int JamSpeed = -1;
+    //private String shortName = null; //short name
+    //private String StartName = null; //Start Location Name
+    //private String EndName = null; //End Location Name
+    //private String StartNode = null; //Start Node
+    //private String EndNode = null; // End Node
+    //private int freeSpeed = -1;
+    //private int JamSpeed = -1;
     
     public Corridor(HashMap<InfraDatas, Object> datas){
         super(datas);
         rodetype = (RoadType)getProperty(InfraDatas.ROADTYPE);
-        shortName =  (String)getProperty(InfraDatas.SHORTNAME);
-        StartName =  (String)getProperty(InfraDatas.STARTNAME);
-        EndName = (String)getProperty(InfraDatas.ENDNAME);
-        StartNode = (String)getProperty(InfraDatas.STARTNODE);
-        EndNode = (String)getProperty(InfraDatas.ENDNODE);
-        Integer temp;
-        temp = (Integer)getProperty(InfraDatas.FREESPEED);
-        freeSpeed = temp == null ? -1 : temp;
-        temp = (Integer)getProperty(InfraDatas.JAMSPEED);
-        JamSpeed = temp == null ? -1 : temp;
         direction = (Direction)getProperty(InfraDatas.DIRECTION);
+        //shortName =  (String)getProperty(InfraDatas.SHORTNAME);
+        //StartName =  (String)getProperty(InfraDatas.STARTNAME);
+        //EndName = (String)getProperty(InfraDatas.ENDNAME);
+        //StartNode = (String)getProperty(InfraDatas.STARTNODE);
+        //EndNode = (String)getProperty(InfraDatas.ENDNODE);
+        //Integer temp;
+        //temp = (Integer)getProperty(InfraDatas.FREESPEED);
+        //freeSpeed = temp == null ? -1 : temp;
+        //temp = (Integer)getProperty(InfraDatas.JAMSPEED);
+        //JamSpeed = temp == null ? -1 : temp;
     }
     
     //Add RNode
@@ -112,11 +112,7 @@ public class Corridor extends InfraObject{
         Collections.sort(dms);
     }
     
-    /**
-     * Data Lists for Corridor
-     */
-    
-    /**
+      /**
      * get Road Type
      * @return RoadType
      */
@@ -124,6 +120,11 @@ public class Corridor extends InfraObject{
         return this.rodetype;
     }
     
+    public Direction getDirection(){
+        return this.direction;
+    }
+    
+    /*
     public String getShortName(){
         return this.shortName;
     }
@@ -151,10 +152,7 @@ public class Corridor extends InfraObject{
     public int getJAMSpeed(){
         return this.JamSpeed;
     }
-    
-    public Direction getDirection(){
-        return this.direction;
-    }
+    */
     
     @Override
     public String toString(){

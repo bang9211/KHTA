@@ -22,11 +22,18 @@ package infra;
  * youngtak Han <gksdudxkr@gmail.com>
  */
 public enum Direction {
-    NB, SB, EB, WB, ALL;
+    NB("N"), SB("S"), EB("E"), WB("W"), ALL("ALL");
+    
+    private Direction(String dir){
+        direction = dir;
+    }
+    
+    final String direction;
+
     public static Direction get(String d)
     {
         for(Direction dr : Direction.values())
-            if(dr.toString().equals(d)) return dr;
+            if(dr.direction.equals(d)) return dr;
         return ALL;
     }
 }
