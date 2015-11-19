@@ -23,29 +23,26 @@ package infra;
  */
 public enum InfraDatas {
     //Integrated Properties
-    ID("id","String","id"),
-    NAME("name","String","name"),
+    ID("ID","String","ID"),
+    NAME("Name","String","name"),
     
     //for Corridor
-    ROADTYPE("roadtype","RoadType","roadtype"), //Road Type
-    SHORTNAME("Short Name","String","shortname"), ////short name
-    STARTNAME("Start Name","String","startname"),//Start Location Name
-    ENDNAME("End Name","String","endname"),//End Location Name
-    STARTNODE("Start Node","String","startnode"),//Start Node
-    ENDNODE("End Node","String","endnode"),// End Node
-    FREESPEED("Freeway Speed","int","freespeed"),
-    JAMSPEED("Jam Speed","int","jamspeed"),
+    ROADTYPE("Road Type","RoadType","roadtype"), //Road Type
     DIRECTION("Direction","Direction","direction"),
     
     //for RNode
     LOCATION("location","double","loc"),
     
     //for Station(VDS)
-    COR_ID("Corridor ID","String","cor_id"),
+    COR_ID("Corridor ID","String","cor_ID"),
     START_LOC("Start Location","double","startloc"),
     END_LOC("End Location","double","endloc"),
+    TYPE_CODE("Type Code", "int", "typeCode"),
     LENGTH("Legnth","int","length"),
-    ORDER("Node Order","int","order");
+    ORDER("Node Order","int","order"),
+    LANE("Lane", "int", "lane"),
+    SPEED_LIMIT("Speed Limit", "float", "speedLimit");
+    
     
     private InfraDatas(String _desc, String _type, String _tableName){
         desc = _desc;

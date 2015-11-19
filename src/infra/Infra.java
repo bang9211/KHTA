@@ -20,7 +20,7 @@ import infra.infraobject.Corridor;
 import infra.infraobject.Station;
 import java.util.ArrayList;
 import java.util.HashMap;
-import trafficsimulationanalysis.tempMySQL;
+import util.DataFetcher;
 
 /**
  *
@@ -29,7 +29,7 @@ import trafficsimulationanalysis.tempMySQL;
  */
 public class Infra {
     ArrayList<Corridor> corridors = new ArrayList();
-    tempMySQL sqlserver = null;
+    DataFetcher sqlserver = null;
     private static Infra infra = new Infra();
     public ArrayList<Corridor> getCorridors(){
         return corridors;
@@ -43,7 +43,7 @@ public class Infra {
      * Lod Infra Data from DB
      * @param _sqlserver 
      */
-    public void load(tempMySQL _sqlserver){
+    public void load(DataFetcher _sqlserver){
         sqlserver= _sqlserver;
         //set Corridors from DB
         System.out.println("Set Corridors....");

@@ -37,6 +37,13 @@ public enum RoadType {
         desc = _desc;
         code = _code;
     }
+    public static RoadType get(String d)
+    {
+        int temp = Integer.parseInt(d);
+        for(RoadType dr : RoadType.values())
+            if(dr.code == temp) return dr;
+        return ETC;
+    }
     
     public final String desc;
     public final int code;

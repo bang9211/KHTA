@@ -36,6 +36,12 @@ public class Station extends RNode{
     protected double End_Loc = -1;
     //Length
     private int Length = -1;
+    //roadType
+    protected String roadType = null;
+    //lane
+    private int lane = -1;
+    //speedLimit
+    protected float speedLimit;
     
     //Detectors must include the Mainline, Bus lane and so on
     private List<Detector> detectors = new ArrayList<Detector>();
