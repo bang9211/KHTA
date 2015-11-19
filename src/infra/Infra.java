@@ -90,6 +90,7 @@ public class Infra {
      * - DMS
      */
     private void setRnodes() {
+        System.out.println("Set RNodes");
         for(Corridor cor : corridors){
             //Search Rnodes in the DB
             //Add Station

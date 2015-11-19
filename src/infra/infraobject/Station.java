@@ -63,7 +63,7 @@ public class Station extends RNode{
     
     @Override
     public String toString(){
-        return getName();
+        return getID();
     }
     
 }

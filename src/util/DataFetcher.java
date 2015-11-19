@@ -121,62 +121,56 @@ public final class DataFetcher {
     private void setStation() {
         //int 
         int slength = 1000;
-        for (HashMap<InfraDatas, Object> cor : corridors) {
-            String corID = (String) cor.get(InfraDatas.ID);
-            Direction dr = (Direction) cor.get(InfraDatas.DIRECTION);
 
-            String sql;
+        String sql;
 
-            try {
-                sql = "SELECT * FROM its.station";
-                resultSet = statement.executeQuery(sql);
-//                System.out.println("result count : "+resultSet.getRow());
-                while (resultSet.next()) {
-                    //Fetch a row
-                    String staID = resultSet.getString("ID");
-//                    System.out.println(staID);
-                    String name = resultSet.getString("name");
-                    double location = resultSet.getDouble("location");
-                    double startLocation = resultSet.getDouble("startLocation");
-                    double endLocation = resultSet.getDouble("endLocation");
-                    int type = resultSet.getInt("type");
-                    int length = resultSet.getInt("length");
-                    int order = resultSet.getInt("order");
-                    RoadType roadType = RoadType.get(resultSet.getString("roadType"));
-                    int lane = resultSet.getInt("lane");
-                    float speedLimit = resultSet.getFloat("speedLimit");
-                    String cor_ID = resultSet.getString("cor_ID");
-                    String sec_ID = resultSet.getString("sec_ID");  //unused
-                    
+        try {
+            sql = "SELECT * FROM its.station";
+            resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                //Fetch a row
+                String staID = resultSet.getString("ID");
+                String name = resultSet.getString("name");
+                double location = resultSet.getDouble("location");
+                double startLocation = resultSet.getDouble("startLocation");
+                double endLocation = resultSet.getDouble("endLocation");
+                int type = resultSet.getInt("type");
+                int length = resultSet.getInt("length");
+                int order = resultSet.getInt("order");
+                RoadType roadType = RoadType.get(resultSet.getString("roadType"));
+                int lane = resultSet.getInt("lane");
+                float speedLimit = resultSet.getFloat("speedLimit");
+                String cor_ID = resultSet.getString("cor_ID");
+                String sec_ID = resultSet.getString("sec_ID");  //unused
 
-                    //Store a row
-                    HashMap<InfraDatas, Object> station = new HashMap();
-                    station.put(InfraDatas.ID, staID);
-                    station.put(InfraDatas.NAME, name);
-                    station.put(InfraDatas.LOCATION, location);
-                    station.put(InfraDatas.START_LOC, startLocation);
-                    station.put(InfraDatas.END_LOC, endLocation);
-                    station.put(InfraDatas.TYPE_CODE, type);
-                    station.put(InfraDatas.LENGTH, length);
-                    station.put(InfraDatas.ORDER, order);
-                    station.put(InfraDatas.ROADTYPE, roadType);
-                    station.put(InfraDatas.LANE, lane);
-                    station.put(InfraDatas.SPEED_LIMIT, speedLimit);
-                    station.put(InfraDatas.COR_ID, cor_ID);
-                    stations.add(station);
 
-                    /*
-                    System.out.println("id : " + corID + "\tCor length : " + corridors.size());
-                    for (HashMap<InfraDatas, Object> cr : corridors) {
-                        System.out.println("CID : " + (String) cr.get(InfraDatas.ID)
-                                + ", CNAME : " + (String) cr.get(InfraDatas.NAME)
-                                + ", Direction : " + ((Direction) cr.get(InfraDatas.DIRECTION)).toString());
-                    }
-                    */
+                //Store a row
+                HashMap<InfraDatas, Object> station = new HashMap();
+                station.put(InfraDatas.ID, staID);
+                station.put(InfraDatas.NAME, name);
+                station.put(InfraDatas.LOCATION, location);
+                station.put(InfraDatas.START_LOC, startLocation);
+                station.put(InfraDatas.END_LOC, endLocation);
+                station.put(InfraDatas.TYPE_CODE, type);
+                station.put(InfraDatas.LENGTH, length);
+                station.put(InfraDatas.ORDER, order);
+                station.put(InfraDatas.ROADTYPE, roadType);
+                station.put(InfraDatas.LANE, lane);
+                station.put(InfraDatas.SPEED_LIMIT, speedLimit);
+                station.put(InfraDatas.COR_ID, cor_ID);
+                stations.add(station);
+
+                /*
+                System.out.println("id : " + corID + "\tCor length : " + corridors.size());
+                for (HashMap<InfraDatas, Object> cr : corridors) {
+                    System.out.println("CID : " + (String) cr.get(InfraDatas.ID)
+                            + ", CNAME : " + (String) cr.get(InfraDatas.NAME)
+                            + ", Direction : " + ((Direction) cr.get(InfraDatas.DIRECTION)).toString());
                 }
-            } catch (SQLException ex) {
-                Logger.getLogger(DataFetcher.class.getName()).log(Level.SEVERE, null, ex);
+                */
             }
+        } catch (SQLException ex) {
+            Logger.getLogger(DataFetcher.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -188,6 +182,7 @@ public final class DataFetcher {
         ArrayList<HashMap<InfraDatas, Object>> selStations = new ArrayList();
         for (HashMap<InfraDatas, Object> ss : stations) {
             String scid = (String) ss.get(InfraDatas.COR_ID);
+//            System.out.println("Corid : "+Corid + ", scid : "+scid); 
             if (scid.equals(Corid)) {
                 selStations.add(ss);
             }

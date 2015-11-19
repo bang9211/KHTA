@@ -84,7 +84,7 @@ public class SectionCreation extends javax.swing.JPanel {
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel2.setText("Corridor Lists");
 
-        cbxCorridorList.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        cbxCorridorList.setFont(new java.awt.Font("Gulim", 0, 12)); // NOI18N
         cbxCorridorList.setPreferredSize(new java.awt.Dimension(200, 30));
         cbxCorridorList.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -92,7 +92,7 @@ public class SectionCreation extends javax.swing.JPanel {
             }
         });
 
-        cbxStartStation.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        cbxStartStation.setFont(new java.awt.Font("Gulim", 0, 12)); // NOI18N
         cbxStartStation.setPreferredSize(new java.awt.Dimension(200, 30));
         cbxStartStation.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -100,7 +100,7 @@ public class SectionCreation extends javax.swing.JPanel {
             }
         });
 
-        cbxEndStation.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        cbxEndStation.setFont(new java.awt.Font("Gulim", 0, 12)); // NOI18N
         cbxEndStation.setPreferredSize(new java.awt.Dimension(200, 30));
         cbxEndStation.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
