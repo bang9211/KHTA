@@ -241,7 +241,7 @@ public class TrafficAnalysis extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        cbxSections.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        cbxSections.setFont(new java.awt.Font("Gulim", 0, 12)); // NOI18N
         cbxSections.setMinimumSize(new java.awt.Dimension(200, 25));
         cbxSections.setPreferredSize(new java.awt.Dimension(250, 25));
         cbxSections.addMouseListener(new java.awt.event.MouseAdapter() {

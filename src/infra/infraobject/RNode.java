@@ -46,13 +46,18 @@ public class RNode extends InfraObject implements Comparable{
         nodetype = _nodetype;
         Double _loc = (Double)getProperty(InfraDatas.LOCATION);
         loc = _loc == null ? -1 : _loc;
-        direction = (Direction)getProperty(InfraDatas.DIRECTION);
+//        direction = (Direction)getProperty(InfraDatas.DIRECTION);
         initDetectors();
     }
     
     //Set Corridor
     public void setCorridor(Corridor nc){
         corridor = nc;
+        setDirection(corridor.getDirection());
+    }
+    
+    private void setDirection(Direction d){
+        direction = d;
     }
     
     /**

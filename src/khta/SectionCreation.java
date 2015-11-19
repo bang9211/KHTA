@@ -193,7 +193,7 @@ public class SectionCreation extends javax.swing.JPanel {
             }
         });
 
-        cbxSectionInfo.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        cbxSectionInfo.setFont(new java.awt.Font("Gulim", 0, 12)); // NOI18N
         cbxSectionInfo.setPreferredSize(new java.awt.Dimension(200, 30));
         cbxSectionInfo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -202,6 +202,7 @@ public class SectionCreation extends javax.swing.JPanel {
         });
 
         tbxSectionInfo.setColumns(20);
+        tbxSectionInfo.setFont(new java.awt.Font("Gulim", 0, 13)); // NOI18N
         tbxSectionInfo.setRows(5);
         jScrollPane2.setViewportView(tbxSectionInfo);
 
@@ -411,7 +412,9 @@ public class SectionCreation extends javax.swing.JPanel {
 
     private void selectSectionInfo(RNode rNode) {
         this.tbxSectionInfo.setText("");
+        if(rNode == null) return;
         String str = "RNode Info\n";
+        str += "Corridor : "+rNode.getCorridor().getName() + "\n";
         str += "RNode ID : "+rNode.getID() + "\n";
         str += "RNode Name : "+rNode.getName()+ "\n";
         str += "RNode Type : "+rNode.getNodeType().toString()+ "\n";
