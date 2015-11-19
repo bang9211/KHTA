@@ -17,6 +17,7 @@
 package infra;
 
 import java.util.HashMap;
+import java.util.Vector;
 
 /**
  *
@@ -48,4 +49,33 @@ public class InfraObject {
     public String getName(){
         return name;
     }
+    
+    protected double[] toDoubleArray(Vector<Double> data)
+    {        
+        if(data == null) return null;        
+        double[] ret = new double[data.size()];
+        for(int i=0; i<data.size(); i++) {
+            ret[i] = data.get(i).doubleValue();
+        }
+            //ret[i] = this.roundUp(data.get(i), 2);
+        return ret;
+    }
+    
+    protected int[] toIntArray(Vector<Integer> data)
+    {
+        if(data == null) return null;
+        int[] ret = new int[data.size()];
+        for(int i=0; i<data.size(); i++)
+            ret[i] = data.get(i).intValue();
+        return ret;
+    }    
+
+    protected String[] toStringArray(Vector<String> data)
+    {
+        if(data == null) return null;
+        String[] ret = new String[data.size()];
+        for(int i=0; i<data.size(); i++)
+            ret[i] = data.get(i);
+        return ret;
+    }  
 }

@@ -16,8 +16,10 @@
  */
 package infra;
 
+import evaluation.DataLoadOption;
 import infra.infraobject.Corridor;
 import infra.infraobject.RNode;
+import infra.simobjects.SimObjects;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -79,6 +81,22 @@ public class Section implements Serializable{
         }catch(Exception e){
             e.printStackTrace();
             return null;
+        }
+    }
+    
+    /**
+     * Loads traffic data for all stations in section
+     */
+    public void loadData(Period period, DataLoadOption dopt) throws OutOfMemoryError {
+        loadData(period,dopt,null);
+    }
+    
+    public void loadData(Period period, DataLoadOption dopt, SimObjects sobj) throws OutOfMemoryError{
+        for(RNode s : section) {
+            if(sobj == null)
+                s.loadData(period, dopt);
+            else
+                s.loadData(period, dopt,sobj);
         }
     }
     

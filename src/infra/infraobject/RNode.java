@@ -16,10 +16,12 @@
  */
 package infra.infraobject;
 
+import evaluation.DataLoadOption;
 import infra.Direction;
 import infra.InfraDatas;
 import infra.InfraObject;
 import infra.Period;
+import infra.simobjects.SimObjects;
 import infra.type.*;
 import java.util.*;
 import trafficsimulationanalysis.TempData;
@@ -62,28 +64,29 @@ public class RNode extends InfraObject implements Comparable{
     
     /**
      * Data Load on Detector
-     * @param period 
+     * @param period
+     * @param dopt
+     * @throws OutOfMemoryError 
      */
-    public void loadData(Period period){
-        for(Detector d : this.detectors.values()){
-            d.loadData(period);
-        }
+    public void loadData(Period period, DataLoadOption dopt) throws OutOfMemoryError
+    {
+        loadData(period,dopt,null);
     }
     
     /**
-     * Load Data with Simulation option
-     * @param period
-     * @param dopt
+     * Data Load on Detector
+     * @param period 
+     * @param dopt 
      * @param sobj 
      */
-//    public void loadData(Period period, DataLoadOption dopt, SimObjects sobj) throw OutOfMemoryError{
-//        for(Detector d : this.detectors.values()){
-//            if(sobj == null)
-//                d.loadData(period, dopt);
-//            else
-//                d.loadData(period, dopt, sobj);
-//        }
-//    }
+    public void loadData(Period period, DataLoadOption dopt, SimObjects sobj) throws OutOfMemoryError{
+        for(Detector d : this.detectors.values()){
+            if(sobj == null)
+                d.loadData(period, dopt);
+            else
+                d.loadData(period, dopt,sobj);
+        }
+    }
     
     /**
      * init Detectors
@@ -117,9 +120,6 @@ public class RNode extends InfraObject implements Comparable{
             dd.put(InfraDatas.NAME, "d_"+this.getName()+"_P");
             detectors.put(did, new Detector(dd, LaneType.PASSAGE, this));
         }
-        
-        
-        
     }
     
     @Override
