@@ -37,9 +37,6 @@ public class Station extends RNode{
     //Length
     private int Length = -1;
     
-    //Detectors must include the Mainline, Bus lane and so on
-    private List<Detector> detectors = new ArrayList<Detector>();
-    
     public Station(HashMap<InfraDatas,Object> datas) {
         super(datas,RnodeType.STATION);
         Integer it;

@@ -18,8 +18,10 @@ package infra.infraobject;
 
 import infra.InfraDatas;
 import infra.InfraObject;
+import infra.Period;
 import infra.type.*;
 import java.util.HashMap;
+import java.util.Vector;
 
 /**
  *
@@ -27,10 +29,34 @@ import java.util.HashMap;
  * youngtak Han <gksdudxkr@gmail.com>
  */
 public class Detector extends InfraObject{
+    private String detector_id;
     private LaneType lanetype = LaneType.None;
-    public Detector(HashMap<InfraDatas,Object> datas) {
+    transient private Period period;
+    transient private int MinInterval;
+    private RNode r_node;
+    
+    transient private Vector<Double> volume = new Vector<Double>();
+    transient private Vector<Double> speed = new Vector<Double>();
+    transient private Vector<Double> flow = new Vector<Double>();
+    transient private Vector<Double> density = new Vector<Double>();
+    
+    public Detector(HashMap<InfraDatas,Object> datas, LaneType ltype, RNode r_node) {
         super(datas);
+        detector_id = this.getID();
+        lanetype = ltype;
     }
     
     //기본 데이터를 가지고 있는 최종단 노드
+
+    void loadData(Period period) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    public void setRNode(RNode rnode){
+        r_node = rnode;
+    }
+    
+    public LaneType getLaneType(){
+        return lanetype;
+    }
 }

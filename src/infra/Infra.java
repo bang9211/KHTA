@@ -63,8 +63,6 @@ public class Infra {
         System.out.println("Set Rnodes....");
         setRnodes();
         System.out.println("Rnodes setting completed");
-        //set RampMeter
-        //Need to addtion
         
         //preprocess Corridor objects
         preProcessCorridor();

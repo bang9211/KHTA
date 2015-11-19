@@ -20,6 +20,7 @@ import exception.section.RNodeCreationException;
 import infra.Infra;
 import infra.Section;
 import infra.infraobject.Corridor;
+import infra.infraobject.Detector;
 import infra.infraobject.RNode;
 import infra.infraobject.Station;
 import java.io.File;
@@ -73,6 +74,9 @@ public class SectionCreation extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         listSection = new javax.swing.JList();
         btnDeleteSection = new javax.swing.JButton();
+        cbxSectionInfo = new javax.swing.JComboBox();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tbxSectionInfo = new javax.swing.JTextArea();
 
         setName("Section Creation"); // NOI18N
 
@@ -175,15 +179,32 @@ public class SectionCreation extends javax.swing.JPanel {
 
         listSection.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         listSection.setPreferredSize(new java.awt.Dimension(190, 30));
+        listSection.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                listSectionMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(listSection);
 
         btnDeleteSection.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        btnDeleteSection.setLabel("Create Section");
+        btnDeleteSection.setText("Delete Section");
         btnDeleteSection.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeleteSectionActionPerformed(evt);
             }
         });
+
+        cbxSectionInfo.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        cbxSectionInfo.setPreferredSize(new java.awt.Dimension(200, 30));
+        cbxSectionInfo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxSectionInfoActionPerformed(evt);
+            }
+        });
+
+        tbxSectionInfo.setColumns(20);
+        tbxSectionInfo.setRows(5);
+        jScrollPane2.setViewportView(tbxSectionInfo);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -193,8 +214,15 @@ public class SectionCreation extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnDeleteSection)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnDeleteSection)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(cbxSectionInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -203,7 +231,10 @@ public class SectionCreation extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnDeleteSection)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cbxSectionInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 427, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -266,12 +297,23 @@ public class SectionCreation extends javax.swing.JPanel {
         deleteSection();
     }//GEN-LAST:event_btnDeleteSectionActionPerformed
 
+    private void cbxSectionInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxSectionInfoActionPerformed
+        // TODO add your handling code here:
+        selectSectionInfo((RNode)cbxSectionInfo.getSelectedItem());
+    }//GEN-LAST:event_cbxSectionInfoActionPerformed
+
+    private void listSectionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listSectionMouseClicked
+        // TODO add your handling code here:
+        ListenSectionInfo();
+    }//GEN-LAST:event_listSectionMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCreateSection;
     private javax.swing.JButton btnDeleteSection;
     private javax.swing.JComboBox cbxCorridorList;
     private javax.swing.JComboBox cbxEndStation;
+    private javax.swing.JComboBox cbxSectionInfo;
     private javax.swing.JComboBox cbxStartStation;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -280,7 +322,9 @@ public class SectionCreation extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JList listSection;
+    private javax.swing.JTextArea tbxSectionInfo;
     private javax.swing.JTextField tbxSectionNane;
     // End of variables declaration//GEN-END:variables
 
@@ -290,7 +334,7 @@ public class SectionCreation extends javax.swing.JPanel {
     }
 
     private void setStation(Corridor corridor) {
-        System.out.println("Changed Corridors to : "+corridor.getName());
+//        System.out.println("Changed Corridors to : "+corridor.getName());
         if(this.cbxStartStation.getItemCount() != 0)
             this.cbxStartStation.removeAllItems();
         if(this.cbxEndStation.getItemCount() != 0)
@@ -356,5 +400,33 @@ public class SectionCreation extends javax.swing.JPanel {
             infra.deleteSection(ss);
             loadSection();
         }
+    }
+
+    private void ListenSectionInfo() {
+        Section ss = (Section)listSection.getSelectedValue();
+        cbxSectionInfo.removeAllItems();
+        for(RNode r : ss.getRNodes()){
+            cbxSectionInfo.addItem(r);
+        }
+        
+        
+    }
+
+    private void selectSectionInfo(RNode rNode) {
+        this.tbxSectionInfo.setText("");
+        String str = "RNode Info\n";
+        str += "RNode ID : "+rNode.getID() + "\n";
+        str += "RNode Name : "+rNode.getName()+ "\n";
+        str += "RNode Type : "+rNode.getNodeType().toString()+ "\n";
+        str += "Direction : "+rNode.getDirection().toString()+ "\n";
+        
+        if(!rNode.getDetectors().isEmpty()){
+            str += "\nDetector Info\n";
+            for(Detector d : rNode.getDetectors().values()){
+                str += "Did : "+d.getID()+ ", ";
+                str += "Dtype : "+d.getLaneType().toString()+ "\n";
+            }
+        }
+        this.tbxSectionInfo.setText(str);
     }
 }

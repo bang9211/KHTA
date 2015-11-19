@@ -25,10 +25,15 @@ import infra.Section;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import khta.KHTAFrame;
+import khta.KHTALoading;
 import khta.SectionCreation;
 /**
  *
@@ -36,23 +41,47 @@ import khta.SectionCreation;
  * youngtak Han <gksdudxkr@gmail.com>
  */
 public class TrafficSimulationAnalysis {
-
+    static KHTALoading kl = new KHTALoading(null, true);
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        tempMySQL tq = new tempMySQL(1000);
-        tq.setup();
+        final tempMySQL tq = new tempMySQL(1000);
+        final Infra infra = Infra.getInstance();
         
-        Infra infra = Infra.getInstance();
-        infra.load(tq);
         
 //        TrafficSimulationAnalysis ta = new TrafficSimulationAnalysis();
 //        ta.infratest();
 
-        KHTAFrame nf = new KHTAFrame(infra);
-        nf.setVisible(true);
+        final KHTAFrame nf = new KHTAFrame(infra);
+        
+        new Timer().schedule(new TimerTask() {
+
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(KHTAFrame.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                //Temp MySql Setup
+                tq.setup();
+                
+                //Infra Load
+                infra.load(tq);
+                
+                //Frame Init
+                nf.init();
+                
+                System.out.println("Openning KHTA..");
+                nf.setAlwaysOnTop(true);
+                nf.setVisible(true);
+                kl.dispose();
+            }
+        }, 10);
+        kl.setAlwaysOnTop(true);
+        kl.setVisible(true);
 
 //        Section s = new Section("test");
 //        try {

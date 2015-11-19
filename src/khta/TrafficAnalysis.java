@@ -19,8 +19,10 @@ package khta;
 import evaluation.Interval;
 import infra.Infra;
 import infra.Section;
+import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
+import javax.swing.JFileChooser;
 
 /**
  *
@@ -99,7 +101,7 @@ public class TrafficAnalysis extends javax.swing.JPanel {
         btnExtraction = new javax.swing.JButton();
         txOutputFolder = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        browser = new javax.swing.JButton();
 
         setName("Traffic Analysis"); // NOI18N
         addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -523,14 +525,24 @@ public class TrafficAnalysis extends javax.swing.JPanel {
 
         btnExtraction.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         btnExtraction.setText("Extraction");
+        btnExtraction.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExtractionActionPerformed(evt);
+            }
+        });
 
         txOutputFolder.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel2.setText("Output Folder");
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jButton1.setText("Browser");
+        browser.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        browser.setText("Browser");
+        browser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                browserActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -541,7 +553,7 @@ public class TrafficAnalysis extends javax.swing.JPanel {
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addComponent(txOutputFolder, javax.swing.GroupLayout.PREFERRED_SIZE, 432, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1))
+                        .addComponent(browser))
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnExtraction, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -557,7 +569,7 @@ public class TrafficAnalysis extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txOutputFolder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1))
+                            .addComponent(browser))
                         .addGap(0, 33, Short.MAX_VALUE))
                     .addComponent(btnExtraction, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -671,8 +683,19 @@ public class TrafficAnalysis extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_cbxVMT7ActionPerformed
 
+    private void browserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browserActionPerformed
+        // TODO add your handling code here:
+        selectOutputPath();
+    }//GEN-LAST:event_browserActionPerformed
+
+    private void btnExtractionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExtractionActionPerformed
+        // TODO add your handling code here:
+        evaluation();
+    }//GEN-LAST:event_btnExtractionActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton browser;
     private javax.swing.JButton btnExtraction;
     private javax.swing.JCheckBox cbxAcceleration;
     private javax.swing.JCheckBox cbxAverageLaneFlow;
@@ -694,7 +717,6 @@ public class TrafficAnalysis extends javax.swing.JPanel {
     private javax.swing.JCheckBox cbxVMT5;
     private javax.swing.JCheckBox cbxVMT6;
     private javax.swing.JCheckBox cbxVMT7;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
@@ -748,5 +770,27 @@ public class TrafficAnalysis extends javax.swing.JPanel {
         for(Section s : infra.getSections()){
             this.cbxSections.addItem(s);
         }
+    }
+
+    private void selectOutputPath() {
+        JFileChooser chooser = new JFileChooser();
+        
+        String path = ".";
+        String prevPath = this.txOutputFolder.getText();
+        if (!prevPath.isEmpty()) {
+            path = new File(prevPath).getAbsolutePath();
+        }
+        
+        chooser.setCurrentDirectory(new java.io.File(path));
+        chooser.setDialogTitle("Select output folder");
+        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        chooser.setAcceptAllFileFilterUsed(false);
+        if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            this.txOutputFolder.setText(chooser.getSelectedFile().getAbsolutePath());
+        }
+    }
+
+    private void evaluation() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

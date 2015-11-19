@@ -47,6 +47,7 @@ public enum InfraDatas {
     LENGTH("Legnth","int","length"),
     ORDER("Node Order","int","order");
     
+    
     private InfraDatas(String _desc, String _type, String _tableName){
         desc = _desc;
         type = _type;

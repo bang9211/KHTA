@@ -40,7 +40,7 @@ public class KHTAFrame extends javax.swing.JFrame {
     private final int width = 1000;
     private final int height = 780;
     
-    static KHTALoading kl = new KHTALoading(null, true);
+    
     /**
      * Creates new form KHTAFrame
      */
@@ -57,25 +57,7 @@ public class KHTAFrame extends javax.swing.JFrame {
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension screenSize = toolkit.getScreenSize();
         this.setLocation((screenSize.width - width) / 2, (screenSize.height - height) / 2);
-        final KHTAFrame kf = this;
         // timer for splash window
-        new Timer().schedule(new TimerTask() {
-
-            @Override
-            public void run() {
-                initPanels();
-//                try {
-//                    Thread.sleep(3000);
-//                } catch (InterruptedException ex) {
-//                    Logger.getLogger(KHTAFrame.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-                kf.setAlwaysOnTop(true);
-                kf.setVisible(true);
-                kl.dispose();
-            }
-        }, 10);
-        kl.setAlwaysOnTop(true);
-        kl.setVisible(true);
     }
 
     /**
@@ -153,6 +135,9 @@ public class KHTAFrame extends javax.swing.JFrame {
     private javax.swing.JTabbedPane MainTabbedPanel;
     // End of variables declaration//GEN-END:variables
 
+    public void init(){
+        initPanels();
+    }
     private void initPanels(){
         initMainFrame();
         initSectionEditor();

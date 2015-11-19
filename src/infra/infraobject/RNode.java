@@ -19,6 +19,7 @@ package infra.infraobject;
 import infra.Direction;
 import infra.InfraDatas;
 import infra.InfraObject;
+import infra.Period;
 import infra.type.*;
 import java.util.*;
 import trafficsimulationanalysis.TempData;
@@ -37,17 +38,83 @@ public class RNode extends InfraObject implements Comparable{
     private Direction direction = Direction.ALL;
     protected RnodeType nodetype = RnodeType.NONE;
     
+    //Detectors must include the Mainline, Bus lane and so on
+    protected HashMap<String,Detector> detectors = new HashMap<String,Detector>();
+    
     public RNode(HashMap<InfraDatas,Object> datas, RnodeType _nodetype){
         super(datas);
         nodetype = _nodetype;
         Double _loc = (Double)getProperty(InfraDatas.LOCATION);
         loc = _loc == null ? -1 : _loc;
         direction = (Direction)getProperty(InfraDatas.DIRECTION);
+        initDetectors();
     }
     
     //Set Corridor
     public void setCorridor(Corridor nc){
         corridor = nc;
+    }
+    
+    /**
+     * Data Load on Detector
+     * @param period 
+     */
+    public void loadData(Period period){
+        for(Detector d : this.detectors.values()){
+            d.loadData(period);
+        }
+    }
+    
+    /**
+     * Load Data with Simulation option
+     * @param period
+     * @param dopt
+     * @param sobj 
+     */
+//    public void loadData(Period period, DataLoadOption dopt, SimObjects sobj) throw OutOfMemoryError{
+//        for(Detector d : this.detectors.values()){
+//            if(sobj == null)
+//                d.loadData(period, dopt);
+//            else
+//                d.loadData(period, dopt, sobj);
+//        }
+//    }
+    
+    /**
+     * init Detectors
+     */
+    private void initDetectors() {
+        if(nodetype.isDMS()) return;
+        if(detectors != null && !detectors.isEmpty()) return;
+        if(detectors == null) detectors = new HashMap<String, Detector>();
+        
+        //init Default Detector
+        if(!nodetype.isEntrance()){
+            String did = "d_"+this.getID();
+            HashMap<InfraDatas, Object> dd = new HashMap();
+            dd.put(InfraDatas.ID, did);
+            dd.put(InfraDatas.NAME, "d_"+this.getName());
+            detectors.put(did, new Detector(dd, LaneType.MAINLINE, this));
+            
+            //init Additional Lane on Mainlane
+            
+        }else{ //Entrance Ramp
+            HashMap<InfraDatas, Object> dd = new HashMap();
+            //Queue Detector
+            String did = "d_"+this.getID()+"_Q";
+            dd.put(InfraDatas.ID, did);
+            dd.put(InfraDatas.NAME, "d_"+this.getName()+"_Q");
+            detectors.put(did, new Detector(dd, LaneType.QUEUE, this));
+            //Passage Detector
+            dd.clear();
+            did = "d_"+this.getID()+"_P";
+            dd.put(InfraDatas.ID, did);
+            dd.put(InfraDatas.NAME, "d_"+this.getName()+"_P");
+            detectors.put(did, new Detector(dd, LaneType.PASSAGE, this));
+        }
+        
+        
+        
     }
     
     @Override
@@ -94,4 +161,9 @@ public class RNode extends InfraObject implements Comparable{
     public RnodeType getNodeType(){
         return nodetype;
     }
+    
+    public HashMap<String, Detector> getDetectors(){
+        return detectors;
+    }
+    
 }
