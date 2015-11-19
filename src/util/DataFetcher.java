@@ -86,7 +86,7 @@ public final class DataFetcher {
         String sql;
 
         try {
-            sql = "SELECT * FROM its.corridor";
+            sql = "SELECT * FROM its.corridor ORDER BY NAME asc";
             resultSet = statement.executeQuery(sql);
 
             while (resultSet.next()) {
@@ -121,7 +121,6 @@ public final class DataFetcher {
     private void setStation() {
         //int 
         int slength = 1000;
-
         String sql;
 
         try {
@@ -159,15 +158,6 @@ public final class DataFetcher {
                 station.put(InfraDatas.SPEED_LIMIT, speedLimit);
                 station.put(InfraDatas.COR_ID, cor_ID);
                 stations.add(station);
-
-                /*
-                System.out.println("id : " + corID + "\tCor length : " + corridors.size());
-                for (HashMap<InfraDatas, Object> cr : corridors) {
-                    System.out.println("CID : " + (String) cr.get(InfraDatas.ID)
-                            + ", CNAME : " + (String) cr.get(InfraDatas.NAME)
-                            + ", Direction : " + ((Direction) cr.get(InfraDatas.DIRECTION)).toString());
-                }
-                */
             }
         } catch (SQLException ex) {
             Logger.getLogger(DataFetcher.class.getName()).log(Level.SEVERE, null, ex);
