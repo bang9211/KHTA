@@ -42,11 +42,18 @@ public class Station extends RNode{
     private int lane = -1;
     //speedLimit
     protected float speedLimit;
+    //Section Name
+    protected String SectionName;
+    //DB Section ID
+    protected String DB_Section_ID;
+    //ISBUSLANE
+    protected boolean isBusLane = false;
     
     public Station(HashMap<InfraDatas,Object> datas) {
         super(datas,RnodeType.STATION);
         Integer it;
         Double dt;
+        Float ft;
         
         it = (Integer)super.getProperty(InfraDatas.ORDER);
         order = it == null ? -1 : it;
@@ -59,11 +66,57 @@ public class Station extends RNode{
         
         dt = (Double)super.getProperty(InfraDatas.END_LOC);
         End_Loc = dt == null ? -1 : dt;
+        
+        it = (Integer)super.getProperty(InfraDatas.LANE);
+        lane = it == null ? -1 : it;
+        
+        ft = (Float)super.getProperty(InfraDatas.SPEED_LIMIT);
+        speedLimit = ft == null ? -1 : ft;
+        
+        it = (Integer)super.getProperty(InfraDatas.ISBUSLANE);
+        if(it == 1)
+            isBusLane = true;
+        
+        SectionName = (String)super.getProperty(InfraDatas.SECTION_NAME);
+        
+        DB_Section_ID = (String)super.getProperty(InfraDatas.SECTION_ID);
+    }
+    
+    public int getOrder(){
+        return order;
+    }
+    
+    public int getLaneCount(){
+        return lane;
+    }
+    
+    public float getSpeedLimit(){
+        return speedLimit;
     }
     
     @Override
     public String toString(){
-        return getID();
+        return getName();
+    }
+
+    public String getSectionName() {
+        return SectionName;
+    }
+    
+    public String getDBSectionID(){
+        return this.DB_Section_ID;
+    }
+    
+    public boolean isBusLane(){
+        return isBusLane;
+    }
+    
+    public double getStartLocation(){
+        return this.Start_Loc;
+    }
+    
+    public double getEndLocation(){
+        return this.End_Loc;
     }
     
 }

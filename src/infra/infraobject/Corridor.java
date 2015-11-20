@@ -17,6 +17,7 @@
 package infra.infraobject;
 
 import infra.*;
+import infra.type.NodeOrder;
 import infra.type.RoadType;
 import java.util.*;
 
@@ -31,6 +32,8 @@ public class Corridor extends InfraObject{
     private ArrayList<Entrance> entrances = new ArrayList();
     private ArrayList<Exit> exits = new ArrayList();
     private ArrayList<DMS> dms = new ArrayList();
+    
+    private NodeOrder nodeorder = NodeOrder.FORWARD;
     
     private RoadType rodetype = null;
     private Direction direction = null;
@@ -64,7 +67,7 @@ public class Corridor extends InfraObject{
         rnodes.add(n);
         ClassifyNodes(n);
         
-        Collections.sort(rnodes);
+//        Collections.sort(rnodes);
     }
     
     //get Rnodes
@@ -106,6 +109,7 @@ public class Corridor extends InfraObject{
     
     //Sort All Collections
     public void sortAllNode(){
+        Collections.sort(rnodes);
         Collections.sort(stations);
         Collections.sort(entrances);
         Collections.sort(exits);
@@ -157,5 +161,13 @@ public class Corridor extends InfraObject{
     @Override
     public String toString(){
         return this.getName();
+    }
+
+    public void setOrder(NodeOrder nodeOrder) {
+        nodeorder = nodeOrder;
+    }
+    
+    public NodeOrder getOrder(){
+        return nodeorder;
     }
 }

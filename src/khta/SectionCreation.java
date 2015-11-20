@@ -22,6 +22,7 @@ import infra.infraobject.Corridor;
 import infra.infraobject.Detector;
 import infra.infraobject.RNode;
 import infra.infraobject.Station;
+import infra.type.RnodeType;
 import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -419,6 +420,16 @@ public class SectionCreation extends javax.swing.JPanel {
         str += "RNode Name : "+rNode.getName()+ "\n";
         str += "RNode Type : "+rNode.getNodeType().toString()+ "\n";
         str += "Direction : "+rNode.getDirection().toString()+ "\n";
+        str += "RNode Location(From StartNode to) : "+rNode.getLocation()+ "km\n";
+        if(rNode.getNodeType() == RnodeType.STATION){
+            Station s = (Station)rNode;
+            str += "Order : "+s.getOrder()+ "\n";
+            str += "Lane Size : "+s.getLaneCount()+ "\n";
+            str += "SpeedLimit : "+s.getSpeedLimit()+ "\n";
+            str += "Section Name : "+s.getSectionName()+ "\n";
+            str += "IsBusLane : "+s.isBusLane()+ "\n";
+        }
+        
         
         if(!rNode.getDetectors().isEmpty()){
             str += "\nDetector Info\n";

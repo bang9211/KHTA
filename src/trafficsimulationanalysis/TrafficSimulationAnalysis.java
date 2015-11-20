@@ -42,7 +42,7 @@ import util.DataFetcher;
  * youngtak Han <gksdudxkr@gmail.com>
  */
 public class TrafficSimulationAnalysis {
-    static KHTALoading kl = new KHTALoading(null, true);
+//    static KHTALoading kl = new KHTALoading(null, true);
     final static String DB_NAME = "korex";
     final static String DB_URL = "jdbc:mysql://210.115.49.40:3308/" + DB_NAME;
     final static String USER_ID = "ythan";
@@ -81,11 +81,11 @@ public class TrafficSimulationAnalysis {
                 System.out.println("Openning KHTA..");
                 nf.setAlwaysOnTop(true);
                 nf.setVisible(true);
-                kl.dispose();
+//                kl.dispose();
             }
         }, 10);
-        kl.setAlwaysOnTop(true);
-        kl.setVisible(true);
+//        kl.setAlwaysOnTop(true);
+//        kl.setVisible(true);
     }
     
     public void infratest(){

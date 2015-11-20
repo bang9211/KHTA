@@ -26,7 +26,7 @@ import java.util.Vector;
  */
 public class InfraObject {
     private final String id;
-    private final String name;
+    private String name;
     private HashMap<InfraDatas, Object> properties = new HashMap();
     
     public InfraObject(HashMap<InfraDatas, Object> _pro){
@@ -48,6 +48,10 @@ public class InfraObject {
     //get NAME
     public String getName(){
         return name;
+    }
+    
+    public void setName(String _name){
+        name = _name;
     }
     
     protected double[] toDoubleArray(Vector<Double> data)

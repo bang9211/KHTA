@@ -27,21 +27,24 @@ public enum InfraDatas {
     NAME("Name","String","name"),
     
     //for Corridor
-    ROADTYPE("Road Type","RoadType","roadtype"), //Road Type
+    ROADTYPE("Road Type","RoadType","roadType"), //Road Type
     DIRECTION("Direction","Direction","direction"),
     
     //for RNode
-    LOCATION("location","double","loc"),
+    LOCATION("location","double","location"),
     
     //for Station(VDS)
     COR_ID("Corridor ID","String","cor_ID"),
-    START_LOC("Start Location","double","startloc"),
-    END_LOC("End Location","double","endloc"),
-    TYPE_CODE("Type Code", "int", "typeCode"),
+    START_LOC("Start Location","double","startLocation"),
+    END_LOC("End Location","double","endLocation"),
+    TYPE_CODE("Type Code", "int", "type"),
     LENGTH("Legnth","int","length"),
     ORDER("Node Order","int","order"),
     LANE("Lane", "int", "lane"),
-    SPEED_LIMIT("Speed Limit", "float", "speedLimit");
+    SPEED_LIMIT("Speed Limit", "float", "speedLimit"),
+    SECTION_NAME("Section Name","String", "s_name"),
+    ISBUSLANE("is bus lane","Intger", "isBusLane"),
+    SECTION_ID("section ID","String", "sec_ID");
     
     
     
@@ -51,14 +54,18 @@ public enum InfraDatas {
         tableName = _tableName;
     }
     
-    public final String desc;
-    public final String type;
-    public final String tableName;
+    private final String desc;
+    private final String type;
+    private final String tableName;
     
     public static InfraDatas getbyTableName(String _tn){
         for(InfraDatas cd : InfraDatas.values()){
             if(_tn.equals(cd.tableName)) return cd;
         }
         return null;
+    }
+
+    public String getTableName() {
+        return tableName;
     }
 }

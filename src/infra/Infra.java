@@ -19,6 +19,7 @@ package infra;
 import infra.infraobject.Corridor;
 import infra.infraobject.RNode;
 import infra.infraobject.Station;
+import infra.type.NodeOrder;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,8 +61,6 @@ public class Infra {
         setRnodes();
         System.out.println("Rnodes setting completed");
         
-        //preprocess Corridor objects
-        preProcessCorridor();
         
         System.out.println("Section Loading..");
         //Load Section
@@ -93,9 +92,9 @@ public class Infra {
         for(Corridor cor : corridors){
             //Search Rnodes in the DB
             //Add Station
-//            System.out.println("Cor ID " +cor.getID() + ", NAME : "+cor.getName());
             for(HashMap<InfraDatas, Object> ss : sqlserver.getStations(cor.getID())){
                 Station ns = new Station(ss);
+                    
                 //Add all Rnodes into the corridor
                 cor.addRNode(ns);
             }
@@ -104,18 +103,108 @@ public class Infra {
             //Add Exit
             //Add DMS
             
-            //Sort Rnode
+            preProcessCorridor(cor);
             cor.sortAllNode();
+            setRNodeName(cor);
+            
         }
         
     }
 
-    private void preProcessCorridor() {
-        //set Rnode upstream and downstream node
-        //set Rnode upstream and downstream length
-        //do I go for it??
+    /**
+     * 
+     * @param cor 
+     */
+    private void preProcessCorridor(Corridor cor) {
+        //Re Processing RNode
+        if(cor.getRNodes().isEmpty()) return;
+        ArrayList<RNode> rnodes = cor.getRNodes();
+        Station firstStation = getFirstStation(rnodes);
+        Station lastStation = getLastStation(rnodes);
+        
+        if(firstStation.getLocation() > lastStation.getLocation()){
+            cor.setOrder(NodeOrder.REVERSE);
+        }else{
+            cor.setOrder(NodeOrder.FORWARD);
+        }
     }
+    
+    /**
+     * re set-up the Rnodes Name
+     * @param cor 
+     */
+    private void setRNodeName(Corridor cor) {
+        int ncnt = 0;
+        String secid = null;
+        for(RNode r : cor.getRNodes()){
+            if(!r.getNodeType().isStation())
+                continue;
 
+            Station ns = (Station)r;
+            //insert Name
+            if(secid == null || !secid.equals(ns.getDBSectionID())){
+                secid = ns.getDBSectionID();
+                ncnt = 0;
+            }
+            ns.setName(AdjustName(ns.getSectionName(), ncnt++));
+        }
+    }
+    
+    private Station getFirstStation(ArrayList<RNode> rnodes){
+        //find order 1 and last order
+        Station firstStation = null;
+        for (RNode r : rnodes) {
+            if (r.getNodeType().isStation()) {
+                Station cs = (Station) r;
+                if (cs.getOrder() == 0) {
+                    continue;
+                }
+
+                if (firstStation == null) {
+                    firstStation = cs;
+                } else {
+                    if (firstStation.getOrder() > cs.getOrder()) {
+                        firstStation = cs;
+                    }
+                }
+            }
+        }
+        
+        return firstStation;
+    }
+    
+     private Station getLastStation(ArrayList<RNode> rnodes){
+        //find order 1 and last order
+        Station lastStation = null;
+        for (RNode r : rnodes) {
+            if (r.getNodeType().isStation()) {
+                Station cs = (Station) r;
+                if (cs.getOrder() == 0) {
+                    continue;
+                }
+
+                if (lastStation == null) {
+                    lastStation = cs;
+                } else {
+                    if (lastStation.getOrder() < cs.getOrder()) {
+                        lastStation = cs;
+                    }
+                }
+            }
+        }
+        
+        return lastStation;
+    }
+     
+    private String AdjustName(String sectionName, int cnt) {
+        String spname = sectionName.split("-")[0];
+        String num = cnt == 0 ? "" : "_"+cnt;
+        if(spname != null)
+            return spname+num;
+        else
+            return sectionName+num;
+    }
+    
     public Corridor getCorridors(String get) {
         for(Corridor c : corridors){
             if(c.getID().equals(get))

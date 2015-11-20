@@ -57,9 +57,9 @@ public final class DataFetcher {
 
     public void disconnectDatabase() {
         try {
-            resultSet.close();
-            statement.close();
-            connection.close();
+            if(resultSet != null) resultSet.close();
+            if(statement != null) statement.close();
+            if(connection != null) connection.close();
         } catch (SQLException ex) {
             Logger.getLogger(DataFetcher.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -68,7 +68,6 @@ public final class DataFetcher {
     public void setup() {
         System.out.println("Connecting Database...");
         connectDatabase();
-        
         System.out.println("Setting up the Corridors");
         setCorridor();
         System.out.println("Corridor Count : " + corridors.size());
@@ -117,6 +116,23 @@ public final class DataFetcher {
             Logger.getLogger(DataFetcher.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    private void test(){
+        String sql;
+
+        try {
+            sql = "SELECT * FROM korex.volume_data where station_id = '0100VDE00100' order by time asc;";
+            resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                //Fetch a row
+                String staID = resultSet.getString("station_ID");
+                int data = resultSet.getInt("volume");
+                System.out.println("sid : "+staID+", data : "+data);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DataFetcher.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     private void setStation() {
         //int 
@@ -124,23 +140,25 @@ public final class DataFetcher {
         String sql;
 
         try {
-            sql = "SELECT * FROM korex.station";
+            sql = "SELECT * FROM korex.station_infra";
             resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
                 //Fetch a row
-                String staID = resultSet.getString("ID");
-                String name = resultSet.getString("name");
-                double location = resultSet.getDouble("location");
-                double startLocation = resultSet.getDouble("startLocation");
-                double endLocation = resultSet.getDouble("endLocation");
-                int type = resultSet.getInt("type");
-                int length = resultSet.getInt("length");
-                int order = resultSet.getInt("order");
-                RoadType roadType = RoadType.get(resultSet.getString("roadType"));
-                int lane = resultSet.getInt("lane");
-                float speedLimit = resultSet.getFloat("speedLimit");
-                String cor_ID = resultSet.getString("cor_ID");
-                String sec_ID = resultSet.getString("sec_ID");  //unused
+                String staID = resultSet.getString(InfraDatas.ID.getTableName());
+                String name = resultSet.getString(InfraDatas.NAME.getTableName());
+                double location = resultSet.getDouble(InfraDatas.LOCATION.getTableName());
+                double startLocation = resultSet.getDouble(InfraDatas.START_LOC.getTableName());
+                double endLocation = resultSet.getDouble(InfraDatas.END_LOC.getTableName());
+                int type = resultSet.getInt(InfraDatas.TYPE_CODE.getTableName());
+                int length = resultSet.getInt(InfraDatas.LENGTH.getTableName());
+                int order = resultSet.getInt(InfraDatas.ORDER.getTableName());
+                RoadType roadType = RoadType.get(resultSet.getString(InfraDatas.ROADTYPE.getTableName()));
+                int lane = resultSet.getInt(InfraDatas.LANE.getTableName());
+                float speedLimit = resultSet.getFloat(InfraDatas.SPEED_LIMIT.getTableName());
+                String cor_ID = resultSet.getString(InfraDatas.COR_ID.getTableName());
+                String section_name = resultSet.getString(InfraDatas.SECTION_NAME.getTableName());
+                int isbusLane = resultSet.getInt(InfraDatas.ISBUSLANE.getTableName());
+                String sec_ID = resultSet.getString(InfraDatas.SECTION_ID.getTableName());
 
 
                 //Store a row
@@ -157,6 +175,10 @@ public final class DataFetcher {
                 station.put(InfraDatas.LANE, lane);
                 station.put(InfraDatas.SPEED_LIMIT, speedLimit);
                 station.put(InfraDatas.COR_ID, cor_ID);
+                station.put(InfraDatas.SECTION_NAME, section_name);
+                station.put(InfraDatas.ISBUSLANE, isbusLane);
+                station.put(InfraDatas.SECTION_ID, sec_ID);
+                
                 stations.add(station);
             }
         } catch (SQLException ex) {

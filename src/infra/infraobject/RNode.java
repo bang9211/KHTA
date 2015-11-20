@@ -127,16 +127,31 @@ public class RNode extends InfraObject implements Comparable{
         return "ID:"+super.getID()+", Name : "+super.getName()+", Type : "+nodetype.toString()+", Loc : "+loc;
     }
 
+    /**
+     * Temporary Location -> Order
+     * Compare with other RNode by Location
+     * @param o
+     * @return 
+     */
     @Override
     public int compareTo(Object o) {
         RNode comrnode = (RNode)o;
         double _loc = comrnode.getLocation();
+        NodeOrder no = getCorridor().getOrder();
+        
+        int ret = 0;
+        
         if(loc == _loc)
-            return 0;
+            ret =  0;
         else if(loc > _loc)
-            return 1;
+            ret = 1;
         else
-            return -1;
+            ret = -1;
+        
+        if(no == NodeOrder.FORWARD)
+            return ret;
+        else
+            return ret * -1;
     }
     
     /**
