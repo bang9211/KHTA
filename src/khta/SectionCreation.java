@@ -476,6 +476,7 @@ public class SectionCreation extends javax.swing.JPanel {
             str += "SpeedLimit : "+s.getSpeedLimit()+ "\n";
             str += "Section Name : "+s.getSectionName()+ "\n";
             str += "IsBusLane : "+s.isBusLane()+ "\n";
+            str += "Station Type : "+s.getStationType()+ "\n";
         }
         
         
@@ -483,7 +484,8 @@ public class SectionCreation extends javax.swing.JPanel {
             str += "\nDetector Info\n";
             for(Detector d : rNode.getDetectors().values()){
                 str += "Did : "+d.getID()+ ", ";
-                str += "Dtype : "+d.getLaneType().toString()+ "\n";
+                str += "Dtype : "+d.getLaneType().toString();
+                str += ", DBid : "+d.getIDforDB()+ "\n";
             }
         }
         this.tbxSectionInfo.setText(str);
@@ -505,7 +507,7 @@ public class SectionCreation extends javax.swing.JPanel {
         str += "Entrance : "+corridor.getEntrances().size()+ ", ";
         str += "Exit : "+corridor.getExits().size()+ ", ";
         str += "DMS : "+corridor.getDMS().size()+ ")\n";
-        str += "Total Length : "+corridor.getStations().get(corridor.getStations().size()-1).getEndLocation()+ " km\n";
+        str += "Total Length : "+corridor.getTotalLength()+ " km\n";
         
         this.tbxCorridorInfo.setText(str);
     }

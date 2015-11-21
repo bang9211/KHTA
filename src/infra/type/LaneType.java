@@ -22,23 +22,24 @@ package infra.type;
  * youngtak Han <gksdudxkr@gmail.com>
  */
 public enum LaneType {
-    None(" ","",-1),
-    All("All Lane","",0),
-    MAINLINE("Mainline","",1),
-    BUS("Bus","B",2),
-    MERGE("Merge","M",3),
-    AUXILARY("Auxiliary","A",4),
-    RAMP("Ramp","R",5),
-    HOV("HOV","H",6),
-    QUEUE("Queue","Q",7),
-    PASSAGE("Passage","P",8),
-    SHOULDER("Shoulder","S",9);
+    None(" ","","",-1),
+    All("All Lane","","",0),
+    MAINLINE("Mainline","M","DM",1),
+    BUS("Bus","B","DB",2),
+    MERGE("Merge","M","DM",3),
+    AUXILARY("Auxiliary","A","DA",4),
+    RAMP("Ramp","R","DR",5),
+    HOV("HOV","H","DH",6),
+    QUEUE("Queue","Q","DQ",7),
+    PASSAGE("Passage","P","DP",8),
+    SHOULDER("Shoulder","S","DS",9);
     
     
     
-    private LaneType(String d, String s, int _code){
+    private LaneType(String d, String s, String dbs, int _code){
         desc = d;
         suffix = s;
+        dbsuffix = dbs;
         code = _code;
     }
     
@@ -47,6 +48,8 @@ public enum LaneType {
     public final String suffix;
     
     public final int code;
+    
+    public final String dbsuffix;
     
     public String toString(){
         return desc;

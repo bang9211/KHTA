@@ -40,6 +40,9 @@ public class RNode extends InfraObject implements Comparable{
     private Direction direction = Direction.ALL;
     protected RnodeType nodetype = RnodeType.NONE;
     
+    //ISBUSLANE
+    protected boolean isBusLane = false;
+    
     //Detectors must include the Mainline, Bus lane and so on
     protected HashMap<String,Detector> detectors = new HashMap<String,Detector>();
     
@@ -48,6 +51,9 @@ public class RNode extends InfraObject implements Comparable{
         nodetype = _nodetype;
         Double _loc = (Double)getProperty(InfraDatas.LOCATION);
         loc = _loc == null ? -1 : _loc;
+        int it = (Integer)super.getProperty(InfraDatas.ISBUSLANE);
+        if(it == 1)
+            isBusLane = true;
 //        direction = (Direction)getProperty(InfraDatas.DIRECTION);
         initDetectors();
     }
@@ -98,26 +104,33 @@ public class RNode extends InfraObject implements Comparable{
         
         //init Default Detector
         if(!nodetype.isEntrance()){
-            String did = "d_"+this.getID();
+            String did = getDetectorID(LaneType.MAINLINE);
             HashMap<InfraDatas, Object> dd = new HashMap();
             dd.put(InfraDatas.ID, did);
-            dd.put(InfraDatas.NAME, "d_"+this.getName());
+            dd.put(InfraDatas.NAME, getDetectorName(LaneType.MAINLINE));
             detectors.put(did, new Detector(dd, LaneType.MAINLINE, this));
             
             //init Additional Lane on Mainlane
+            if(isBusLane){
+                did = getDetectorID(LaneType.BUS);
+                dd.clear();
+                dd.put(InfraDatas.ID, did);
+                dd.put(InfraDatas.NAME, getDetectorName(LaneType.BUS));
+                detectors.put(did, new Detector(dd, LaneType.BUS, this));
+            }
             
         }else{ //Entrance Ramp
             HashMap<InfraDatas, Object> dd = new HashMap();
             //Queue Detector
-            String did = "d_"+this.getID()+"_Q";
+            String did = getDetectorID(LaneType.QUEUE);
             dd.put(InfraDatas.ID, did);
-            dd.put(InfraDatas.NAME, "d_"+this.getName()+"_Q");
+            dd.put(InfraDatas.NAME, getDetectorName(LaneType.QUEUE));
             detectors.put(did, new Detector(dd, LaneType.QUEUE, this));
             //Passage Detector
             dd.clear();
-            did = "d_"+this.getID()+"_P";
+            did = getDetectorID(LaneType.PASSAGE);
             dd.put(InfraDatas.ID, did);
-            dd.put(InfraDatas.NAME, "d_"+this.getName()+"_P");
+            dd.put(InfraDatas.NAME, getDetectorName(LaneType.PASSAGE));
             detectors.put(did, new Detector(dd, LaneType.PASSAGE, this));
         }
     }
@@ -188,6 +201,14 @@ public class RNode extends InfraObject implements Comparable{
 
     public void setLocation(double loc) {
         this.loc = loc;
+    }
+
+    private String getDetectorID(LaneType lt) {
+        return lt.dbsuffix+getID();
+    }
+
+    private Object getDetectorName(LaneType laneType) {
+        return laneType.dbsuffix+this.getName();
     }
     
 }

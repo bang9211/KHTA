@@ -239,15 +239,37 @@ public class Detector extends InfraObject{
         this.flow.clear();
     }
     
+    /**
+     * set RNode
+     * @param rnode 
+     */
     private void setRNode(RNode rnode){
         r_node = rnode;
     }
     
+    /**
+     * get LaneType
+     * @return 
+     */
     public LaneType getLaneType(){
         return lanetype;
     }
     
+    /**
+     * get RNode
+     * @return 
+     */
     public RNode getRNode(){
         return r_node;
+    }
+    
+    
+    /**
+     * get Detector ID for Database
+     * @return 
+     */
+    public String getIDforDB(){
+        String _id = getID().split(this.lanetype.dbsuffix)[1];
+        return _id == null ? getID() : _id;
     }
 }

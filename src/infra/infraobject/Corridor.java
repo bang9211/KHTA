@@ -37,6 +37,8 @@ public class Corridor extends InfraObject{
     
     private RoadType rodetype = null;
     private Direction direction = null;
+    
+    private double totalLength = 0;
     //private String shortName = null; //short name
     //private String StartName = null; //Start Location Name
     //private String EndName = null; //End Location Name
@@ -169,5 +171,13 @@ public class Corridor extends InfraObject{
     
     public NodeOrder getOrder(){
         return nodeorder;
+    }
+    
+    public void setTotalLength(double l){
+        totalLength = l;
+    }
+
+    public double getTotalLength() {
+        return totalLength;
     }
 }

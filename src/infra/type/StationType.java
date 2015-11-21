@@ -36,4 +36,15 @@ public enum StationType {
     
     public final String desc;
     public final int code;
+    
+    public static StationType getType(int aInt) {
+        for(StationType tt : StationType.values()){
+            if(tt.code == aInt) return tt;
+        }
+        return NONE;
+    }
+    
+    public boolean isRoadVDS(){
+        return this.code < RAMP.code;
+    }
 }

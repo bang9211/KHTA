@@ -46,8 +46,6 @@ public class Station extends RNode{
     protected String SectionName;
     //DB Section ID
     protected String DB_Section_ID;
-    //ISBUSLANE
-    protected boolean isBusLane = false;
     
     public Station(HashMap<InfraDatas,Object> datas) {
         super(datas,RnodeType.STATION);
@@ -73,13 +71,11 @@ public class Station extends RNode{
         ft = (Float)super.getProperty(InfraDatas.SPEED_LIMIT);
         speedLimit = ft == null ? -1 : ft;
         
-        it = (Integer)super.getProperty(InfraDatas.ISBUSLANE);
-        if(it == 1)
-            isBusLane = true;
-        
         SectionName = (String)super.getProperty(InfraDatas.SECTION_NAME);
         
         DB_Section_ID = (String)super.getProperty(InfraDatas.SECTION_ID);
+        
+        stationtype = (StationType)super.getProperty(InfraDatas.STATION_TYPE);
     }
     
     public int getOrder(){
@@ -117,6 +113,10 @@ public class Station extends RNode{
     
     public double getEndLocation(){
         return this.End_Loc;
+    }
+    
+    public StationType getStationType(){
+        return this.stationtype;
     }
     
     public void setLocation(double sloc, double eloc){

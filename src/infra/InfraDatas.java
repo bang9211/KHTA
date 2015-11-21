@@ -37,7 +37,7 @@ public enum InfraDatas {
     COR_ID("Corridor ID","String","cor_ID"),
     START_LOC("Start Location","double","startLocation"),
     END_LOC("End Location","double","endLocation"),
-    TYPE_CODE("Type Code", "int", "type"),
+    STATION_TYPE("Type Code", "StationType", "type"),
     LENGTH("Legnth","int","length"),
     ORDER("Node Order","int","order"),
     LANE("Lane", "int", "lane"),

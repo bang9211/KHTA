@@ -114,6 +114,7 @@ public class Infra {
             //Modify RNode Location
 //            System.out.println("RNode Distance Calibration..");
             modifyRNodeLocation(cor);
+            setCorridorTotalLength(cor);
             
         }
         
@@ -127,12 +128,12 @@ public class Infra {
     private void modifyRNodeLocation(Corridor cor){
         if(cor.getOrder().isFORWARD()) return;
         Station ss = cor.getStations().get(0);
-        double sLoc = ss.getStartLocation();
+        double sLoc = ss.getStartLocation() <= 0 ? ss.getLocation() : ss.getStartLocation();
         double cLoc = 0;
         double csloc = 0;
         double celoc = 0;
         Station cs = null;
-        
+            
         for(RNode r : cor.getRNodes()){
             cLoc = r.getLocation();
             r.setLocation(Math.round(Math.abs(sLoc - cLoc)*100d)/100d);
@@ -174,6 +175,8 @@ public class Infra {
     private void setRNodeName(Corridor cor) {
         int ncnt = 0;
         String secid = null;
+        int nodecnt = 0;
+        int MaxRNode = cor.getRNodes().size()-1;
         for(RNode r : cor.getRNodes()){
             if(!r.getNodeType().isStation())
                 continue;
@@ -184,7 +187,11 @@ public class Infra {
                 secid = ns.getDBSectionID();
                 ncnt = 0;
             }
-            ns.setName(AdjustName(ns.getSectionName(), ncnt++));
+            if(nodecnt == MaxRNode)
+                ns.setName(AdjustName(ns.getSectionName(), -1));
+            else
+                ns.setName(AdjustName(ns.getSectionName(), ncnt++));
+            nodecnt ++;
         }
     }
     
@@ -234,7 +241,7 @@ public class Infra {
                 if (lastStation == null) {
                     lastStation = cs;
                 } else {
-                    if (lastStation.getOrder() < cs.getOrder()) {
+                    if (cs.getStationType().isRoadVDS() && lastStation.getOrder() < cs.getOrder()) {
                         lastStation = cs;
                     }
                 }
@@ -251,8 +258,8 @@ public class Infra {
      * @return 
      */
     private String AdjustName(String sectionName, int cnt) {
-        String spname = sectionName.split("-")[0];
-        String num = cnt == 0 ? "" : "_"+cnt;
+        String spname = cnt != -1 ? sectionName.split(" - ")[0] : sectionName.split(" - ")[1];
+        String num = cnt <= 0 ? "" : "_"+cnt;
         if(spname != null)
             return spname+num;
         else
@@ -352,5 +359,19 @@ public class Infra {
                 break;
             }
         }
+    }
+
+    /**
+     * set Total Length
+     * @param cor 
+     */
+    private void setCorridorTotalLength(Corridor cor) {
+        Station ls = (Station)cor.getStations().get(cor.getStations().size()-1);
+        if(ls == null) return;
+        
+        if(ls.getEndLocation() != 0)
+            cor.setTotalLength(ls.getEndLocation());
+        else
+            cor.setTotalLength(ls.getLocation());
     }
 }

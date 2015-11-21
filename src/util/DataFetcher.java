@@ -8,6 +8,7 @@ package util;
 import infra.Direction;
 import infra.InfraDatas;
 import infra.type.RoadType;
+import infra.type.StationType;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -149,7 +150,7 @@ public final class DataFetcher {
                 double location = resultSet.getDouble(InfraDatas.LOCATION.getTableName());
                 double startLocation = resultSet.getDouble(InfraDatas.START_LOC.getTableName());
                 double endLocation = resultSet.getDouble(InfraDatas.END_LOC.getTableName());
-                int type = resultSet.getInt(InfraDatas.TYPE_CODE.getTableName());
+                StationType type = StationType.getType(resultSet.getInt(InfraDatas.STATION_TYPE.getTableName()));
                 int length = resultSet.getInt(InfraDatas.LENGTH.getTableName());
                 int order = resultSet.getInt(InfraDatas.ORDER.getTableName());
                 RoadType roadType = RoadType.get(resultSet.getString(InfraDatas.ROADTYPE.getTableName()));
@@ -168,7 +169,7 @@ public final class DataFetcher {
                 station.put(InfraDatas.LOCATION, location);
                 station.put(InfraDatas.START_LOC, startLocation);
                 station.put(InfraDatas.END_LOC, endLocation);
-                station.put(InfraDatas.TYPE_CODE, type);
+                station.put(InfraDatas.STATION_TYPE, type);
                 station.put(InfraDatas.LENGTH, length);
                 station.put(InfraDatas.ORDER, order);
                 station.put(InfraDatas.ROADTYPE, roadType);
