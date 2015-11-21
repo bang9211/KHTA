@@ -24,4 +24,12 @@ package infra.type;
 public enum NodeOrder {
     FORWARD,
     REVERSE;
+    
+    public boolean isFORWARD(){
+        return this == FORWARD;
+    }
+    
+    public boolean isREVERSE(){
+        return this == REVERSE;
+    }
 }

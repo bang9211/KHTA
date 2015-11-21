@@ -36,24 +36,21 @@ import khta.KHTAFrame;
 import khta.KHTALoading;
 import khta.SectionCreation;
 import util.DataFetcher;
+import util.KHTAParam;
 /**
  *
  * @author soobin Jeon <j.soobin@gmail.com>, chungsan Lee <dj.zlee@gmail.com>,
  * youngtak Han <gksdudxkr@gmail.com>
  */
 public class TrafficSimulationAnalysis {
-//    static KHTALoading kl = new KHTALoading(null, true);
-    final static String DB_NAME = "korex";
-    final static String DB_URL = "jdbc:mysql://210.115.49.40:3308/" + DB_NAME;
-    final static String USER_ID = "ythan";
-    final static String PASSWORD = "wwwsnslab";
+    static KHTALoading kl = new KHTALoading(null, true);
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         // TODO code application logic here
         final Infra infra = Infra.getInstance();
-        final DataFetcher tq = new DataFetcher(DB_NAME, DB_URL, USER_ID, PASSWORD);
+        final DataFetcher tq = new DataFetcher(KHTAParam.DB_NAME, KHTAParam.DB_URL, KHTAParam.USER_ID, KHTAParam.PASSWORD);
         
 //        TrafficSimulationAnalysis ta = new TrafficSimulationAnalysis();
 //        ta.infratest();
@@ -81,11 +78,11 @@ public class TrafficSimulationAnalysis {
                 System.out.println("Openning KHTA..");
                 nf.setAlwaysOnTop(true);
                 nf.setVisible(true);
-//                kl.dispose();
+                kl.dispose();
             }
         }, 10);
-//        kl.setAlwaysOnTop(true);
-//        kl.setVisible(true);
+        kl.setAlwaysOnTop(true);
+        kl.setVisible(true);
     }
     
     public void infratest(){

@@ -185,5 +185,9 @@ public class RNode extends InfraObject implements Comparable{
     public HashMap<String, Detector> getDetectors(){
         return detectors;
     }
+
+    public void setLocation(double loc) {
+        this.loc = loc;
+    }
     
 }

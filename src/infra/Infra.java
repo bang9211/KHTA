@@ -88,7 +88,6 @@ public class Infra {
      * - DMS
      */
     private void setRnodes() {
-        System.out.println("Set RNodes");
         for(Corridor cor : corridors){
             //Search Rnodes in the DB
             //Add Station
@@ -103,19 +102,58 @@ public class Infra {
             //Add Exit
             //Add DMS
             
-            preProcessCorridor(cor);
+            //set Rnode Direction
+//            System.out.println("Setting up the Rnode Direction..");
+            setRNodeDirection(cor);
+            //re-alignment
+//            System.out.println("Alignment RNodes..");
             cor.sortAllNode();
+            //set RNodeName(Station)
+//            System.out.println("Insert RNode Name..");
             setRNodeName(cor);
+            //Modify RNode Location
+//            System.out.println("RNode Distance Calibration..");
+            modifyRNodeLocation(cor);
             
         }
         
     }
-
+    
     /**
-     * 
+     * Modify RNode Location
+     * if Direction is reverse
      * @param cor 
      */
-    private void preProcessCorridor(Corridor cor) {
+    private void modifyRNodeLocation(Corridor cor){
+        if(cor.getOrder().isFORWARD()) return;
+        Station ss = cor.getStations().get(0);
+        double sLoc = ss.getStartLocation();
+        double cLoc = 0;
+        double csloc = 0;
+        double celoc = 0;
+        Station cs = null;
+        
+        for(RNode r : cor.getRNodes()){
+            cLoc = r.getLocation();
+            r.setLocation(Math.round(Math.abs(sLoc - cLoc)*100d)/100d);
+            
+            if(r.getNodeType().isStation()){
+                cs = (Station)r;
+                csloc = cs.getStartLocation();
+                celoc = cs.getEndLocation();
+                cs.setLocation(Math.round(Math.abs(sLoc - csloc)*100d)/100d
+                        , Math.round(Math.abs(sLoc - celoc)*100d)/100d);
+            }
+        }
+    }
+
+    /**
+     * Set RNode Direction
+     * FORWARD
+     * REVERSE
+     * @param cor 
+     */
+    private void setRNodeDirection(Corridor cor) {
         //Re Processing RNode
         if(cor.getRNodes().isEmpty()) return;
         ArrayList<RNode> rnodes = cor.getRNodes();
@@ -150,6 +188,11 @@ public class Infra {
         }
     }
     
+    /**
+     * get FirstStation on Corridor by order
+     * @param rnodes
+     * @return 
+     */
     private Station getFirstStation(ArrayList<RNode> rnodes){
         //find order 1 and last order
         Station firstStation = null;
@@ -173,6 +216,11 @@ public class Infra {
         return firstStation;
     }
     
+    /**
+     * get lastStation on Corridor by order
+     * @param rnodes
+     * @return 
+     */
      private Station getLastStation(ArrayList<RNode> rnodes){
         //find order 1 and last order
         Station lastStation = null;
@@ -195,7 +243,13 @@ public class Infra {
         
         return lastStation;
     }
-     
+    
+    /**
+     * Adjust the Station Name
+     * @param sectionName
+     * @param cnt
+     * @return 
+     */
     private String AdjustName(String sectionName, int cnt) {
         String spname = sectionName.split("-")[0];
         String num = cnt == 0 ? "" : "_"+cnt;

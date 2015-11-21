@@ -119,4 +119,8 @@ public class Station extends RNode{
         return this.End_Loc;
     }
     
+    public void setLocation(double sloc, double eloc){
+        this.Start_Loc = sloc;
+        this.End_Loc = eloc;
+    }
 }
