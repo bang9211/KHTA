@@ -36,6 +36,7 @@ import khta.KHTAFrame;
 import khta.KHTALoading;
 import khta.SectionCreation;
 import util.DataFetcher;
+import util.InfraDataFetcher;
 import util.KHTAParam;
 /**
  *
@@ -50,7 +51,7 @@ public class TrafficSimulationAnalysis {
     public static void main(String[] args) {
         // TODO code application logic here
         final Infra infra = Infra.getInstance();
-        final DataFetcher tq = new DataFetcher(KHTAParam.DB_NAME, KHTAParam.DB_URL, KHTAParam.USER_ID, KHTAParam.PASSWORD);
+        final InfraDataFetcher tq = new InfraDataFetcher();
         
 //        TrafficSimulationAnalysis ta = new TrafficSimulationAnalysis();
 //        ta.infratest();

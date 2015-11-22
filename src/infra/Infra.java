@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import util.KHTAParam;
-import util.DataFetcher;
+import util.InfraDataFetcher;
 
 /**
  *
@@ -35,7 +35,7 @@ import util.DataFetcher;
 public class Infra {
     ArrayList<Corridor> corridors = new ArrayList();
     List<Section> sections = new ArrayList();
-    DataFetcher sqlserver = null;
+    InfraDataFetcher sqlserver = null;
     private static Infra infra = new Infra();
     public ArrayList<Corridor> getCorridors(){
         return corridors;
@@ -49,7 +49,7 @@ public class Infra {
      * Lod Infra Data from DB
      * @param _sqlserver 
      */
-    public void load(DataFetcher _sqlserver){
+    public void load(InfraDataFetcher _sqlserver){
         sqlserver= _sqlserver;
         //set Corridors from DB
         System.out.println("Set Corridors....");

@@ -30,6 +30,7 @@ import java.util.Vector;
  * youngtak Han <gksdudxkr@gmail.com>
  */
 public class Period implements Serializable {
+
     public Date startDate;
     public Date endDate;
     public int start_year, start_month, start_date, start_hour, start_min;
@@ -38,106 +39,102 @@ public class Period implements Serializable {
 
     public Period(Date startDate, Date endDate, int interval) {
         this.setTimes(startDate, endDate);
-        this.interval = interval;       
+        this.interval = interval;
     }
 
     public Period(Period period) {
         this.setTimes(period.startDate, period.endDate);
         this.interval = period.interval;
     }
-    
-    private void setTimes(Date startDate, Date endDate)
-    {
+
+    private void setTimes(Date startDate, Date endDate) {
         this.startDate = startDate;
         this.endDate = endDate;
 
         Calendar c = Calendar.getInstance();
         c.setTime(startDate);
         this.start_year = c.get(Calendar.YEAR);
-        this.start_month = c.get(Calendar.MONTH)+1;
+        this.start_month = c.get(Calendar.MONTH) + 1;
         this.start_date = c.get(Calendar.DATE);
         this.start_hour = c.get(Calendar.HOUR_OF_DAY);
         this.start_min = c.get(Calendar.MINUTE);
-        
+
         c.setTime(endDate);
         this.end_year = c.get(Calendar.YEAR);
-        this.end_month = c.get(Calendar.MONTH)+1;
+        this.end_month = c.get(Calendar.MONTH) + 1;
         this.end_date = c.get(Calendar.DATE);
         this.end_hour = c.get(Calendar.HOUR_OF_DAY);
-        this.end_min = c.get(Calendar.MINUTE);        
+        this.end_min = c.get(Calendar.MINUTE);
     }
 
-    public int getHowManyDays()
-    {
+    public int getHowManyDays() {
         Calendar c = Calendar.getInstance();
         c.setTime(startDate);
         int count = 1;
 
-        while(true)
-        {
-            if(isSameDay(c.getTime(), this.endDate)) return count;
+        while (true) {
+            if (isSameDay(c.getTime(), this.endDate)) {
+                return count;
+            }
             c.add(Calendar.DATE, 1);
             count++;
         }
     }
-    
-    public int getIntervalPeriod(){
+
+    public int getIntervalPeriod() {
         Calendar c = Calendar.getInstance();
         c.setTime(startDate);
         int count = 0;
 
-        while(true)
-        {
-            if(isSameTime(c.getTime(), this.endDate)) return count;
+        while (true) {
+            if (isSameTime(c.getTime(), this.endDate)) {
+                return count;
+            }
             c.add(Calendar.SECOND, interval);
             count++;
         }
     }
 
-    
-    public String[] getTimeline()
-    {
-        if(this.getHowManyDays() > 1) return getTimelineWithDate();
-        else return getTimelineJustTime();
+    public String[] getTimeline() {
+        if (this.getHowManyDays() > 1) {
+            return getTimelineWithDate();
+        } else {
+            return getTimelineJustTime();
+        }
     }
-    
-    public String[] getTimelineWithDate()
-    {
+
+    public String[] getTimelineWithDate() {
         Vector<String> timeline = new Vector<String>();
         Calendar c = Calendar.getInstance();
         c.setTime(this.startDate);
         Calendar ce = Calendar.getInstance();
         ce.setTime(this.endDate);
         DecimalFormat df = new DecimalFormat("00");
-        while(c.getTimeInMillis()/1000 < ce.getTimeInMillis()/1000)
-        {
+        while (c.getTimeInMillis() / 1000 < ce.getTimeInMillis() / 1000) {
             c.add(Calendar.SECOND, interval);
-            String time = c.get(Calendar.YEAR)+"-"+
-                    df.format(c.get(Calendar.MONTH)+1)+"-"+
-                    df.format(c.get(Calendar.DATE))+" "+
-                    df.format(c.get(Calendar.HOUR_OF_DAY))+":"+
-                    df.format(c.get(Calendar.MINUTE))+":"+
-                    df.format(c.get(Calendar.SECOND))
-                    ;
+            String time = c.get(Calendar.YEAR) + "-"
+                    + df.format(c.get(Calendar.MONTH) + 1) + "-"
+                    + df.format(c.get(Calendar.DATE)) + " "
+                    + df.format(c.get(Calendar.HOUR_OF_DAY)) + ":"
+                    + df.format(c.get(Calendar.MINUTE)) + ":"
+                    + df.format(c.get(Calendar.SECOND));
             timeline.add(time);
         }
         return timeline.toArray(new String[timeline.size()]);
     }
 
-    public String[] getTimelineJustTime()
-    {
+    public String[] getTimelineJustTime() {
         Vector<String> timeline = new Vector<String>();
         Calendar c = Calendar.getInstance();
         c.setTime(this.startDate);
-        
+
         Calendar ce = Calendar.getInstance();
         ce.setTime(this.endDate);
         DecimalFormat df = new DecimalFormat("00");
-        
-        while(c.getTimeInMillis()/1000 < ce.getTimeInMillis()/1000)
-        {
+
+        while (c.getTimeInMillis() / 1000 < ce.getTimeInMillis() / 1000) {
             c.add(Calendar.SECOND, interval);
-            String time = df.format(c.get(Calendar.HOUR_OF_DAY))+":"+df.format(c.get(Calendar.MINUTE))+":"+df.format(c.get(Calendar.SECOND));
+            String time = df.format(c.get(Calendar.HOUR_OF_DAY)) + ":" + df.format(c.get(Calendar.MINUTE)) + ":" + df.format(c.get(Calendar.SECOND));
             timeline.add(time);
         }
         return timeline.toArray(new String[timeline.size()]);
@@ -154,12 +151,12 @@ public class Period implements Serializable {
             return false;
         }
     }
-    
+
     boolean isSameTime(Date d1, Date d2) {
-        if(!isSameDay(d1,d2)){
+        if (!isSameDay(d1, d2)) {
             return false;
         }
-        
+
         Calendar c1 = Calendar.getInstance();
         Calendar c2 = Calendar.getInstance();
         c1.setTime(d1);
@@ -170,33 +167,42 @@ public class Period implements Serializable {
             return false;
         }
     }
-    
-    public String getPeriodStringWithoutTime(){
-        return String.format("%4d%02d%02d", 
+
+    public String getPeriodStringWithoutTime() {
+        return String.format("%4d%02d%02d",
                 this.start_year, this.start_month, this.start_date);
     }
-    
-    public String getPeriodStringHWithoutTime(){
-        return String.format("%4d-%02d-%02d", 
+
+    public String getPeriodStringHWithoutTime() {
+        return String.format("%4d-%02d-%02d",
                 this.start_year, this.start_month, this.start_date);
     }
+
+    public String getStartDateString() {
+        return String.format("%4d%02d%02d%02d%02d%02d",
+                this.start_year, this.start_month, this.start_date, this.start_hour, this.start_min, 0
+        );
+    }
     
-    public String getPeriodString()
-    {
-        return String.format("%4d%02d%02d%02d%02d-%4d%02d%02d%02d%02d", 
+    public String getEndDateString() {
+        return String.format("%4d%02d%02d%02d%02d%02d",
+                this.end_year, this.end_month, this.end_date, this.end_hour, this.end_min, this.start_min, 0
+        );
+    }
+
+    public String getPeriodString() {
+        return String.format("%4d%02d%02d%02d%02d-%4d%02d%02d%02d%02d",
                 this.start_year, this.start_month, this.start_date, this.start_hour, this.start_min,
                 this.end_year, this.end_month, this.end_date, this.end_hour, this.end_min
-                );
+        );
     }
-    
-    public void setInterval(int interval)
-    {
+
+    public void setInterval(int interval) {
         this.interval = interval;
     }
-    
+
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "START : " + this.startDate.toString() + "\nEND : " + this.endDate.toString();
     }
 
@@ -205,18 +211,17 @@ public class Period implements Serializable {
         c.setTime(this.startDate);
         c.add(Calendar.HOUR, h);
         this.setTimes(c.getTime(), this.endDate);
-    }    
-    
+    }
+
     public void addEndHour(int h) {
         Calendar c = Calendar.getInstance();
         c.setTime(this.endDate);
         c.add(Calendar.HOUR, h);
         this.setTimes(this.startDate, c.getTime());
     }
-    
+
     @Override
-    public Period clone()
-    {
+    public Period clone() {
         return new Period(this);
     }
 
@@ -226,18 +231,20 @@ public class Period implements Serializable {
 //        System.out.println("gap : " +gap);
         int addTime = minterval == 0 ? gap : gap % minterval;
 //        System.out.println("addTime : " +addTime);
-        if(start_min < end_min)
+        if (start_min < end_min) {
             addTime = minterval - addTime;
+        }
 //        System.out.println("interval - addTime : " +addTime);
-        if(addTime == 0)
+        if (addTime == 0) {
             return;
-        
+        }
+
         Calendar c = Calendar.getInstance();
         c.setTime(endDate);
         SimpleDateFormat dateformatter = new SimpleDateFormat("yyyy.MM.dd HH:mm");
 //        System.out.println("beforetime : "+dateformatter.format(c.getTime()));
         c.add(Calendar.MINUTE, addTime);
 //        System.out.println("aftertime : "+dateformatter.format(c.getTime()));
-        this.setTimes(startDate,c.getTime());
+        this.setTimes(startDate, c.getTime());
     }
 }

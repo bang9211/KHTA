@@ -99,18 +99,18 @@ public class Detector extends InfraObject{
         for(int i=0;i<volume.length;i++){
             double q = volume[i] * InfraConstants.SAMPLES_PER_HOUR;
             
-            double u = speed[i];
+//            double u = speed[i];
+//            
+//            double k = q / u;
             
-            double k = q / u;
-            
-            if(q <= 0){
-                q = k = u = InfraConstants.MISSING_DATA;
-            }
+//            if(q <= 0){
+//                q = k = u = InfraConstants.MISSING_DATA;
+//            }
             
             this.volume.add(volume[i]);
-            this.speed.add(u);
+//            this.speed.add(u);
             this.flow.add(q);
-            this.density.add(k);
+//            this.density.add(k);
         }
     }
     
