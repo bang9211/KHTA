@@ -30,7 +30,7 @@ public class KHTAParam {
     
     //DB
     public final static String DB_NAME = "korex";
-    public final static String DB_URL = "jdbc:mysql://210.115.49.40:3308/" + DB_NAME;
+    public final static String DB_URL = "jdbc:mysql://210.115.49.40:3306/" + DB_NAME;
     public final static String USER_ID = "ythan";
     public final static String PASSWORD = "wwwsnslab";
 }
