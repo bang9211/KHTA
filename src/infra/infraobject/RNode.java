@@ -24,7 +24,6 @@ import infra.Period;
 import infra.simobjects.SimObjects;
 import infra.type.*;
 import java.util.*;
-import trafficsimulationanalysis.TempData;
 
 /**
  *
