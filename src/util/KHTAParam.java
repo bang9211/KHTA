@@ -28,6 +28,8 @@ public class KHTAParam {
     public static final String SECTION_SAVE = "Create Section";
     public static final String SECTION_LOADING = "Section saving..";
     
+    public static final int MISSING_DATA = -1;
+    
     //DB
     public final static String DB_NAME = "korex";
     public final static String DB_URL = "jdbc:mysql://210.115.49.40:3306/" + DB_NAME;

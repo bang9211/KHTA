@@ -40,6 +40,7 @@ public class Detector extends InfraObject{
     transient private Period period;
     transient private int MinInterval;
     private RNode r_node;
+    private double confidence = -1;
     
     transient private Vector<Double> volume = new Vector<Double>();
     transient private Vector<Double> speed = new Vector<Double>();
@@ -99,18 +100,18 @@ public class Detector extends InfraObject{
         for(int i=0;i<volume.length;i++){
             double q = volume[i] * InfraConstants.SAMPLES_PER_HOUR;
             
-//            double u = speed[i];
-//            
-//            double k = q / u;
+            double u = speed[i];
             
-//            if(q <= 0){
-//                q = k = u = InfraConstants.MISSING_DATA;
-//            }
+            double k = q / u;
+            
+            if(q <= 0){
+                q = k = u = InfraConstants.MISSING_DATA;
+            }
             
             this.volume.add(volume[i]);
-//            this.speed.add(u);
+            this.speed.add(u);
             this.flow.add(q);
-//            this.density.add(k);
+            this.density.add(k);
         }
     }
     
@@ -211,19 +212,42 @@ public class Detector extends InfraObject{
         if (trafficType.isSpeed()) {
             return adjustInterval(speed,AdjustType.Average);
         }
-        if (trafficType.isSppedForStation()){
-            return speed;//adjustInterval(speed,AdjustType.SpeedWithStation);
-        }
+//        if (trafficType.isSppedForStation()){
+//            return speed;//adjustInterval(speed,AdjustType.SpeedWithStation);
+//        }
         if (trafficType.isDensity()) {
             return adjustInterval(density,AdjustType.DensityWithStation);
         }
-        if (trafficType.isFlow() || trafficType.isFlowForAverage() || trafficType.isAverageFlow()) { //modify soobin Jeon 02/15/2012
+        if (trafficType.isFlow() || trafficType.isAverageFlow()) { //modify soobin Jeon 02/15/2012
             return adjustInterval(flow,AdjustType.Flow);
         }
         if (trafficType.isVolume()) {
             return adjustInterval(volume,AdjustType.Cumulative);
         }
         return null;
+    }
+    
+    public double getConfidence() {
+        if (this.confidence < 0) {
+            int validCount = 0;
+            for (double u : this.speed) {
+                if (u > 0) {
+                    validCount++;
+                }
+            }
+            this.confidence = (double) validCount / this.speed.size() * 100;
+        }
+        return this.roundUp(this.confidence, 1);
+    }
+
+    public boolean isMissing() {
+        this.confidence = getConfidence();
+        if (confidence < 50) {
+//            System.out.println("confidence : " + confidence);
+            return true;
+        } else {
+            return false;
+        }
     }
     
     public void clear(){

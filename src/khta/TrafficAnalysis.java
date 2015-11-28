@@ -826,5 +826,19 @@ public class TrafficAnalysis extends javax.swing.JPanel {
             StationDensity sd = new StationDensity(p, selectedSection);
         }
         
+        new Timer().schedule(new TimerTask() {
+
+            @Override
+            public void run() {
+                test();
+            }
+        }, 10);
+    }
+    
+    private void test(){
+        khtaTest kt = new khtaTest();
+        
+        Section s = (Section)this.cbxSections.getSelectedItem();
+        kt.test(s);
     }
 }

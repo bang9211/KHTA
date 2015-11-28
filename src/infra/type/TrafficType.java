@@ -28,7 +28,6 @@ public enum TrafficType {
     DENSITY(3),
     AVERAGEFLOW(4),
     SPEEDFORSTATION(5),
-    FLOWFORAVERAGE(6),
     UNKNOWN(99);
     
     final int id;
@@ -53,6 +52,5 @@ public enum TrafficType {
     public boolean isFlow() { return this == FLOW; }
     public boolean isDensity() { return this == DENSITY; }
     public boolean isAverageFlow() { return this == AVERAGEFLOW; }
-    public boolean isFlowForAverage() { return this == FLOWFORAVERAGE; }
     public boolean isSppedForStation(){return this == SPEEDFORSTATION;}
 }
