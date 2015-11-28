@@ -47,8 +47,8 @@ public class DetectorDataReader extends DataFetcher{
     public static final String VOLUME = "volume";
     
     //DB TABLE NAME
-    public static final String VOLUME_TABLE = "volume_test";
-    public static final String SPEED_TABLE = "speed_test";
+    public static final String VOLUME_TABLE = "volume";
+    public static final String SPEED_TABLE = "speed";
     
     public DetectorDataReader(Detector detector, Period period){
         super(KHTAParam.DB_NAME, KHTAParam.DB_URL, KHTAParam.USER_ID, KHTAParam.PASSWORD);
@@ -69,9 +69,9 @@ public class DetectorDataReader extends DataFetcher{
         this.connectDatabase();
         try {
             loadDatafromDB(TableMap.get(TrafficType.VOLUME),dataMap.get(TrafficType.VOLUME));
-//            loadDatafromDB(TableMap.get(TrafficType.SPEED),dataMap.get(TrafficType.SPEED));
+            loadDatafromDB(TableMap.get(TrafficType.SPEED),dataMap.get(TrafficType.SPEED));
             isLoaded = true;
-            //adjustTrafficData(read(TrafficType.VOLUME), read(TrafficType.SPEED));
+//            adjustTrafficData(read(TrafficType.VOLUME), read(TrafficType.SPEED));
         } catch (Exception ex) {
             Logger.getLogger(DetectorDataReader.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -95,27 +95,39 @@ public class DetectorDataReader extends DataFetcher{
      */
     private void loadDatafromDB(String tableName, Vector<Double> data) throws Exception{
 //        System.out.println(detector.getIDforDB());
-        String sql = "SELECT * FROM korex."+tableName+" where "
+        String sql = "SELECT * FROM korex."+tableName+"  use index(sid_date) where "
                 + STATION_ID+"='"+detector.getIDforDB()+"' and "
                 + S_DATE+" > '"+period.getStartDateString()+"' and "
                 + S_DATE+" <= '"+period.getEndDateString()+"' and "
-                + LANETYPE+" <= '"+detector.getLaneType().code+"' "
+                + LANETYPE+" = '"+detector.getLaneType().code+"' "
                 + "order by "+S_DATE+" asc";
         
         System.out.println(sql);
         
+        int idx = 0;
         resultSet = statement.executeQuery(sql);
+        HashMap<String,Double> tdata = new HashMap();
         
         while(resultSet.next()){
             String sid = resultSet.getString("station_id");
             String s_date = resultSet.getString("s_date");
             int ltype = resultSet.getInt("lanetype");
-            int volume = resultSet.getInt("volume");
+            double ddata = resultSet.getDouble("data");
             
             System.out.println("sid-"+sid+", s_date-"+s_date
-                    +", ltype-"+ltype+", volume-"+volume);
+                    +", ltype-"+ltype+", data-"+ddata);
             
-            data.add((double)volume);
+            tdata.put(s_date.split("\\.")[0], ddata);
+        }
+        
+        for(String ct : period.getTimelineWithDate()){
+            Double d = tdata.get(ct);
+            System.out.println(ct+" "+d);
+            
+            if(d!=null)
+                data.add(d);
+            else
+                data.add((double)-1);
         }
     }
 }

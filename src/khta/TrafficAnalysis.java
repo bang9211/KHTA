@@ -791,6 +791,19 @@ public class TrafficAnalysis extends javax.swing.JPanel {
     }
 
     private void evaluation() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        new Timer().schedule(new TimerTask() {
+
+            @Override
+            public void run() {
+                test();
+            }
+        }, 10);
+    }
+    
+    private void test(){
+        khtaTest kt = new khtaTest();
+        
+        Section s = (Section)this.cbxSections.getSelectedItem();
+        kt.test(s);
     }
 }

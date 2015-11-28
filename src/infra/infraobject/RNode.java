@@ -25,6 +25,7 @@ import infra.simobjects.SimObjects;
 import infra.type.*;
 import java.util.*;
 import trafficsimulationanalysis.TempData;
+import util.KHTAParam;
 
 /**
  *
@@ -43,8 +44,11 @@ public class RNode extends InfraObject implements Comparable{
     //ISBUSLANE
     protected boolean isBusLane = false;
     
+    protected double confidence = -1;    
+    
     //Detectors must include the Mainline, Bus lane and so on
     protected HashMap<String,Detector> detectors = new HashMap<String,Detector>();
+    private boolean isMissing = false;
     
     public RNode(HashMap<InfraDatas,Object> datas, RnodeType _nodetype){
         super(datas);
@@ -92,6 +96,98 @@ public class RNode extends InfraObject implements Comparable{
             else
                 d.loadData(period, dopt,sobj);
         }
+    }
+    
+    public double[] getSpeed(){ return getData(TrafficType.SPEED);}
+    public double[] getDensity() { return getData(TrafficType.DENSITY);}
+    public double[] getFlow() { return getData(TrafficType.FLOW); }
+//    public double[] getFlowForAverageLaneFlow() { return getData(TrafficType.FLOWFORAVERAGE); } //modify soobin Jeon 02/15/2012
+    public double[] getAverageLaneFlow() { return getData(TrafficType.AVERAGEFLOW); } //modify soobin Jeon 02/15/2012
+    public double[] getVolume() { return getData(TrafficType.VOLUME); }
+    
+    public double[] getData(TrafficType type){
+        return makeAdjustData(MakeData(type), type);
+    }
+    
+    /**
+     * Make Data file to array
+     * @param type
+     * @return 
+     */
+    private double[][] MakeData(TrafficType type){
+        double[][] ddata = new double[this.detectors.size()][];
+        int idx = 0;
+        for (Detector d : this.detectors.values()) {
+            ddata[idx++] = d.getData(type);
+            System.out.println("data["+(idx-1)+"]= "+d.getID()+" - "+ddata[idx-1].length);
+        }
+
+        return ddata;
+    }
+    
+    /**
+     * make Station data using all detector data
+     * @param data
+     * @param atype
+     * @return 
+     */
+    private double[] makeAdjustData(double[][] data, TrafficType atype){
+        if(data == null || data.length == 0) return null;
+        double[] avg = new double[data[0].length];
+        Detector[] ds = this.detectors.values().toArray(new Detector[this.detectors.size()]);
+        
+        double totalValidCount = 0;
+        double totalDataCount = 0;
+        
+        for(int i=0; i<data[0].length; i++) {
+            double sum = 0;
+            double validCount = 0;            
+            for(int detIdx=0;detIdx<data.length; detIdx++)
+            {
+                
+                //요부분 고쳐야함 - 2015/11/28
+//                if(!atype.isFlow() && ds[detIdx].getLaneType().)
+//                    continue;
+                /*
+                 * Modify to check missing detectors
+                 * Check Missing detectors in Station
+                 * modify soobin Jeon 02/13/2012
+                 */
+                if(ds[detIdx].isMissing()){
+                    continue;
+                }
+                
+                totalDataCount++;
+                
+                double v = data[detIdx][i];                        
+                
+                if(v > 0)
+                {                    
+                    sum += v;
+                    validCount++;
+                }else if(atype.isDensity())
+                    validCount++;
+            }    
+            totalValidCount += validCount;
+            
+            if(validCount > 0) {
+                    if(atype.isFlow() || atype.isVolume()){
+                        avg[i] = sum;
+                    }
+                    else if(getNodeType().isStation() && atype.isAverageFlow()){
+                        avg[i] = sum / ((Station)this).getLaneCount();
+                    }
+                    else{
+                        avg[i] = sum/validCount;
+                    }
+            }///validCount;//this.roundUp(sum / validCount, 2);
+            else {avg[i] = KHTAParam.MISSING_DATA;}            
+        }
+//        System.out.println("========================================\n");
+        
+        this.confidence = totalValidCount / totalDataCount * 100;
+        if(confidence < 50) isMissing = true;
+        return avg;
     }
     
     /**
@@ -209,6 +305,17 @@ public class RNode extends InfraObject implements Comparable{
 
     private Object getDetectorName(LaneType laneType) {
         return laneType.dbsuffix+this.getName();
+    }
+    
+    public boolean isMissing() {
+        Iterator<Detector> itr = this.detectors.values().iterator();
+        while(itr.hasNext()) {
+            Detector d = itr.next();
+            if(!d.isMissing()) {
+                return false;
+            }
+        }
+        return true;
     }
     
 }

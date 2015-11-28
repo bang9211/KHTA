@@ -82,4 +82,9 @@ public class InfraObject {
             ret[i] = data.get(i);
         return ret;
     }  
+    
+    protected double roundUp(double n, int precision )
+    {
+        return (double) ( Math.round(n*Math.pow(10, precision)) / Math.pow(10, precision) );
+    }
 }

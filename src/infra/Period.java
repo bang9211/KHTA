@@ -186,7 +186,7 @@ public class Period implements Serializable {
     
     public String getEndDateString() {
         return String.format("%4d%02d%02d%02d%02d%02d",
-                this.end_year, this.end_month, this.end_date, this.end_hour, this.end_min, this.start_min, 0
+                this.end_year, this.end_month, this.end_date, this.end_hour, this.end_min, 0
         );
     }
 
