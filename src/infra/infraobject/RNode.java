@@ -24,6 +24,8 @@ import infra.Period;
 import infra.simobjects.SimObjects;
 import infra.type.*;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import trafficsimulationanalysis.TempData;
 import util.KHTAParam;
 
@@ -46,6 +48,9 @@ public class RNode extends InfraObject implements Comparable{
     
     protected double confidence = -1;    
     
+    //lane
+    protected int lane = 1;
+    
     //Detectors must include the Mainline, Bus lane and so on
     protected HashMap<String,Detector> detectors = new HashMap<String,Detector>();
     private boolean isMissing = false;
@@ -55,9 +60,13 @@ public class RNode extends InfraObject implements Comparable{
         nodetype = _nodetype;
         Double _loc = (Double)getProperty(InfraDatas.LOCATION);
         loc = _loc == null ? -1 : _loc;
-        int it = (Integer)super.getProperty(InfraDatas.ISBUSLANE);
+        Integer it = (Integer)super.getProperty(InfraDatas.ISBUSLANE);
         if(it == 1)
             isBusLane = true;
+        
+        it = (Integer)super.getProperty(InfraDatas.LANE);
+        lane = it == null ? -1 : it;
+        
 //        direction = (Direction)getProperty(InfraDatas.DIRECTION);
         initDetectors();
     }
@@ -89,12 +98,29 @@ public class RNode extends InfraObject implements Comparable{
      * @param dopt 
      * @param sobj 
      */
-    public void loadData(Period period, DataLoadOption dopt, SimObjects sobj) throws OutOfMemoryError{
+    public void loadData(Period period, DataLoadOption dopt, SimObjects sobj){
+        DetectorThread[] dtlist = new DetectorThread[detectors.size()];
+        int cnt = 0;
         for(Detector d : this.detectors.values()){
-            if(sobj == null)
-                d.loadData(period, dopt);
-            else
-                d.loadData(period, dopt,sobj);
+            dtlist[cnt] = new DetectorThread(d, period, dopt, sobj);
+            dtlist[cnt].start();
+            cnt ++;
+//            if(sobj == null)
+//                d.loadData(period, dopt);
+//            else
+//                d.loadData(period, dopt,sobj);
+        }
+        
+        cnt = 0;
+        try {
+            while (true) {
+                dtlist[cnt++].join();
+                if (cnt == dtlist.length) {
+                    break;
+                }
+            }
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
         }
     }
     
@@ -144,18 +170,15 @@ public class RNode extends InfraObject implements Comparable{
             double validCount = 0;            
             for(int detIdx=0;detIdx<data.length; detIdx++)
             {
-                
-                //요부분 고쳐야함 - 2015/11/28
-//                if(!atype.isFlow() && ds[detIdx].getLaneType().)
-//                    continue;
                 /*
                  * Modify to check missing detectors
                  * Check Missing detectors in Station
                  * modify soobin Jeon 02/13/2012
                  */
-                if(ds[detIdx].isMissing()){
-                    continue;
-                }
+//                if(ds[detIdx].isMissing()){
+//                    System.out.println("Detector="+ds[detIdx].getID()+", isMissing : "+ds[detIdx].isMissing());
+//                    continue;
+//                }
                 
                 totalDataCount++;
                 
@@ -174,14 +197,18 @@ public class RNode extends InfraObject implements Comparable{
                     if(atype.isFlow() || atype.isVolume()){
                         avg[i] = sum;
                     }
-                    else if(getNodeType().isStation() && atype.isAverageFlow()){
-                        avg[i] = sum / ((Station)this).getLaneCount();
+                    else if(atype.isAverageFlow() || atype.isDensity()){
+//                        System.out.println("Lane Count : "+getLaneCount());
+                        avg[i] = sum / getLaneCount();
                     }
                     else{
                         avg[i] = sum/validCount;
                     }
             }///validCount;//this.roundUp(sum / validCount, 2);
-            else {avg[i] = KHTAParam.MISSING_DATA;}            
+            else {
+//                System.out.println("valid Count : "+validCount+" missing");
+                avg[i] = KHTAParam.MISSING_DATA;
+            }            
         }
 //        System.out.println("========================================\n");
         
@@ -316,6 +343,10 @@ public class RNode extends InfraObject implements Comparable{
             }
         }
         return true;
+    }
+    
+    public int getLaneCount(){
+        return lane;
     }
     
 }

@@ -38,8 +38,6 @@ public class Station extends RNode{
     private int Length = -1;
     //roadType
     protected String roadType = null;
-    //lane
-    private int lane = -1;
     //speedLimit
     protected float speedLimit;
     //Section Name
@@ -65,9 +63,6 @@ public class Station extends RNode{
         dt = (Double)super.getProperty(InfraDatas.END_LOC);
         End_Loc = dt == null ? -1 : dt;
         
-        it = (Integer)super.getProperty(InfraDatas.LANE);
-        lane = it == null ? -1 : it;
-        
         ft = (Float)super.getProperty(InfraDatas.SPEED_LIMIT);
         speedLimit = ft == null ? -1 : ft;
         
@@ -80,10 +75,6 @@ public class Station extends RNode{
     
     public int getOrder(){
         return order;
-    }
-    
-    public int getLaneCount(){
-        return lane;
     }
     
     public float getSpeedLimit(){

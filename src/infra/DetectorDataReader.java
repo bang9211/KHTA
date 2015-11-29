@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import exception.DBException;
 import util.DataFetcher;
 import util.KHTAParam;
 
@@ -65,21 +66,34 @@ public class DetectorDataReader extends DataFetcher{
     /**
      * Data Load from Database
      */
-    public void load(){
-        this.connectDatabase();
+    public void load() throws DBException{
+//        System.out.println(detector.getID()+" - Start DB");
         try {
-            loadDatafromDB(TableMap.get(TrafficType.VOLUME),dataMap.get(TrafficType.VOLUME));
-            loadDatafromDB(TableMap.get(TrafficType.SPEED),dataMap.get(TrafficType.SPEED));
-            isLoaded = true;
-//            adjustTrafficData(read(TrafficType.VOLUME), read(TrafficType.SPEED));
-        } catch (Exception ex) {
-            Logger.getLogger(DetectorDataReader.class.getName()).log(Level.SEVERE, null, ex);
+//            System.out.println(detector.getID()+" - Connection");
+            this.connectDatabase();
+        } catch (ClassNotFoundException ex) {
+            throw new DBException(DBException.DBEX.ConnectionError);
+        } catch (SQLException ex) {
+            throw new DBException(DBException.DBEX.ConnectionError);
         }
         
-        this.disconnectDatabase();
+        try {
+            
+            loadDatafromDB(TableMap.get(TrafficType.VOLUME),dataMap.get(TrafficType.VOLUME));
+            loadDatafromDB(TableMap.get(TrafficType.SPEED),dataMap.get(TrafficType.SPEED));
+        } catch (Exception ex) {
+            throw new DBException(DBException.DBEX.LoadError);
+        }
+        
+        try {
+            this.disconnectDatabase();
+        } catch (SQLException ex) {
+            throw new DBException(DBException.DBEX.DisconnectionError);
+        }
+        isLoaded = true;
     }
     
-    public double[] read(TrafficType trafficType){
+    public double[] read(TrafficType trafficType) throws DBException{
         if(!isLoaded) load();
         Vector<Double> data = dataMap.get(trafficType);
         if(data == null) return null;
@@ -102,7 +116,7 @@ public class DetectorDataReader extends DataFetcher{
                 + LANETYPE+" = '"+detector.getLaneType().code+"' "
                 + "order by "+S_DATE+" asc";
         
-        System.out.println(sql);
+//        System.out.println(sql);
         
         int idx = 0;
         resultSet = statement.executeQuery(sql);
@@ -114,15 +128,15 @@ public class DetectorDataReader extends DataFetcher{
             int ltype = resultSet.getInt("lanetype");
             double ddata = resultSet.getDouble("data");
             
-            System.out.println("sid-"+sid+", s_date-"+s_date
-                    +", ltype-"+ltype+", data-"+ddata);
+//            System.out.println("sid-"+sid+", s_date-"+s_date
+//                    +", ltype-"+ltype+", data-"+ddata);
             
             tdata.put(s_date.split("\\.")[0], ddata);
         }
         
         for(String ct : period.getTimelineWithDate()){
             Double d = tdata.get(ct);
-            System.out.println(ct+" "+d);
+//            System.out.println(ct+" "+d);
             
             if(d!=null)
                 data.add(d);

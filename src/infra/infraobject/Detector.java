@@ -28,6 +28,7 @@ import infra.type.*;
 import java.util.HashMap;
 import java.util.Vector;
 import javax.swing.JOptionPane;
+import exception.DBException;
 
 /**
  *
@@ -58,11 +59,11 @@ public class Detector extends InfraObject{
      * Data Load
      * @param period 
      */
-    void loadData(Period p, DataLoadOption dopt) throws OutOfMemoryError {
+    void loadData(Period p, DataLoadOption dopt) throws DBException {
         loadData(p,dopt,null);
     }
     
-    public void loadData(Period p, DataLoadOption dopt,SimObjects sobj) throws OutOfMemoryError {
+    public void loadData(Period p, DataLoadOption dopt,SimObjects sobj) throws DBException{
         this.clear();
         
         this.period = p;

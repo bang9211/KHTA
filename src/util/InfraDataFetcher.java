@@ -45,16 +45,21 @@ public class InfraDataFetcher extends DataFetcher{
     }
     
     public void setup() {
-        System.out.println("Connecting Database...");
-        connectDatabase();
-        System.out.println("Setting up the Corridors");
-        setCorridor();
-        System.out.println("Corridor Count : " + corridors.size());
-        System.out.println("Setting up the Stations");
-        setStation();
-        System.out.println("Station Count : " + stations.size());
-        
-        disconnectDatabase();
+        try {
+            System.out.println("Connecting Database...");
+            connectDatabase();
+            System.out.println("Setting up the Corridors");
+            setCorridor();
+            System.out.println("Corridor Count : " + corridors.size());
+            System.out.println("Setting up the Stations");
+            setStation();
+            System.out.println("Station Count : " + stations.size());
+            disconnectDatabase();
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
     
     private void setCorridor() {

@@ -19,6 +19,7 @@ package infra;
 import evaluation.DataLoadOption;
 import infra.infraobject.Corridor;
 import infra.infraobject.RNode;
+import infra.infraobject.RNodeThread;
 import infra.simobjects.SimObjects;
 import java.io.File;
 import java.io.Serializable;
@@ -92,11 +93,26 @@ public class Section implements Serializable{
     }
     
     public void loadData(Period period, DataLoadOption dopt, SimObjects sobj) throws OutOfMemoryError{
+        System.out.println("Load Section Data..");
+        RNodeThread[] rlist = new RNodeThread[section.size()];
+        int cnt = 0;
         for(RNode s : section) {
-            if(sobj == null)
-                s.loadData(period, dopt);
-            else
-                s.loadData(period, dopt,sobj);
+            rlist[cnt] = new RNodeThread(s, period, dopt, sobj);
+            rlist[cnt].start();
+            cnt ++;
+        }
+        
+        cnt = 0;
+        try {
+            while (true) {
+                System.out.println("Load RNode - "+rlist[cnt].getRNode().getName()+" ["+(cnt+1)+"/"+rlist.length+"]");
+                rlist[cnt++].join();
+                if (cnt == rlist.length) {
+                    break;
+                }
+            }
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
         }
     }
     

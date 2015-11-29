@@ -45,24 +45,15 @@ public class DataFetcher {
         PASSWORD = password;
     }
     
-    public void connectDatabase() {
-        try {
-            Class.forName(JDBC_DRIVER);
-            connection = DriverManager.getConnection(DB_URL, USER_ID, PASSWORD);
-            System.out.println("MySQL Connection");
-            statement = connection.createStatement();
-        } catch (SQLException | ClassNotFoundException ex) {
-            Logger.getLogger(DataFetcher.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public void connectDatabase() throws ClassNotFoundException, SQLException {
+        Class.forName(JDBC_DRIVER);
+        connection = DriverManager.getConnection(DB_URL, USER_ID, PASSWORD);
+        statement = connection.createStatement();
     }
 
-    public void disconnectDatabase() {
-        try {
-            if(resultSet != null) resultSet.close();
-            if(statement != null) statement.close();
-            if(connection != null) connection.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(DataFetcher.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public void disconnectDatabase() throws SQLException {
+        if(resultSet != null) resultSet.close();
+        if(statement != null) statement.close();
+        if(connection != null) connection.close();
     }
 }
