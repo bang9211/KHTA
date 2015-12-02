@@ -24,7 +24,9 @@ import infra.simobjects.SimObjects;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import javax.swing.JOptionPane;
 import util.KHTAParam;
 import util.PropertiesWrapper;
@@ -91,22 +93,53 @@ public class Section implements Serializable{
     public void loadData(Period period, DataLoadOption dopt) throws OutOfMemoryError {
         loadData(period,dopt,null);
     }
-    
+    private int LoadCount = 0;
     public void loadData(Period period, DataLoadOption dopt, SimObjects sobj) throws OutOfMemoryError{
         System.out.println("Load Section Data..");
-        RNodeThread[] rlist = new RNodeThread[section.size()];
+        int QueueCount = 10;
         int cnt = 0;
-        for(RNode s : section) {
+        int fcnt = 0;
+        LoadCount = 1;
+        RNodeThread[] rlist = new RNodeThread[QueueCount];
+        
+        RNodeThread.Callback cbmsg = new RNodeThread.Callback() {
+            @Override
+            public void IsLoaded(RNode r) {
+                System.out.println("Load RNode - "+r.getName()+" ["+(LoadCount++)+"/"+section.size()+"]");
+            }
+        };
+        
+        for(RNode s : section){
             rlist[cnt] = new RNodeThread(s, period, dopt, sobj);
-            rlist[cnt].start();
+            rlist[cnt].setCallback(cbmsg);
             cnt ++;
+            fcnt++;
+            if(cnt % QueueCount == 0 || fcnt == section.size()){
+                StartLoad(rlist, period, dopt, sobj);
+                rlist = new RNodeThread[QueueCount];
+                cnt = 0;
+            }
+            
+        }
+    }
+    
+    private void StartLoad(RNodeThread[] rlist, Period period, DataLoadOption dopt, SimObjects sobj){
+        for(int i=0;i<rlist.length;i++) {
+            if(rlist[i] == null)
+                continue;
+            else
+                rlist[i].start();
         }
         
-        cnt = 0;
+        int cnt = 0;
         try {
             while (true) {
-                System.out.println("Load RNode - "+rlist[cnt].getRNode().getName()+" ["+(cnt+1)+"/"+rlist.length+"]");
-                rlist[cnt++].join();
+                if(rlist[cnt] != null){
+                    rlist[cnt].join();
+                }
+                
+                cnt ++;
+                
                 if (cnt == rlist.length) {
                     break;
                 }

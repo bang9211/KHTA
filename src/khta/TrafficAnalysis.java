@@ -803,28 +803,28 @@ public class TrafficAnalysis extends javax.swing.JPanel {
     }
 
     private void evaluation() {
-        Section selectedSection = (Section)this.cbxSections.getSelectedItem();
-        System.out.println(selectedSection.getName());
-        Period p = new Period(new Date( ),null,Interval.I5MIN.getSecond());
-        selectedSection.loadData(p, null);
-        
-        EvaluationOption eo = new EvaluationOption();
-        eo.setStationData(cbxSpeed.isSelected(), cbxDensity.isSelected(), cbxTotalFlow.isSelected(),
-                cbxAverageLaneFlow.isSelected(), cbxAcceleration.isSelected());
-        eo.setTrafficFlowMeasurements(cbxVMT.isSelected(), cbxVMT1.isSelected(), cbxVMT2.isSelected(), 
-                cbxVMT3.isSelected(), cbxVMT4.isSelected(), cbxVMT5.isSelected(), cbxVMT6.isSelected(), 
-                cbxVMT7.isSelected(), Double.parseDouble(jTextField1.getText()), 
-                Double.parseDouble(jTextField2.getText()), Double.parseDouble(jTextField3.getText()));
-        
-        //for(){
-            
-        //}
-        if(eo.getSpeedCheck()){
-            StationSpeed ss = new StationSpeed(p, selectedSection);
-        }
-        if(eo.getDensityCheck()){
-            StationDensity sd = new StationDensity(p, selectedSection);
-        }
+//        Section selectedSection = (Section)this.cbxSections.getSelectedItem();
+//        System.out.println(selectedSection.getName());
+//        Period p = new Period(new Date( ),null,Interval.I5MIN.getSecond());
+//        selectedSection.loadData(p, null);
+//        
+//        EvaluationOption eo = new EvaluationOption();
+//        eo.setStationData(cbxSpeed.isSelected(), cbxDensity.isSelected(), cbxTotalFlow.isSelected(),
+//                cbxAverageLaneFlow.isSelected(), cbxAcceleration.isSelected());
+//        eo.setTrafficFlowMeasurements(cbxVMT.isSelected(), cbxVMT1.isSelected(), cbxVMT2.isSelected(), 
+//                cbxVMT3.isSelected(), cbxVMT4.isSelected(), cbxVMT5.isSelected(), cbxVMT6.isSelected(), 
+//                cbxVMT7.isSelected(), Double.parseDouble(jTextField1.getText()), 
+//                Double.parseDouble(jTextField2.getText()), Double.parseDouble(jTextField3.getText()));
+//        
+//        //for(){
+//            
+//        //}
+//        if(eo.getSpeedCheck()){
+//            StationSpeed ss = new StationSpeed(p, selectedSection);
+//        }
+//        if(eo.getDensityCheck()){
+//            StationDensity sd = new StationDensity(p, selectedSection);
+//        }
         
         new Timer().schedule(new TimerTask() {
 
