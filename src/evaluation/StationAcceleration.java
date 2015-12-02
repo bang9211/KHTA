@@ -5,10 +5,30 @@
  */
 package evaluation;
 
+import infra.Period;
+import infra.Section;
+import infra.infraobject.RNode;
+import infra.infraobject.Station;
+import infra.type.RnodeType;
+import java.util.ArrayList;
+
 /**
  *
  * @author HanYoungTak
  */
-public class StationAcceleration {
-    
+public class StationAcceleration extends BasicData{
+
+    public StationAcceleration(Period p, Section s, String op) {
+        super(p, s, op);
+    }
+
+    @Override
+    protected void init() {
+        name = "acceleration";
+    }
+
+    @Override
+    protected void setData() {
+       
+    }
 }

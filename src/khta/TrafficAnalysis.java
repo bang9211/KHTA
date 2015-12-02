@@ -18,12 +18,18 @@ package khta;
 
 import evaluation.EvaluationOption;
 import evaluation.Interval;
+import evaluation.StationAcceleration;
+import evaluation.StationAverageLaneFlow;
 import evaluation.StationDensity;
 import evaluation.StationSpeed;
+import evaluation.StationTotalFlow;
 import infra.Infra;
 import infra.Period;
 import infra.Section;
 import java.io.File;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -430,12 +436,6 @@ public class TrafficAnalysis extends javax.swing.JPanel {
         jLabel8.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel8.setText("Critical Density (veh/km)");
 
-        jTextField1.setText("jTextField1");
-
-        jTextField2.setText("jTextField2");
-
-        jTextField3.setText("jTextField3");
-
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -443,6 +443,10 @@ public class TrafficAnalysis extends javax.swing.JPanel {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(cbxVMT)
                     .addComponent(cbxVMT1)
                     .addComponent(cbxVMT2)
@@ -454,16 +458,12 @@ public class TrafficAnalysis extends javax.swing.JPanel {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(27, 27, 27)
-                        .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -537,78 +537,79 @@ public class TrafficAnalysis extends javax.swing.JPanel {
         });
 
         txOutputFolder.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        txOutputFolder.setText("D:\\");
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel2.setText("Output Folder");
+            jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+            jLabel2.setText("Output Folder");
 
-        browser.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        browser.setText("Browser");
-        browser.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                browserActionPerformed(evt);
-            }
-        });
+            browser.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+            browser.setText("Browser");
+            browser.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    browserActionPerformed(evt);
+                }
+            });
 
-        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-        jPanel7.setLayout(jPanel7Layout);
-        jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addComponent(txOutputFolder, javax.swing.GroupLayout.PREFERRED_SIZE, 432, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(browser))
-                    .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnExtraction, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txOutputFolder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+            jPanel7.setLayout(jPanel7Layout);
+            jPanel7Layout.setHorizontalGroup(
+                jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                    .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel7Layout.createSequentialGroup()
+                            .addComponent(txOutputFolder, javax.swing.GroupLayout.PREFERRED_SIZE, 432, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(browser))
-                        .addGap(0, 33, Short.MAX_VALUE))
-                    .addComponent(btnExtraction, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-        );
+                        .addComponent(jLabel2))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnExtraction, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap())
+            );
+            jPanel7Layout.setVerticalGroup(
+                jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel7Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel7Layout.createSequentialGroup()
+                            .addComponent(jLabel2)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(txOutputFolder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(browser))
+                            .addGap(0, 33, Short.MAX_VALUE))
+                        .addComponent(btnExtraction, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addContainerGap())
+            );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-    }// </editor-fold>//GEN-END:initComponents
+            javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+            this.setLayout(layout);
+            layout.setHorizontalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addContainerGap())
+            );
+            layout.setVerticalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap())
+            );
+        }// </editor-fold>//GEN-END:initComponents
 
     private void cbxTotalFlowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxTotalFlowActionPerformed
         // TODO add your handling code here:
@@ -803,36 +804,82 @@ public class TrafficAnalysis extends javax.swing.JPanel {
     }
 
     private void evaluation() {
-//        Section selectedSection = (Section)this.cbxSections.getSelectedItem();
-//        System.out.println(selectedSection.getName());
-//        Period p = new Period(new Date( ),null,Interval.I5MIN.getSecond());
-//        selectedSection.loadData(p, null);
-//        
-//        EvaluationOption eo = new EvaluationOption();
-//        eo.setStationData(cbxSpeed.isSelected(), cbxDensity.isSelected(), cbxTotalFlow.isSelected(),
-//                cbxAverageLaneFlow.isSelected(), cbxAcceleration.isSelected());
-//        eo.setTrafficFlowMeasurements(cbxVMT.isSelected(), cbxVMT1.isSelected(), cbxVMT2.isSelected(), 
-//                cbxVMT3.isSelected(), cbxVMT4.isSelected(), cbxVMT5.isSelected(), cbxVMT6.isSelected(), 
-//                cbxVMT7.isSelected(), Double.parseDouble(jTextField1.getText()), 
-//                Double.parseDouble(jTextField2.getText()), Double.parseDouble(jTextField3.getText()));
-//        
-//        //for(){
-//            
-//        //}
-//        if(eo.getSpeedCheck()){
-//            StationSpeed ss = new StationSpeed(p, selectedSection);
+        //섹션 읽기
+        Section selectedSection = (Section)this.cbxSections.getSelectedItem();
+        //시간 읽기
+//        nATSRLCalendar1.getSelectedDates();
+//        Interval selectedInterval;
+//        if(cbxInterval.getSelectedIndex() == 0){
+//            selectedInterval = Interval.I5MIN;
 //        }
-//        if(eo.getDensityCheck()){
-//            StationDensity sd = new StationDensity(p, selectedSection);
+//        else if(cbxInterval.getSelectedIndex() == 1){
+//            selectedInterval = Interval.I10MIN;
 //        }
+//        else if(cbxInterval.getSelectedIndex() == 2){
+//            selectedInterval = Interval.I15MIN;
+//        }
+//        else if(cbxInterval.getSelectedIndex() == 3){
+//            selectedInterval = Interval.I20MIN;
+//        }
+//        else if(cbxInterval.getSelectedIndex() == 4){
+//            selectedInterval = Interval.I30MIN;
+//        }
+//        else if(cbxInterval.getSelectedIndex() == 5){
+//            selectedInterval = Interval.I1HOUR;
+//        }
+        //임시 날짜설정
+        //**********************************************************************
+        String stime = "20151001063000";
+        String etime = "20151001073000";
+        DateFormat formatter = new SimpleDateFormat("yyyyMMddhhmmss");
+        Date sdate = null;
+        Date edate = null;
+        try {
+            sdate = formatter.parse(stime);
+            edate = formatter.parse(etime);
+        } catch (ParseException ex) {
+            
+        }
+        if(sdate == null || edate == null)
+            return;
+        System.out.println("Start Date : "+sdate.toString());
+        System.out.println("End Date : "+edate.toString());
+        Period p = new Period(sdate, edate, Interval.I5MIN.getSecond());
+        //**********************************************************************
         
-        new Timer().schedule(new TimerTask() {
-
-            @Override
-            public void run() {
-                test();
-            }
-        }, 10);
+        //해당하는 시간내 섹션의 데이터를 로드
+        selectedSection.loadData(p, null);
+        //경로 읽기
+        String prevPath = this.txOutputFolder.getText();
+        
+        //체크박스 읽기
+        EvaluationOption eo = new EvaluationOption();
+        eo.setStationData(cbxSpeed.isSelected(), cbxDensity.isSelected(), cbxTotalFlow.isSelected(),
+                cbxAverageLaneFlow.isSelected(), cbxAcceleration.isSelected());
+        if((jTextField1.getText().length() != 0) && 
+                (jTextField2.getText().length() != 0) && 
+                (jTextField3.getText().length() != 0)){
+            eo.setTrafficFlowMeasurements(cbxVMT.isSelected(), cbxVMT1.isSelected(), cbxVMT2.isSelected(), 
+                    cbxVMT3.isSelected(), cbxVMT4.isSelected(), cbxVMT5.isSelected(), cbxVMT6.isSelected(), 
+                    cbxVMT7.isSelected(), Double.parseDouble(jTextField1.getText()), 
+                    Double.parseDouble(jTextField2.getText()), Double.parseDouble(jTextField3.getText()));
+        }
+        //체크박스에 맞춰 evaluation.process 실행
+        if(eo.getSpeedCheck()){
+            StationSpeed ss = new StationSpeed(p, selectedSection, prevPath);
+        }
+        if(eo.getDensityCheck()){
+            StationDensity sd = new StationDensity(p, selectedSection, prevPath);
+        }
+        if(eo.getTotalFlowCheck()){
+            StationTotalFlow stf = new StationTotalFlow(p, selectedSection, prevPath);
+        }
+        if(eo.getAverageLaneFlowCheck()){
+            StationAverageLaneFlow salf = new StationAverageLaneFlow(p, selectedSection, prevPath);
+        }
+        if(eo.getAccelerationCheck()){
+            StationAcceleration sa = new StationAcceleration(p, selectedSection, prevPath);
+        }
     }
     
     private void test(){
