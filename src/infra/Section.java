@@ -25,6 +25,8 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import util.KHTAParam;
 import util.PropertiesWrapper;
@@ -99,6 +101,11 @@ public class Section implements Serializable{
         for(RNode s : section) {
             rlist[cnt] = new RNodeThread(s, period, dopt, sobj);
             rlist[cnt].start();
+            try {
+                rlist[cnt].join();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Section.class.getName()).log(Level.SEVERE, null, ex);
+            }
             cnt ++;
         }
         

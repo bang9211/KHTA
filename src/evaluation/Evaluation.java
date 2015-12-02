@@ -37,13 +37,13 @@ import jxl.write.WritableWorkbook;
 public abstract class Evaluation {
     
     protected Vector<EvaluationResult> results = new Vector<EvaluationResult>();
-    private String name="";
+    protected String name;
     
     protected abstract void init();
     
     protected abstract void process();
     
-    private boolean checkExcelDataLength() {
+    protected boolean checkExcelDataLength() {
 
         int maxColumn = 256;
         int maxRow = 65536;
@@ -75,10 +75,11 @@ public abstract class Evaluation {
     
     /**
      * Save to excel file
+     * @param outputpath
      * @throws Exception 
      */
     public void saveExcel(String outputpath) throws Exception {
-        String workbookFile = getFileName(outputpath, null, "xls");
+        String workbookFile = getFileName(outputpath, name, "xls");
         //System.out.println("Save to Excel : " + workbookFile);
 
         if (!checkExcelDataLength()) {
@@ -123,7 +124,7 @@ public abstract class Evaluation {
                 }
             }
         }
-
+        System.out.println("END WRITE");
         workbook.write();
         workbook.close();
 

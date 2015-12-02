@@ -5,10 +5,36 @@
  */
 package evaluation;
 
+import infra.Period;
+import infra.Section;
+import infra.infraobject.RNode;
+
 /**
  *
  * @author HanYoungTak
  */
-public class StationTotalFlow {
-    
+public class StationTotalFlow extends Evaluation{
+    private Period period;
+    private Section section;
+    private String outputPath;
+
+    public StationTotalFlow(Period p, Section s, String op) {
+        this.period = p;
+        this.section = s;
+        this.outputPath = op;
+    }
+
+    @Override
+    protected void init() {
+
+    }
+
+    @Override
+    //make excel
+    protected void process() {
+        for (RNode r : section.getRNodes()) {
+            //evaluationResult
+
+        }
+    }
 }

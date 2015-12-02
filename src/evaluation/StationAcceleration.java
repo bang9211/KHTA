@@ -5,10 +5,35 @@
  */
 package evaluation;
 
+import infra.Period;
+import infra.Section;
+import infra.infraobject.RNode;
+
 /**
  *
  * @author HanYoungTak
  */
-public class StationAcceleration {
-    
+public class StationAcceleration extends Evaluation{
+    private Period period;
+    private Section section;
+    private String outputPath;
+
+    public StationAcceleration(Period p, Section s, String op) {
+        this.period = p;
+        this.section = s;
+    }
+
+    @Override
+    protected void init() {
+
+    }
+
+    @Override
+    //make excel
+    protected void process() {
+        for (RNode r : section.getRNodes()) {
+            //evaluationResult
+
+        }
+    }
 }
