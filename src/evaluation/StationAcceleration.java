@@ -8,32 +8,27 @@ package evaluation;
 import infra.Period;
 import infra.Section;
 import infra.infraobject.RNode;
+import infra.infraobject.Station;
+import infra.type.RnodeType;
+import java.util.ArrayList;
 
 /**
  *
  * @author HanYoungTak
  */
-public class StationAcceleration extends Evaluation{
-    private Period period;
-    private Section section;
-    private String outputPath;
+public class StationAcceleration extends BasicData{
 
     public StationAcceleration(Period p, Section s, String op) {
-        this.period = p;
-        this.section = s;
+        super(p, s, op);
     }
 
     @Override
     protected void init() {
-
+        name = "acceleration";
     }
 
     @Override
-    //make excel
-    protected void process() {
-        for (RNode r : section.getRNodes()) {
-            //evaluationResult
-
-        }
+    protected void setData() {
+       
     }
 }
