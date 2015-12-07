@@ -109,7 +109,7 @@ public class DetectorDataReader extends DataFetcher{
      */
     private void loadDatafromDB(String tableName, Vector<Double> data) throws Exception{
 //        System.out.println(detector.getIDforDB());
-        String sql = "SELECT * FROM korex."+tableName+"  use index(sid_date) where "
+        String sql = "SELECT * FROM korex."+tableName+" where "
                 + STATION_ID+"='"+detector.getIDforDB()+"' and "
                 + S_DATE+" > '"+period.getStartDateString()+"' and "
                 + S_DATE+" <= '"+period.getEndDateString()+"' and "

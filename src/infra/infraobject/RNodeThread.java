@@ -20,6 +20,12 @@ public class RNodeThread extends Thread{
     private SimObjects sobj = null;
     private boolean isLoaded = false;
     
+    public static interface Callback{
+        public void IsLoaded(RNode r);
+    }
+    
+    private Callback mcallback;
+    
     public RNodeThread(RNode r, Period period, DataLoadOption dopt, SimObjects sobj){
         rnode = r;
         p = period;
@@ -30,6 +36,8 @@ public class RNodeThread extends Thread{
     @Override
     public void run(){
         rnode.loadData(p, dopt,sobj);
+        isLoaded = true;
+        mcallback.IsLoaded(rnode);
     }
     
     public boolean isLoaded(){
@@ -38,5 +46,9 @@ public class RNodeThread extends Thread{
     
     public RNode getRNode(){
         return rnode;
+    }
+    
+    public void setCallback(Callback msg){
+        mcallback = msg;
     }
 }
