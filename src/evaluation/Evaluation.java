@@ -16,7 +16,6 @@
  */
 package evaluation;
 
-import infra.infraobject.Station;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;

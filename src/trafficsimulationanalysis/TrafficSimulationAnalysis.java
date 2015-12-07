@@ -18,26 +18,13 @@ package trafficsimulationanalysis;
 
 import infra.Infra;
 import infra.infraobject.*;
-import java.util.ArrayList;
-import java.util.Random;
-import infra.InfraDatas;
-import infra.Section;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 import khta.KHTAFrame;
 import khta.KHTALoading;
-import khta.SectionCreation;
-import util.DataFetcher;
 import util.InfraDataFetcher;
-import util.KHTAParam;
 /**
  *
  * @author soobin Jeon <j.soobin@gmail.com>, chungsan Lee <dj.zlee@gmail.com>,

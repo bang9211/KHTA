@@ -30,6 +30,9 @@ import java.io.File;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -641,6 +644,14 @@ public class TrafficAnalysis extends javax.swing.JPanel {
 
     private void cbxDurationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxDurationActionPerformed
 //        selectDuration();
+        if(cbxDuration.getSelectedIndex() != 0){
+            cbxEndHour.setEnabled(false);
+            cbxEndMin.setEnabled(false);
+        }
+        else{
+            cbxEndHour.setEnabled(true);
+            cbxEndMin.setEnabled(true);
+        }
     }//GEN-LAST:event_cbxDurationActionPerformed
 
     private void cbxSectionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxSectionsActionPerformed
@@ -806,81 +817,117 @@ public class TrafficAnalysis extends javax.swing.JPanel {
     private void evaluation() {
         //섹션 읽기
         Section selectedSection = (Section)this.cbxSections.getSelectedItem();
-        //시간 읽기
-//        nATSRLCalendar1.getSelectedDates();
-//        Interval selectedInterval;
-//        if(cbxInterval.getSelectedIndex() == 0){
-//            selectedInterval = Interval.I5MIN;
-//        }
-//        else if(cbxInterval.getSelectedIndex() == 1){
-//            selectedInterval = Interval.I10MIN;
-//        }
-//        else if(cbxInterval.getSelectedIndex() == 2){
-//            selectedInterval = Interval.I15MIN;
-//        }
-//        else if(cbxInterval.getSelectedIndex() == 3){
-//            selectedInterval = Interval.I20MIN;
-//        }
-//        else if(cbxInterval.getSelectedIndex() == 4){
-//            selectedInterval = Interval.I30MIN;
-//        }
-//        else if(cbxInterval.getSelectedIndex() == 5){
-//            selectedInterval = Interval.I1HOUR;
-//        }
-        //임시 날짜설정
-        //**********************************************************************
-        String stime = "20151001063000";
-        String etime = "20151001073000";
+        
+        //달력 읽기
+        ArrayList<Calendar> selectedCalendar = new ArrayList();
+        
+        //선택한 날짜들 정렬하기
+        Collections.addAll(selectedCalendar, nATSRLCalendar1.getSelectedDates());
+        Collections.sort(selectedCalendar, (Calendar o1, Calendar o2) -> 
+                Long.compare(o1.getTimeInMillis(), o2.getTimeInMillis()));
+               
+        //interval 읽기
+        Interval selectedInterval = null;
+        if(cbxInterval.getSelectedIndex() == 0){
+            selectedInterval = Interval.I5MIN;
+        }
+        else if(cbxInterval.getSelectedIndex() == 1){
+            selectedInterval = Interval.I10MIN;
+        }
+        else if(cbxInterval.getSelectedIndex() == 2){
+            selectedInterval = Interval.I15MIN;
+        }
+        else if(cbxInterval.getSelectedIndex() == 3){
+            selectedInterval = Interval.I20MIN;
+        }
+        else if(cbxInterval.getSelectedIndex() == 4){
+            selectedInterval = Interval.I30MIN;
+        }
+        else if(cbxInterval.getSelectedIndex() == 5){
+            selectedInterval = Interval.I1HOUR;
+        }
+        
+        //시작 시간, 끝 시간 읽기
+        int shour = cbxStartHour.getSelectedIndex();
+        int smin = cbxStartMin.getSelectedIndex();
+        int ehour = -1;
+        int emin = -1;
+        if(cbxEndHour.isEnabled()){
+            ehour = cbxEndHour.getSelectedIndex();
+            emin = cbxEndMin.getSelectedIndex();
+        }
+        else{
+            int duration = cbxDuration.getSelectedIndex();
+        }
+        
+        //정렬된 dList를 이용하여 연결되지 않은 날짜 분리하여 sdate, edate 설정하기
+        ArrayList<Period> periods = new ArrayList();
         DateFormat formatter = new SimpleDateFormat("yyyyMMddhhmmss");
         Date sdate = null;
         Date edate = null;
-        try {
-            sdate = formatter.parse(stime);
-            edate = formatter.parse(etime);
-        } catch (ParseException ex) {
+        String stime = "";
+        String etime = "";
+        for(Calendar c : selectedCalendar){
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH) + 1;
+            int day = c.get(Calendar.DATE);
+
+            stime = String.format("%4d%02d%02d%02d%02d%02d", year, month, day, shour, smin, 0);
+            etime = String.format("%4d%02d%02d%02d%02d%02d", year, month, day, ehour, emin, 0);
+
+            System.out.println(stime);
+            System.out.println(etime);
             
-        }
-        if(sdate == null || edate == null)
-            return;
-        System.out.println("Start Date : "+sdate.toString());
-        System.out.println("End Date : "+edate.toString());
-        Period p = new Period(sdate, edate, Interval.I5MIN.getSecond());
-        //**********************************************************************
-        
-        //해당하는 시간내 섹션의 데이터를 로드
-        selectedSection.loadData(p, null);
-        //경로 읽기
-        String prevPath = this.txOutputFolder.getText();
-        
-        //체크박스 읽기
-        EvaluationOption eo = new EvaluationOption();
-        eo.setStationData(cbxSpeed.isSelected(), cbxDensity.isSelected(), cbxTotalFlow.isSelected(),
-                cbxAverageLaneFlow.isSelected(), cbxAcceleration.isSelected());
-        if((jTextField1.getText().length() != 0) && 
-                (jTextField2.getText().length() != 0) && 
-                (jTextField3.getText().length() != 0)){
-            eo.setTrafficFlowMeasurements(cbxVMT.isSelected(), cbxVMT1.isSelected(), cbxVMT2.isSelected(), 
-                    cbxVMT3.isSelected(), cbxVMT4.isSelected(), cbxVMT5.isSelected(), cbxVMT6.isSelected(), 
-                    cbxVMT7.isSelected(), Double.parseDouble(jTextField1.getText()), 
-                    Double.parseDouble(jTextField2.getText()), Double.parseDouble(jTextField3.getText()));
-        }
-        //체크박스에 맞춰 evaluation.process 실행
-        if(eo.getSpeedCheck()){
-            StationSpeed ss = new StationSpeed(p, selectedSection, prevPath);
-        }
-        if(eo.getDensityCheck()){
-            StationDensity sd = new StationDensity(p, selectedSection, prevPath);
-        }
-        if(eo.getTotalFlowCheck()){
-            StationTotalFlow stf = new StationTotalFlow(p, selectedSection, prevPath);
-        }
-        if(eo.getAverageLaneFlowCheck()){
-            StationAverageLaneFlow salf = new StationAverageLaneFlow(p, selectedSection, prevPath);
-        }
-        if(eo.getAccelerationCheck()){
-            StationAcceleration sa = new StationAcceleration(p, selectedSection, prevPath);
+            try {
+                sdate = formatter.parse(stime);
+                edate = formatter.parse(etime);
+            } catch (ParseException ex) {
+
+            }
+            if(sdate == null || edate == null)
+                return;
+            System.out.println("Start Date : "+sdate.toString());
+            System.out.println("End Date : "+edate.toString());
+
+            periods.add(new Period(sdate, edate, selectedInterval.getSecond()));
         }
         
+        for(Period p : periods)
+        {
+            //해당하는 시간내 섹션의 데이터를 로드
+            selectedSection.loadData(p, null);
+            //경로 읽기
+            String prevPath = this.txOutputFolder.getText();
+
+            //체크박스 읽기
+            EvaluationOption eo = new EvaluationOption();
+            eo.setStationData(cbxSpeed.isSelected(), cbxDensity.isSelected(), cbxTotalFlow.isSelected(),
+                    cbxAverageLaneFlow.isSelected(), cbxAcceleration.isSelected());
+            if((jTextField1.getText().length() != 0) && 
+                    (jTextField2.getText().length() != 0) && 
+                    (jTextField3.getText().length() != 0)){
+                eo.setTrafficFlowMeasurements(cbxVMT.isSelected(), cbxVMT1.isSelected(), cbxVMT2.isSelected(), 
+                        cbxVMT3.isSelected(), cbxVMT4.isSelected(), cbxVMT5.isSelected(), cbxVMT6.isSelected(), 
+                        cbxVMT7.isSelected(), Double.parseDouble(jTextField1.getText()), 
+                        Double.parseDouble(jTextField2.getText()), Double.parseDouble(jTextField3.getText()));
+            }
+            //체크박스에 맞춰 evaluation.process 실행
+            if(eo.getSpeedCheck()){
+                StationSpeed ss = new StationSpeed(p, selectedSection, prevPath);
+            }
+            if(eo.getDensityCheck()){
+                StationDensity sd = new StationDensity(p, selectedSection, prevPath);
+            }
+            if(eo.getTotalFlowCheck()){
+                StationTotalFlow stf = new StationTotalFlow(p, selectedSection, prevPath);
+            }
+            if(eo.getAverageLaneFlowCheck()){
+                StationAverageLaneFlow salf = new StationAverageLaneFlow(p, selectedSection, prevPath);
+            }
+            if(eo.getAccelerationCheck()){
+                StationAcceleration sa = new StationAcceleration(p, selectedSection, prevPath);
+            }
+        }
     }
     
     private void test(){

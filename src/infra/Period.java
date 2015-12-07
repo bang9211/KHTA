@@ -247,4 +247,6 @@ public class Period implements Serializable {
 //        System.out.println("aftertime : "+dateformatter.format(c.getTime()));
         this.setTimes(startDate, c.getTime());
     }
+    
+    
 }
