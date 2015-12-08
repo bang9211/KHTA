@@ -16,6 +16,7 @@
  */
 package khta;
 
+import evaluation.BasicData;
 import evaluation.EvaluationOption;
 import evaluation.Interval;
 import evaluation.StationAcceleration;
@@ -124,9 +125,9 @@ public class TrafficAnalysis extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         browser = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jCheckBox2 = new javax.swing.JCheckBox();
-        jCheckBox3 = new javax.swing.JCheckBox();
+        cbxExcel = new javax.swing.JCheckBox();
+        cbxCSV = new javax.swing.JCheckBox();
+        cbxContour = new javax.swing.JCheckBox();
 
         setName("Traffic Analysis"); // NOI18N
         addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -567,11 +568,12 @@ public class TrafficAnalysis extends javax.swing.JPanel {
             jLabel9.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
             jLabel9.setText("Output Format");
 
-            jCheckBox1.setText("Excel");
+            cbxExcel.setSelected(true);
+            cbxExcel.setText("Excel");
 
-            jCheckBox2.setText("CSV");
+            cbxCSV.setText("CSV");
 
-            jCheckBox3.setText("Contour");
+            cbxContour.setText("Contour");
 
             javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
             jPanel7.setLayout(jPanel7Layout);
@@ -586,11 +588,11 @@ public class TrafficAnalysis extends javax.swing.JPanel {
                         .addComponent(jLabel2)
                         .addComponent(jLabel9)
                         .addGroup(jPanel7Layout.createSequentialGroup()
-                            .addComponent(jCheckBox1)
+                            .addComponent(cbxExcel)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jCheckBox2)
+                            .addComponent(cbxCSV)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jCheckBox3)))
+                            .addComponent(cbxContour)))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnExtraction, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap())
@@ -607,9 +609,9 @@ public class TrafficAnalysis extends javax.swing.JPanel {
                             .addComponent(jLabel9)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jCheckBox1)
-                                .addComponent(jCheckBox2)
-                                .addComponent(jCheckBox3))
+                                .addComponent(cbxExcel)
+                                .addComponent(cbxCSV)
+                                .addComponent(cbxContour))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jLabel2)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -757,10 +759,13 @@ public class TrafficAnalysis extends javax.swing.JPanel {
     private javax.swing.JButton btnExtraction;
     private javax.swing.JCheckBox cbxAcceleration;
     private javax.swing.JCheckBox cbxAverageLaneFlow;
+    private javax.swing.JCheckBox cbxCSV;
+    private javax.swing.JCheckBox cbxContour;
     private javax.swing.JCheckBox cbxDensity;
     private javax.swing.JComboBox cbxDuration;
     private javax.swing.JComboBox cbxEndHour;
     private javax.swing.JComboBox cbxEndMin;
+    private javax.swing.JCheckBox cbxExcel;
     private javax.swing.JComboBox cbxInterval;
     private javax.swing.JComboBox cbxSections;
     private javax.swing.JCheckBox cbxSpeed;
@@ -775,9 +780,6 @@ public class TrafficAnalysis extends javax.swing.JPanel {
     private javax.swing.JCheckBox cbxVMT5;
     private javax.swing.JCheckBox cbxVMT6;
     private javax.swing.JCheckBox cbxVMT7;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox2;
-    private javax.swing.JCheckBox jCheckBox3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
@@ -876,6 +878,7 @@ public class TrafficAnalysis extends javax.swing.JPanel {
         ArrayList<Period> periods;
         Section selectedSection;
         String outputPath;
+        ArrayList<BasicData> basicDataSet;
         
         public EvaluateTask(KHTAOption ko, EvaluationOption eo, RunningDialog rd){
             this.ko = ko;
@@ -884,6 +887,7 @@ public class TrafficAnalysis extends javax.swing.JPanel {
             periods = ko.getPeriods();
             selectedSection = ko.getSelectedSection();
             outputPath = ko.getOutputPath();
+            basicDataSet = new ArrayList<>();
             rd.showLog();
         }
         
@@ -897,21 +901,30 @@ public class TrafficAnalysis extends javax.swing.JPanel {
                 
                 //체크박스에 맞춰 evaluation.process 실행
                 if(eo.getSpeedCheck()){
-                    StationSpeed ss = new StationSpeed(p, selectedSection, outputPath);
+                    //StationSpeed ss = new StationSpeed(p, selectedSection, outputPath);
+                    basicDataSet.add(new StationSpeed(p, selectedSection, outputPath));
                 }
                 if(eo.getDensityCheck()){
-                    StationDensity sd = new StationDensity(p, selectedSection, outputPath);
+                    //StationDensity sd = new StationDensity(p, selectedSection, outputPath);
+                    basicDataSet.add(new StationDensity(p, selectedSection, outputPath));
                 }
                 if(eo.getTotalFlowCheck()){
-                    StationTotalFlow stf = new StationTotalFlow(p, selectedSection, outputPath);
+                    //StationTotalFlow stf = new StationTotalFlow(p, selectedSection, outputPath);
+                    basicDataSet.add(new StationTotalFlow(p, selectedSection, outputPath));
                 }
                 if(eo.getAverageLaneFlowCheck()){
-                    StationAverageLaneFlow salf = new StationAverageLaneFlow(p, selectedSection, outputPath);
+                    //StationAverageLaneFlow salf = new StationAverageLaneFlow(p, selectedSection, outputPath);
+                    basicDataSet.add(new StationAverageLaneFlow(p, selectedSection, outputPath));
                 }
                 if(eo.getAccelerationCheck()){
-                    StationAcceleration sa = new StationAcceleration(p, selectedSection, outputPath);
+                    //StationAcceleration sa = new StationAcceleration(p, selectedSection, outputPath);
+                    basicDataSet.add(new StationAcceleration(p, selectedSection, outputPath));
                 }
             }
+            for(BasicData bd : basicDataSet){
+                    bd.process();
+            }
+            
             // close RunningDialog after 1.8 seconds
             rd.close(1.8);
             
@@ -926,8 +939,11 @@ public class TrafficAnalysis extends javax.swing.JPanel {
             }
         }
         
+        private void runEvaluate(){
+            
+        }
     }
-    
+        
     private KHTAOption getOption(){
         
         //섹션 읽기
@@ -990,7 +1006,7 @@ public class TrafficAnalysis extends javax.swing.JPanel {
         
         //정렬된 dList를 이용하여 연결되지 않은 날짜 분리하여 sdate, edate 설정하기
         ArrayList<Period> periods = new ArrayList();
-        DateFormat formatter = new SimpleDateFormat("yyyyMMddhhmmss");
+        DateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
         Date sdate = null;
         Date edate = null;
         String stime;
@@ -1022,7 +1038,8 @@ public class TrafficAnalysis extends javax.swing.JPanel {
         //경로 읽기
         String outputPath = this.txOutputFolder.getText();
         
-        return new KHTAOption(selectedSection, periods, selectedInterval, outputPath);
+        return new KHTAOption(selectedSection, periods, selectedInterval, outputPath, 
+                cbxExcel.isSelected(), cbxCSV.isSelected(), cbxContour.isSelected());
     } 
     
     private EvaluationOption getEvaluationOption(){
@@ -1047,10 +1064,4 @@ public class TrafficAnalysis extends javax.swing.JPanel {
         return eo;
     }
     
-    private void test(){
-        khtaTest kt = new khtaTest();
-        
-        Section s = (Section)this.cbxSections.getSelectedItem();
-        kt.test(s);
-    }
 }

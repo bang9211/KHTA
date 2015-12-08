@@ -8,9 +8,6 @@ package evaluation;
 import infra.Period;
 import infra.Section;
 import infra.infraobject.RNode;
-import infra.infraobject.Station;
-import infra.type.RnodeType;
-import java.util.ArrayList;
 
 /**
  *
@@ -28,7 +25,7 @@ public class StationAcceleration extends BasicData{
     }
 
     @Override
-    protected void setData() {
-       
+    protected void addStationDataSet(RNode r) {
+        
     }
 }

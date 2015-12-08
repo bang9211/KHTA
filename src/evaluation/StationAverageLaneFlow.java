@@ -8,9 +8,6 @@ package evaluation;
 import infra.Period;
 import infra.Section;
 import infra.infraobject.RNode;
-import infra.infraobject.Station;
-import infra.type.RnodeType;
-import java.util.ArrayList;
 
 /**
  *
@@ -28,22 +25,9 @@ public class StationAverageLaneFlow extends BasicData{
     }
 
     @Override
-    protected void setData() {
-        //해당 데이터를 results에 저장
-        for (RNode r : section.getRNodes()) {
-            if(r.getNodeType() == RnodeType.STATION){
-                Station s = (Station)r;
-                //매 스테이션마다 데이터의 헤더를 추가해야함
-                data = new ArrayList();
-                data.add("");
-                data.add(s.getName());
-                data.add(100);
-                data.add(s.getLocation());
-                for(double speedData : r.getAverageLaneFlow()){
-                    data.add(speedData);
-                }
-                erData.add(data);
-            }
+    protected void addStationDataSet(RNode r) {
+        for(double d : r.getAverageLaneFlow()){
+            data.add(d);
         }
     }
 }

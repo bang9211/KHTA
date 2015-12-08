@@ -20,13 +20,20 @@ public class KHTAOption {
     private ArrayList<Period>  periods;
     private Interval selectedInterval;
     private String outputPath;
+    private boolean excelCheck;
+    private boolean csvCheck;
+    private boolean contourCheck;
     
     public KHTAOption(Section selectedSection, ArrayList<Period> periods,
-            Interval selectedInterval, String outputPath){
+            Interval selectedInterval, String outputPath, 
+            boolean excelCheck, boolean csvCheck, boolean contourCheck){
         this.selectedSection = selectedSection;
         this.periods = periods;
         this.selectedInterval = selectedInterval;
         this.outputPath = outputPath;
+        this.excelCheck = excelCheck;
+        this.csvCheck = csvCheck;
+        this.contourCheck = contourCheck;
     }
     
     public Section getSelectedSection(){
@@ -45,4 +52,15 @@ public class KHTAOption {
         return outputPath;
     }
     
+    public boolean getExcelCheck(){
+        return excelCheck;
+    }
+    
+    public boolean getCSVCheck(){
+        return csvCheck;
+    }
+    
+    public boolean getContourCheck(){
+        return contourCheck;
+    }
 }
