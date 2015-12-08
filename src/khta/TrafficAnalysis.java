@@ -26,17 +26,24 @@ import evaluation.StationTotalFlow;
 import infra.Infra;
 import infra.Period;
 import infra.Section;
+import java.awt.Desktop;
+import java.awt.Frame;
 import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -116,6 +123,10 @@ public class TrafficAnalysis extends javax.swing.JPanel {
         txOutputFolder = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         browser = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
+        jCheckBox1 = new javax.swing.JCheckBox();
+        jCheckBox2 = new javax.swing.JCheckBox();
+        jCheckBox3 = new javax.swing.JCheckBox();
 
         setName("Traffic Analysis"); // NOI18N
         addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -522,7 +533,7 @@ public class TrafficAnalysis extends javax.swing.JPanel {
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 875, Short.MAX_VALUE)
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -553,6 +564,15 @@ public class TrafficAnalysis extends javax.swing.JPanel {
                 }
             });
 
+            jLabel9.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+            jLabel9.setText("Output Format");
+
+            jCheckBox1.setText("Excel");
+
+            jCheckBox2.setText("CSV");
+
+            jCheckBox3.setText("Contour");
+
             javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
             jPanel7.setLayout(jPanel7Layout);
             jPanel7Layout.setHorizontalGroup(
@@ -563,7 +583,14 @@ public class TrafficAnalysis extends javax.swing.JPanel {
                             .addComponent(txOutputFolder, javax.swing.GroupLayout.PREFERRED_SIZE, 432, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(browser))
-                        .addComponent(jLabel2))
+                        .addComponent(jLabel2)
+                        .addComponent(jLabel9)
+                        .addGroup(jPanel7Layout.createSequentialGroup()
+                            .addComponent(jCheckBox1)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jCheckBox2)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jCheckBox3)))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnExtraction, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap())
@@ -574,14 +601,21 @@ public class TrafficAnalysis extends javax.swing.JPanel {
                     .addContainerGap()
                     .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel7Layout.createSequentialGroup()
+                            .addComponent(btnExtraction, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE)
+                            .addContainerGap())
+                        .addGroup(jPanel7Layout.createSequentialGroup()
+                            .addComponent(jLabel9)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jCheckBox1)
+                                .addComponent(jCheckBox2)
+                                .addComponent(jCheckBox3))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jLabel2)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(txOutputFolder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(browser))
-                            .addGap(0, 33, Short.MAX_VALUE))
-                        .addComponent(btnExtraction, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addContainerGap())
+                                .addComponent(browser)))))
             );
 
             javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -741,6 +775,9 @@ public class TrafficAnalysis extends javax.swing.JPanel {
     private javax.swing.JCheckBox cbxVMT5;
     private javax.swing.JCheckBox cbxVMT6;
     private javax.swing.JCheckBox cbxVMT7;
+    private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JCheckBox jCheckBox2;
+    private javax.swing.JCheckBox jCheckBox3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
@@ -754,6 +791,7 @@ public class TrafficAnalysis extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -815,6 +853,83 @@ public class TrafficAnalysis extends javax.swing.JPanel {
     }
 
     private void evaluation() {
+        
+        KHTAOption ko = getOption();
+        EvaluationOption eo = getEvaluationOption();
+        if((ko != null) && (eo != null))
+        {
+            // open RunningDialog
+            RunningDialog rd = new RunningDialog((Frame) this.getTopLevelAncestor(), true);
+            rd.setLocationRelativeTo(this);
+            Timer t = new Timer();
+            t.schedule(new EvaluateTask(ko, eo, rd), 10);
+            rd.setTimer(t);
+            rd.setVisible(true);  
+        }
+    }
+    
+    class EvaluateTask extends TimerTask{
+
+        KHTAOption ko;
+        EvaluationOption eo;
+        RunningDialog rd;
+        ArrayList<Period> periods;
+        Section selectedSection;
+        String outputPath;
+        
+        public EvaluateTask(KHTAOption ko, EvaluationOption eo, RunningDialog rd){
+            this.ko = ko;
+            this.eo = eo;
+            this.rd = rd;
+            periods = ko.getPeriods();
+            selectedSection = ko.getSelectedSection();
+            outputPath = ko.getOutputPath();
+            rd.showLog();
+        }
+        
+        @Override
+        public void run() {
+            //모든 process 실행
+            for(Period p : periods)
+            {
+                //해당하는 시간내 섹션의 데이터를 로드
+                selectedSection.loadData(p, null);
+                
+                //체크박스에 맞춰 evaluation.process 실행
+                if(eo.getSpeedCheck()){
+                    StationSpeed ss = new StationSpeed(p, selectedSection, outputPath);
+                }
+                if(eo.getDensityCheck()){
+                    StationDensity sd = new StationDensity(p, selectedSection, outputPath);
+                }
+                if(eo.getTotalFlowCheck()){
+                    StationTotalFlow stf = new StationTotalFlow(p, selectedSection, outputPath);
+                }
+                if(eo.getAverageLaneFlowCheck()){
+                    StationAverageLaneFlow salf = new StationAverageLaneFlow(p, selectedSection, outputPath);
+                }
+                if(eo.getAccelerationCheck()){
+                    StationAcceleration sa = new StationAcceleration(p, selectedSection, outputPath);
+                }
+            }
+            // close RunningDialog after 1.8 seconds
+            rd.close(1.8);
+            
+            // open output folder
+            Desktop desktop = Desktop.getDesktop();
+            try {
+                desktop.open(new File(outputPath));
+                // if error, open log file
+                //if(hasError) desktop.open(new File("log.txt"));
+            } catch (IOException ex) {
+                Logger.getLogger(TrafficAnalysis.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+    }
+    
+    private KHTAOption getOption(){
+        
         //섹션 읽기
         Section selectedSection = (Section)this.cbxSections.getSelectedItem();
         
@@ -823,9 +938,19 @@ public class TrafficAnalysis extends javax.swing.JPanel {
         
         //선택한 날짜들 정렬하기
         Collections.addAll(selectedCalendar, nATSRLCalendar1.getSelectedDates());
-        Collections.sort(selectedCalendar, (Calendar o1, Calendar o2) -> 
-                Long.compare(o1.getTimeInMillis(), o2.getTimeInMillis()));
-               
+        
+        if(selectedCalendar.isEmpty()){
+            JOptionPane.showMessageDialog(this, "Check KHTA options");
+            return null;
+        }
+        
+        Collections.sort(selectedCalendar, new Comparator<Calendar>(){
+            @Override
+            public int compare(Calendar o1, Calendar o2) {
+                return Long.compare(o1.getTimeInMillis(), o2.getTimeInMillis());
+            }
+        });
+        
         //interval 읽기
         Interval selectedInterval = null;
         if(cbxInterval.getSelectedIndex() == 0){
@@ -850,14 +975,16 @@ public class TrafficAnalysis extends javax.swing.JPanel {
         //시작 시간, 끝 시간 읽기
         int shour = cbxStartHour.getSelectedIndex();
         int smin = cbxStartMin.getSelectedIndex();
-        int ehour = -1;
-        int emin = -1;
+        int ehour;
+        int emin;
         if(cbxEndHour.isEnabled()){
             ehour = cbxEndHour.getSelectedIndex();
             emin = cbxEndMin.getSelectedIndex();
         }
         else{
             int duration = cbxDuration.getSelectedIndex();
+            ehour = smin + duration;
+            emin = smin;
         }
         
         //정렬된 dList를 이용하여 연결되지 않은 날짜 분리하여 sdate, edate 설정하기
@@ -865,8 +992,8 @@ public class TrafficAnalysis extends javax.swing.JPanel {
         DateFormat formatter = new SimpleDateFormat("yyyyMMddhhmmss");
         Date sdate = null;
         Date edate = null;
-        String stime = "";
-        String etime = "";
+        String stime;
+        String etime;
         for(Calendar c : selectedCalendar){
             int year = c.get(Calendar.YEAR);
             int month = c.get(Calendar.MONTH) + 1;
@@ -884,50 +1011,39 @@ public class TrafficAnalysis extends javax.swing.JPanel {
             } catch (ParseException ex) {
 
             }
-            if(sdate == null || edate == null)
-                return;
+            
             System.out.println("Start Date : "+sdate.toString());
             System.out.println("End Date : "+edate.toString());
 
             periods.add(new Period(sdate, edate, selectedInterval.getSecond()));
         }
         
-        for(Period p : periods)
-        {
-            //해당하는 시간내 섹션의 데이터를 로드
-            selectedSection.loadData(p, null);
-            //경로 읽기
-            String prevPath = this.txOutputFolder.getText();
-
-            //체크박스 읽기
-            EvaluationOption eo = new EvaluationOption();
-            eo.setStationData(cbxSpeed.isSelected(), cbxDensity.isSelected(), cbxTotalFlow.isSelected(),
-                    cbxAverageLaneFlow.isSelected(), cbxAcceleration.isSelected());
-            if((jTextField1.getText().length() != 0) && 
-                    (jTextField2.getText().length() != 0) && 
-                    (jTextField3.getText().length() != 0)){
-                eo.setTrafficFlowMeasurements(cbxVMT.isSelected(), cbxVMT1.isSelected(), cbxVMT2.isSelected(), 
-                        cbxVMT3.isSelected(), cbxVMT4.isSelected(), cbxVMT5.isSelected(), cbxVMT6.isSelected(), 
-                        cbxVMT7.isSelected(), Double.parseDouble(jTextField1.getText()), 
-                        Double.parseDouble(jTextField2.getText()), Double.parseDouble(jTextField3.getText()));
-            }
-            //체크박스에 맞춰 evaluation.process 실행
-            if(eo.getSpeedCheck()){
-                StationSpeed ss = new StationSpeed(p, selectedSection, prevPath);
-            }
-            if(eo.getDensityCheck()){
-                StationDensity sd = new StationDensity(p, selectedSection, prevPath);
-            }
-            if(eo.getTotalFlowCheck()){
-                StationTotalFlow stf = new StationTotalFlow(p, selectedSection, prevPath);
-            }
-            if(eo.getAverageLaneFlowCheck()){
-                StationAverageLaneFlow salf = new StationAverageLaneFlow(p, selectedSection, prevPath);
-            }
-            if(eo.getAccelerationCheck()){
-                StationAcceleration sa = new StationAcceleration(p, selectedSection, prevPath);
-            }
+        //경로 읽기
+        String outputPath = this.txOutputFolder.getText();
+        
+        return new KHTAOption(selectedSection, periods, selectedInterval, outputPath);
+    } 
+    
+    private EvaluationOption getEvaluationOption(){
+        EvaluationOption eo = new EvaluationOption();
+        
+        eo.setStationData(cbxSpeed.isSelected(), cbxDensity.isSelected(), cbxTotalFlow.isSelected(),
+                cbxAverageLaneFlow.isSelected(), cbxAcceleration.isSelected());
+        
+        if((jTextField1.getText().length() != 0) && (jTextField2.getText().length() != 0) && 
+                (jTextField3.getText().length() != 0)){
+            eo.setTrafficFlowMeasurements(cbxVMT.isSelected(), cbxVMT1.isSelected(), cbxVMT2.isSelected(), 
+            cbxVMT3.isSelected(), cbxVMT4.isSelected(), cbxVMT5.isSelected(), cbxVMT6.isSelected(), 
+            cbxVMT7.isSelected(), Double.parseDouble(jTextField1.getText()), 
+            Double.parseDouble(jTextField2.getText()), Double.parseDouble(jTextField3.getText()));
         }
+        
+        if (eo.isSelectedAnything() == false) {
+            JOptionPane.showMessageDialog(this, "Check evaluation options");
+            return null;
+        }
+        
+        return eo;
     }
     
     private void test(){

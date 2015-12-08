@@ -13,7 +13,7 @@ public class EvaluationOption {
     private boolean speedCheck;
     private boolean densityCheck;
     private boolean totalFlowCheck;
-    private boolean avgerageLaneFlowCheck;
+    private boolean averageLaneFlowCheck;
     private boolean accelerationCheck;
     
     private boolean vmt;        //Vehicle Miles Traveled
@@ -28,7 +28,7 @@ public class EvaluationOption {
     private double cts;         //Congestion Threshold Speed(km)
     private double cd;          //Critical Density(veh/km)
     private double dlc;         //Default Lane Capacity(veh/hr)
-    
+        
     public EvaluationOption(){
         
     }
@@ -38,7 +38,7 @@ public class EvaluationOption {
         this.speedCheck = speedCheck;
         this.densityCheck = densityCheck;
         this.totalFlowCheck = totalFlowCheck;
-        this.avgerageLaneFlowCheck = averageLaneFlowCheck;
+        this.averageLaneFlowCheck = averageLaneFlowCheck;
         this.accelerationCheck = accelerationCheck;
     }
     
@@ -58,6 +58,26 @@ public class EvaluationOption {
         this.dlc = dlc;
     }
     
+    public boolean isSelectedAnything(){
+        if((speedCheck == true) ||
+                (densityCheck == true) ||
+                (totalFlowCheck == true) ||
+                (averageLaneFlowCheck == true) ||
+                (accelerationCheck == true) ||
+                (vmt == true) ||
+                (lvmt == true) ||
+                (vht == true) ||
+                (dvh == true) ||
+                (flowRates == true) ||
+                (tt == true) ||
+                (sv == true) ||
+                (cm == true)){
+            return true;
+        }
+        else
+            return false;
+    }
+    
     public boolean getSpeedCheck(){
         return speedCheck;
     }
@@ -71,7 +91,7 @@ public class EvaluationOption {
     }
     
     public boolean getAverageLaneFlowCheck(){
-        return avgerageLaneFlowCheck;
+        return averageLaneFlowCheck;
     }
     
     public boolean getAccelerationCheck(){

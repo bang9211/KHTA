@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SRTEStationGroup>
+    <group id="1" name="694WB-1"/>
+    <group id="2" name="694WB-2"/>
+    <group id="3" name="694EB-1"/>
+    <group id="4" name="694EB-2"/>
+    <group id="5" name="35NB-1"/>
+    <group id="6" name="35NB-2"/>
+    <group id="7" name="35NB-3"/>
+    <group id="8" name="35SB-1"/>
+    <group id="9" name="35SB-2"/>
+    <group id="10" name="35SB-3"/>
+    <group id="11" name="94WB-1"/>
+    <group id="12" name="94WB-2"/>
+    <group id="13" name="94EB-1"/>
+    <group id="14" name="94EB-2"/>
+    <group id="15" name="52NB-1"/>
+    <group id="16" name="52SB-1"/>
+    <Station id="S1457" groupid="1" groupName="694WB-1"/>
+    <Station id="S1458" groupid="1"  groupName="694WB-1"/>
+    <Station id="S1459" groupid="1"  groupName="694WB-1"/>
+    <Station id="S1461" groupid="2"  groupName="694WB-2"/>
+    <Station id="S1083" groupid="2"  groupName="694WB-2"/>
+    <Station id="S1084" groupid="2"  groupName="694WB-2"/>
+    <Station id="S1085" groupid="2"  groupName="694WB-2"/>
+    <Station id="S1078" groupid="3"  groupName="694EB-1"/>
+    <Station id="S1079" groupid="3"  groupName="694EB-1"/>
+    <Station id="S1080" groupid="3"  groupName="694EB-1"/>
+    <Station id="S1450" groupid="4"  groupName="694EB-2"/>
+    <Station id="S1452" groupid="4"  groupName="694EB-2"/>
+    <Station id="S1453" groupid="4"  groupName="694EB-2"/>
+    <Station id="S626" groupid="5" groupName="35NB-1"/>
+    <Station id="S627" groupid="5" groupName="35NB-1"/>
+    <Station id="S628" groupid="5" groupName="35NB-1"/>
+    <Station id="S629" groupid="6" groupName="35NB-2"/>
+    <Station id="S630" groupid="6" groupName="35NB-2"/>
+    <Station id="S1447" groupid="6" groupName="35NB-2"/>
+    <Station id="S1448" groupid="7" groupName="35NB-3"/>
+    <Station id="S1449" groupid="7" groupName="35NB-3"/>
+    <Station id="S1485" groupid="7" groupName="35NB-3"/>
+    <Station id="S1549" groupid="8" groupName="35SB-1"/>
+    <Station id="S1462" groupid="8" groupName="35SB-1"/>
+    <Station id="S1463" groupid="8" groupName="35SB-1"/>
+    <Station id="S1464" groupid="9" groupName="35SB-2"/>
+    <Station id="S1446" groupid="9" groupName="35SB-2"/>
+    <Station id="S633" groupid="9" groupName="35SB-2"/>
+    <Station id="S634" groupid="9" groupName="35SB-2"/>
+    <Station id="S635" groupid="10" groupName="35SB-3"/>
+    <Station id="S636" groupid="10" groupName="35SB-3"/>
+    <Station id="S637" groupid="10" groupName="35SB-3"/>
+    <Station id="S500" groupid="11" groupName="94WB-1"/>
+    <Station id="S546" groupid="11" groupName="94WB-1"/>
+    <Station id="S789" groupid="12" groupName="94WB-2"/>
+    <Station id="S788" groupid="12" groupName="94WB-2"/>
+    <Station id="S548" groupid="12" groupName="94WB-2"/>
+    <Station id="S787" groupid="12" groupName="94WB-2"/>
+    <Station id="S549" groupid="12" groupName="94WB-2"/>
+    <Station id="S786" groupid="12" groupName="94WB-2"/>
+    <Station id="S550" groupid="12" groupName="94WB-2"/>
+    <Station id="S469" groupid="13" groupName="94EB-1"/>
+    <Station id="S776" groupid="13" groupName="94EB-1"/>
+    <Station id="S479" groupid="13" groupName="94EB-1"/>
+    <Station id="S777" groupid="13" groupName="94EB-1"/>
+    <Station id="S489" groupid="13" groupName="94EB-1"/>
+    <Station id="S778" groupid="13" groupName="94EB-1"/>
+    <Station id="S490" groupid="13" groupName="94EB-1"/>
+    <Station id="S491" groupid="14" groupName="94EB-2"/>
+    <Station id="S499" groupid="14" groupName="94EB-2"/>
+    <Station id="S1175" groupid="15" groupName="52NB-1"/>
+    <Station id="S1176" groupid="15" groupName="52NB-1"/>
+    <Station id="S1177" groupid="15" groupName="52NB-1"/>
+    <Station id="S1152" groupid="16" groupName="52SB-1"/>
+    <Station id="S1153" groupid="16" groupName="52SB-1"/>
+    <Station id="S1154" groupid="16" groupName="52SB-1"/>
+</SRTEStationGroup>
