@@ -932,6 +932,7 @@ public class TrafficAnalysis extends javax.swing.JPanel {
         
         //섹션 읽기
         Section selectedSection = (Section)this.cbxSections.getSelectedItem();
+
         
         //달력 읽기
         ArrayList<Calendar> selectedCalendar = new ArrayList();

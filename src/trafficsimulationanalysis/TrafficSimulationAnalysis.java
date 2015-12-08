@@ -64,12 +64,13 @@ public class TrafficSimulationAnalysis {
                 nf.init();
                 
                 System.out.println("Openning KHTA..");
-                nf.setAlwaysOnTop(true);
-                nf.setVisible(true);
+//                nf.setAlwaysOnTop(true);
                 kl.dispose();
+                nf.setVisible(true);
             }
         }, 10);
         kl.setAlwaysOnTop(true);
+        
         kl.setVisible(true);
     }
     

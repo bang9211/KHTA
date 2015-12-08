@@ -47,4 +47,8 @@ public enum StationType {
     public boolean isRoadVDS(){
         return this.code < RAMP.code;
     }
+    
+    public boolean isRamp(){
+        return this != NONE && this == RAMP;
+    }
 }
