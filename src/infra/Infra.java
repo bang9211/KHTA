@@ -17,9 +17,12 @@
 package infra;
 
 import infra.infraobject.Corridor;
+import infra.infraobject.Entrance;
+import infra.infraobject.Exit;
 import infra.infraobject.RNode;
 import infra.infraobject.Station;
 import infra.type.NodeOrder;
+import infra.type.StationType;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -89,19 +92,38 @@ public class Infra {
      */
     private void setRnodes() {
         for(Corridor cor : corridors){
+            RNode prevRNode = null;
             //Search Rnodes in the DB
             //Add Station
             for(HashMap<InfraDatas, Object> ss : sqlserver.getStations(cor.getID())){
-                Station ns = new Station(ss);
-                    
+                StationType vdstype = (StationType)ss.get(InfraDatas.STATION_TYPE);
+                if(vdstype == null)
+                    continue;
+                RNode nn = null;
+                if(vdstype.isRoadVDS())
+                     nn = new Station(ss);
+                else if(vdstype.isRamp()){
+                    if (prevRNode != null) {
+                        if (prevRNode.getNodeType().isExit()) {
+                            nn = new Entrance(ss);
+                        } else{
+                            nn = new Exit(ss);
+                        }
+                    }
+                }
                 //Add all Rnodes into the corridor
-                cor.addRNode(ns);
+                if(nn != null){
+                    cor.addRNode(nn);
+                    prevRNode = nn;
+                }
             }
             
+            if(cor.getRNodes().isEmpty())
+                continue;
             //Add Entrance
             //Add Exit
             //Add DMS
-            
+//            System.out.println("Cor : "+cor.getName());
             //set Rnode Direction
 //            System.out.println("Setting up the Rnode Direction..");
             setRNodeDirection(cor);
@@ -160,7 +182,8 @@ public class Infra {
         ArrayList<RNode> rnodes = cor.getRNodes();
         Station firstStation = getFirstStation(rnodes);
         Station lastStation = getLastStation(rnodes);
-        
+//        System.out.println("first Station : "+firstStation.getName());
+//        System.out.println("last Station : "+lastStation.getName());
         if(firstStation.getLocation() > lastStation.getLocation()){
             cor.setOrder(NodeOrder.REVERSE);
         }else{

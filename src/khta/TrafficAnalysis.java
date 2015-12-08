@@ -829,8 +829,8 @@ public class TrafficAnalysis extends javax.swing.JPanel {
 //        }
         //임시 날짜설정
         //**********************************************************************
-        String stime = "20151001063000";
-        String etime = "20151001073000";
+        String stime = "20151001060000";
+        String etime = "20151001160000";
         DateFormat formatter = new SimpleDateFormat("yyyyMMddhhmmss");
         Date sdate = null;
         Date edate = null;

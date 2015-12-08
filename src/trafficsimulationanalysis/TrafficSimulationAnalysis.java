@@ -32,6 +32,8 @@ import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JRootPane;
+import javax.swing.WindowConstants;
 import khta.KHTAFrame;
 import khta.KHTALoading;
 import khta.SectionCreation;
@@ -77,12 +79,13 @@ public class TrafficSimulationAnalysis {
                 nf.init();
                 
                 System.out.println("Openning KHTA..");
-                nf.setAlwaysOnTop(true);
-                nf.setVisible(true);
+//                nf.setAlwaysOnTop(true);
                 kl.dispose();
+                nf.setVisible(true);
             }
         }, 10);
         kl.setAlwaysOnTop(true);
+        
         kl.setVisible(true);
     }
     

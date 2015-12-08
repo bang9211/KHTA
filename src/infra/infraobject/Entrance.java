@@ -31,4 +31,8 @@ public class Entrance extends RNode{
         super(datas,RnodeType.ENTRANCE);
     }
     
+    @Override
+    public String toString(){
+        return getName();
+    }
 }
