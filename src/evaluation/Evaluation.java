@@ -237,6 +237,21 @@ public abstract class Evaluation {
         return res;
     }
     
+    /**
+     * Returns this name
+     * @return 
+     */
+    public String getName() {
+        return this.name;
+    }
+    
+    /**
+     * Returns results
+     */
+    public Vector<EvaluationResult> getResult() {
+        return this.results;
+    }
+    
      /**
      * Is it integer ?
      * @param data string

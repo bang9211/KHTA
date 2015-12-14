@@ -17,6 +17,9 @@
 package khta;
 
 import evaluation.BasicData;
+import evaluation.ContourPlotter;
+import evaluation.ContourType;
+import evaluation.Evaluation;
 import evaluation.EvaluationOption;
 import evaluation.Interval;
 import evaluation.StationAcceleration;
@@ -857,7 +860,7 @@ public class TrafficAnalysis extends javax.swing.JPanel {
     private void evaluation() {
         
         KHTAOption ko = getOption();
-        EvaluationOption eo = getEvaluationOption();
+        EvaluationOption eo = ko.getEvaluationOption();
         if((ko != null) && (eo != null))
         {
             // open RunningDialog
@@ -884,8 +887,8 @@ public class TrafficAnalysis extends javax.swing.JPanel {
             this.ko = ko;
             this.eo = eo;
             this.rd = rd;
-            periods = ko.getPeriods();
-            selectedSection = ko.getSelectedSection();
+            periods = eo.getPeriods();
+            selectedSection = eo.getSelectedSection();
             outputPath = ko.getOutputPath();
             basicDataSet = new ArrayList<>();
             rd.showLog();
@@ -893,12 +896,28 @@ public class TrafficAnalysis extends javax.swing.JPanel {
         
         @Override
         public void run() {
-            //모든 process 실행
+            runEvaluate();
+            
+            // close RunningDialog after 1.8 seconds
+            rd.close(1.8);
+            
+            // open output folder
+            Desktop desktop = Desktop.getDesktop();
+            try {
+                desktop.open(new File(outputPath));
+                // if error, open log file
+                //if(hasError) desktop.open(new File("log.txt"));
+            } catch (IOException ex) {
+                Logger.getLogger(TrafficAnalysis.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        private void runEvaluate(){
             for(Period p : periods)
             {
                 //해당하는 시간내 섹션의 데이터를 로드
                 selectedSection.loadData(p, null);
-                
+
                 //체크박스에 맞춰 evaluation.process 실행
                 if(eo.getSpeedCheck()){
                     //StationSpeed ss = new StationSpeed(p, selectedSection, outputPath);
@@ -922,33 +941,66 @@ public class TrafficAnalysis extends javax.swing.JPanel {
                 }
             }
             for(BasicData bd : basicDataSet){
-                    bd.process();
+                bd.process();
+                if(ko.getExcelCheck()){
+                    //엑셀 저장
+                    try {
+                        //this.saveExcel(outputPath + "speed_" + section.getName() + period.getPeriodString());
+                        bd.saveExcel(outputPath);
+                    } catch (Exception ex) {
+                        Logger.getLogger(StationSpeed.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                if(ko.getCSVCheck()){
+                    try {
+                        bd.saveCsv(outputPath);
+                    } catch (Exception ex) {
+                        Logger.getLogger(TrafficAnalysis.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                if(ko.getContourCheck()){
+                    if (eo.getSpeedCheck()) {
+                        saveContour(bd, ko, eo, ContourType.SPEED);
+                    } else if (eo.getDensityCheck()) {
+                        saveContour(bd, ko, eo, ContourType.DENSITY);
+                    } else if (eo.getTotalFlowCheck()) {
+                        saveContour(bd, ko, eo, ContourType.TOTAL_FLOW);
+                    }// else if (eo.getAverageLaneFlowCheck()) {
+//                        saveContour(ev, selectedOption, opts, ContourType.OCCUPANCY);
+//                    }else if (ot.equals(OptionType.EVAL_TT)){
+//                            System.out.println("EVALTT");
+//                            saveContour(ev, selectedOption, opts, ContourType.TT);
+//                    } else if (ot.equals(OptionType.EVAL_TT_REALTIME)){
+//                            saveContour(ev, selectedOption, opts, ContourType.STT);
+//                    }
+                }
             }
-            
-            // close RunningDialog after 1.8 seconds
-            rd.close(1.8);
-            
-            // open output folder
-            Desktop desktop = Desktop.getDesktop();
-            try {
-                desktop.open(new File(outputPath));
-                // if error, open log file
-                //if(hasError) desktop.open(new File("log.txt"));
-            } catch (IOException ex) {
-                Logger.getLogger(TrafficAnalysis.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        
-        private void runEvaluate(){
-            
         }
     }
-        
+
+    /**
+     * Save contour
+     * @param ev
+     * @param selectedOption
+     * @param opts
+     * @param cType 
+     */
+    private void saveContour(Evaluation ev, KHTAOption selectedOption, EvaluationOption opts, ContourType cType) {
+        ContourPlotter cp = new ContourPlotter(opts.getSelectedSection(), opts.getContourSetting(cType), ev, selectedOption.getOutputPath());
+//        cp.saveImage(opts.hasOption(OptionType.OPEN_CONTOUR));        
+        cp.saveImage(false);        
+    }    
+    
     private KHTAOption getOption(){
         
+        int duration = -1;
+        KHTAOption khtaOption = new KHTAOption();
+        EvaluationOption opt = khtaOption.getEvaluationOption();
+        
+        int selectedSectionIndex = this.cbxSections.getSelectedIndex();
+                
         //섹션 읽기
         Section selectedSection = (Section)this.cbxSections.getSelectedItem();
-
         
         //달력 읽기
         ArrayList<Calendar> selectedCalendar = new ArrayList();
@@ -999,7 +1051,7 @@ public class TrafficAnalysis extends javax.swing.JPanel {
             emin = cbxEndMin.getSelectedIndex();
         }
         else{
-            int duration = cbxDuration.getSelectedIndex();
+            duration = cbxDuration.getSelectedIndex();
             ehour = smin + duration;
             emin = smin;
         }
@@ -1035,33 +1087,40 @@ public class TrafficAnalysis extends javax.swing.JPanel {
             periods.add(new Period(sdate, edate, selectedInterval.getSecond()));
         }
         
-        //경로 읽기
-        String outputPath = this.txOutputFolder.getText();
+        opt.setSelectedSection(selectedSection);
+        opt.setPeriods(periods);
         
-        return new KHTAOption(selectedSection, periods, selectedInterval, outputPath, 
-                cbxExcel.isSelected(), cbxCSV.isSelected(), cbxContour.isSelected());
-    } 
-    
-    private EvaluationOption getEvaluationOption(){
-        EvaluationOption eo = new EvaluationOption();
-        
-        eo.setStationData(cbxSpeed.isSelected(), cbxDensity.isSelected(), cbxTotalFlow.isSelected(),
+        opt.setStationData(cbxSpeed.isSelected(), cbxDensity.isSelected(), cbxTotalFlow.isSelected(),
                 cbxAverageLaneFlow.isSelected(), cbxAcceleration.isSelected());
         
         if((jTextField1.getText().length() != 0) && (jTextField2.getText().length() != 0) && 
                 (jTextField3.getText().length() != 0)){
-            eo.setTrafficFlowMeasurements(cbxVMT.isSelected(), cbxVMT1.isSelected(), cbxVMT2.isSelected(), 
+            opt.setTrafficFlowMeasurements(cbxVMT.isSelected(), cbxVMT1.isSelected(), cbxVMT2.isSelected(), 
             cbxVMT3.isSelected(), cbxVMT4.isSelected(), cbxVMT5.isSelected(), cbxVMT6.isSelected(), 
             cbxVMT7.isSelected(), Double.parseDouble(jTextField1.getText()), 
             Double.parseDouble(jTextField2.getText()), Double.parseDouble(jTextField3.getText()));
         }
         
-        if (eo.isSelectedAnything() == false) {
+        if (opt.isSelectedAnything() == false) {
             JOptionPane.showMessageDialog(this, "Check evaluation options");
             return null;
         }
         
-        return eo;
-    }
+        // contourTapPanel에 있는 세팅 읽기
+//        opt.addContourPanel(ContourType.SPEED, speedContourSetting);
+//        opt.addContourPanel(ContourType.DENSITY, this.densityContourSetting);
+//        opt.addContourPanel(ContourType.TOTAL_FLOW, this.totalFlowContourSetting);
+//        opt.addContourPanel(ContourType.OCCUPANCY, this.occupancyContourSetting);
+//        opt.addContourPanel(ContourType.TT, this.TTContourSetting);
+//        opt.addContourPanel(ContourType.STT, this.TTContourSetting);
+        
+        
+        String outputPath = this.txOutputFolder.getText();
+        
+        khtaOption.setOptions(selectedSectionIndex, duration, selectedInterval, outputPath, 
+                cbxExcel.isSelected(), cbxCSV.isSelected(), cbxContour.isSelected());
+                
+        return khtaOption;
+    } 
     
 }

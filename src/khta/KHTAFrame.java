@@ -17,16 +17,9 @@
 package khta;
 
 import infra.Infra;
-import infra.infraobject.Corridor;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import version.Version;
 
 /**
@@ -141,6 +134,7 @@ public class KHTAFrame extends javax.swing.JFrame {
     private void initPanels(){
         initMainFrame();
         initSectionEditor();
+        initContourConfiguration();
         this.MainTabbedPanel.setSelectedIndex(0);
     }
     private void initMainFrame(){
@@ -151,5 +145,10 @@ public class KHTAFrame extends javax.swing.JFrame {
     private void initSectionEditor() {
         SectionCreation sc = new SectionCreation(infra);
         this.MainTabbedPanel.add(sc);
+    }
+    
+    private void initContourConfiguration() {
+        ContourTapPanel cp = new ContourTapPanel(infra);
+        this.MainTabbedPanel.add(cp);
     }
 }

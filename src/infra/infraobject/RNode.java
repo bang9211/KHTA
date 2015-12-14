@@ -24,9 +24,6 @@ import infra.Period;
 import infra.simobjects.SimObjects;
 import infra.type.*;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import trafficsimulationanalysis.TempData;
 import util.KHTAParam;
 
 /**

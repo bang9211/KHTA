@@ -20,14 +20,13 @@ import evaluation.DataLoadOption;
 import infra.infraobject.Corridor;
 import infra.infraobject.RNode;
 import infra.infraobject.RNodeThread;
+import infra.infraobject.Station;
 import infra.simobjects.SimObjects;
+import infra.type.RnodeType;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import util.KHTAParam;
 import util.PropertiesWrapper;
@@ -47,6 +46,7 @@ public class Section implements Serializable{
     private PropertiesWrapper prop;
     private Corridor corridor = null;
     private List<RNode> section = new ArrayList<RNode>();
+    private ArrayList<Station> stations = new ArrayList<Station>();
     private String name;
     private String desc;
     
@@ -168,6 +168,17 @@ public class Section implements Serializable{
             rid.add(r.getID());
         }
         return rid;
+    }
+    
+    public Station[] getStations(){
+        for(RNode r : section){
+            if(r.getNodeType() == RnodeType.STATION){
+                Station station = (Station)r;
+                stations.add(station);
+            }
+        }
+        Station[] s = new Station[stations.size()];
+        return stations.toArray(s);
     }
 
     /**

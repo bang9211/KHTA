@@ -35,12 +35,10 @@ public abstract class BasicData extends Evaluation{
         this.section = s;
         this.outputPath = op;
         init();
-        //process();
     }
     
     protected void setTimeLine(){
         timeLine.add("timeline");
-        timeLine.add("");
         timeLine.add("Confidence");
         timeLine.add("Distance");
         //타임 넣기
@@ -60,7 +58,6 @@ public abstract class BasicData extends Evaluation{
                 Station s = (Station)r;
                 //매 스테이션마다 데이터의 헤더를 추가해야함
                 data = new ArrayList();
-                data.add("");
                 data.add(s.getName());
                 data.add(100);
                 data.add(s.getLocation());
@@ -73,15 +70,5 @@ public abstract class BasicData extends Evaluation{
         EvaluationResult er = new EvaluationResult(erData);
         er.setName(period.getPeriodString());
         results.add(er);
-        
-        //엑셀 저장
-        if(this.checkExcelDataLength()){
-            try {
-                //this.saveExcel(outputPath + "speed_" + section.getName() + period.getPeriodString());
-                this.saveExcel(outputPath);
-            } catch (Exception ex) {
-                Logger.getLogger(StationSpeed.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
     }
 }
