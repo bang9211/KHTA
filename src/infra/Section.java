@@ -27,6 +27,8 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import util.KHTAParam;
 import util.PropertiesWrapper;
@@ -94,8 +96,55 @@ public class Section implements Serializable{
     public void loadData(Period period, DataLoadOption dopt) throws OutOfMemoryError {
         loadData(period,dopt,null);
     }
+    
+//    private int rnodesize = section.size();
+    private int stidx = 0;
+    private int tidx = 0;
+    private int qs = 0;
+    private final int QueueSize = 30;
+    
+    public void loadData(final Period period, final DataLoadOption dopt, final SimObjects sobj) throws OutOfMemoryError{
+        System.out.println("Load Section Data..");
+        RNodeThread.Callback cbmsg = new RNodeThread.Callback() {
+            @Override
+            public void IsLoaded(RNode r) {
+                System.out.println("Load RNode - "+r.getID()+" ["+(stidx+1)+"/"+section.size()+"]");
+                loadRNode(period, dopt, sobj, this);
+                stidx ++;
+            }
+        };
+        loadRNode(period, dopt, sobj, cbmsg);
+        
+        while(stidx < section.size()){
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Section.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+//        while(tidx < rnodesize){
+//            
+////            RNodeThread
+//        }
+    }
+    
+    private synchronized void loadRNode(Period period, DataLoadOption dopt, SimObjects sobj, RNodeThread.Callback cbmsg){
+        if(qs != 0)
+            qs--;
+//        System.out.println("Load RNode 11"+"Qsize : "+QueueSize+", rnodesize : "+section.size()+", ("+qs+","+tidx+")");
+        while(qs < QueueSize && tidx < section.size()){
+            RNode r = section.get(tidx);
+            RNodeThread rn = new RNodeThread(r, period, dopt, sobj);
+            rn.setCallback(cbmsg);
+            rn.start();
+//            System.out.println("RNode["+qs+"] :"+r.getID()+" Start!");
+            qs ++;
+            tidx ++;
+        }
+    }
+    
     private int LoadCount = 0;
-    public void loadData(Period period, DataLoadOption dopt, SimObjects sobj) throws OutOfMemoryError{
+    public void loadData_old(Period period, DataLoadOption dopt, SimObjects sobj) throws OutOfMemoryError{
         System.out.println("Load Section Data..");
         int QueueCount = 10;
         int cnt = 0;

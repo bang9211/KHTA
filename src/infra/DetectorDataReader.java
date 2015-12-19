@@ -45,11 +45,11 @@ public class DetectorDataReader extends DataFetcher{
     public static final String STATION_ID = "station_id";
     public static final String S_DATE = "s_date";
     public static final String LANETYPE = "lanetype";
-    public static final String VOLUME = "volume";
+//    public static final String VOLUME = "volume";
     
     //DB TABLE NAME
-    public static final String VOLUME_TABLE = "volume";
-    public static final String SPEED_TABLE = "speed";
+    public static final String VOLUME_TABLE = "n_volume";
+    public static final String SPEED_TABLE = "n_speed";
     
     public DetectorDataReader(Detector detector, Period period){
         super(KHTAParam.DB_NAME, KHTAParam.DB_URL, KHTAParam.USER_ID, KHTAParam.PASSWORD);
@@ -111,8 +111,11 @@ public class DetectorDataReader extends DataFetcher{
 //        System.out.println(detector.getIDforDB());
         String sql = "SELECT * FROM korex."+tableName+" where "
                 + STATION_ID+"='"+detector.getIDforDB()+"' and "
-                + S_DATE+" > '"+period.getStartDateString()+"' and "
-                + S_DATE+" <= '"+period.getEndDateString()+"' and "
+                + "(" + S_DATE + " between "
+                + period.getStartDateString() + " and "
+                + period.getEndDateString() + ") and "
+//                + S_DATE+" > '"+period.getStartDateString()+"' and "
+//                + S_DATE+" <= '"+period.getEndDateString()+"' and "
                 + LANETYPE+" = '"+detector.getLaneType().code+"' "
                 + "order by "+S_DATE+" asc";
         
