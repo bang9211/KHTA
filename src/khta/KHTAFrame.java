@@ -30,9 +30,13 @@ import version.Version;
 public class KHTAFrame extends javax.swing.JFrame {
 
     private Infra infra;
+    private KHTAOption khtaOption;
     private final int width = 1000;
     private final int height = 780;
     
+    TrafficAnalysis ta;
+    SectionCreation sc;
+    ContourTapPanel cp;
     
     /**
      * Creates new form KHTAFrame
@@ -132,23 +136,26 @@ public class KHTAFrame extends javax.swing.JFrame {
         initPanels();
     }
     private void initPanels(){
-        initMainFrame();
-        initSectionEditor();
-        initContourConfiguration();
+        khtaOption = new KHTAOption();
+        cp = new ContourTapPanel(khtaOption);
+        ta = new TrafficAnalysis(infra, khtaOption, cp);
+        sc = new SectionCreation(infra);
+        
+        initMainFrame(ta);
+        initSectionEditor(sc);
+        initContourConfiguration(cp);
         this.MainTabbedPanel.setSelectedIndex(0);
     }
-    private void initMainFrame(){
-        TrafficAnalysis ta = new TrafficAnalysis(infra);
+    private void initMainFrame(TrafficAnalysis ta){
+        
         this.MainTabbedPanel.add(ta);
     }
     
-    private void initSectionEditor() {
-        SectionCreation sc = new SectionCreation(infra);
+    private void initSectionEditor(SectionCreation sc) {
         this.MainTabbedPanel.add(sc);
     }
     
-    private void initContourConfiguration() {
-        ContourTapPanel cp = new ContourTapPanel(infra);
+    private void initContourConfiguration(ContourTapPanel cp) {
         this.MainTabbedPanel.add(cp);
     }
 }

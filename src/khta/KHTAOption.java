@@ -150,6 +150,10 @@ public class KHTAOption {
         return outputPath;
     }
     
+    boolean isLoaded() {
+        return this.isLoaded;
+    }
+    
     public boolean getExcelCheck(){
         return excelCheck;
     }

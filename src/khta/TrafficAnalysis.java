@@ -56,12 +56,19 @@ import javax.swing.JOptionPane;
  */
 public class TrafficAnalysis extends javax.swing.JPanel {
     private final Infra infra;
+    private KHTAOption khtaOption;
+    private ContourTapPanel contourTapPanel;
     /**
      * Creates new form TrafficAnalysis
+     * @param _infra
+     * @param khtaOption
+     * @param contourTapPanel
      */
-    public TrafficAnalysis(Infra _infra) {
+    public TrafficAnalysis(Infra _infra, KHTAOption khtaOption, ContourTapPanel contourTapPanel) {
         initComponents();
         infra = _infra;
+        this.khtaOption = khtaOption;
+        this.contourTapPanel = contourTapPanel;
         new Timer().schedule(new TimerTask() {
 
             @Override
@@ -859,15 +866,15 @@ public class TrafficAnalysis extends javax.swing.JPanel {
 
     private void evaluation() {
         
-        KHTAOption ko = getOption();
-        EvaluationOption eo = ko.getEvaluationOption();
-        if((ko != null) && (eo != null))
+        khtaOption = getOption();
+        EvaluationOption eo = khtaOption.getEvaluationOption();
+        if((khtaOption != null) && (eo != null))
         {
             // open RunningDialog
             RunningDialog rd = new RunningDialog((Frame) this.getTopLevelAncestor(), true);
             rd.setLocationRelativeTo(this);
             Timer t = new Timer();
-            t.schedule(new EvaluateTask(ko, eo, rd), 10);
+            t.schedule(new EvaluateTask(khtaOption, eo, rd), 10);
             rd.setTimer(t);
             rd.setVisible(true);  
         }
@@ -994,7 +1001,6 @@ public class TrafficAnalysis extends javax.swing.JPanel {
     private KHTAOption getOption(){
         
         int duration = -1;
-        KHTAOption khtaOption = new KHTAOption();
         EvaluationOption opt = khtaOption.getEvaluationOption();
         
         int selectedSectionIndex = this.cbxSections.getSelectedIndex();
@@ -1106,14 +1112,7 @@ public class TrafficAnalysis extends javax.swing.JPanel {
             return null;
         }
         
-        // contourTapPanel에 있는 세팅 읽기
-//        opt.addContourPanel(ContourType.SPEED, speedContourSetting);
-//        opt.addContourPanel(ContourType.DENSITY, this.densityContourSetting);
-//        opt.addContourPanel(ContourType.TOTAL_FLOW, this.totalFlowContourSetting);
-//        opt.addContourPanel(ContourType.OCCUPANCY, this.occupancyContourSetting);
-//        opt.addContourPanel(ContourType.TT, this.TTContourSetting);
-//        opt.addContourPanel(ContourType.STT, this.TTContourSetting);
-        
+        contourTapPanel.setContourOption();
         
         String outputPath = this.txOutputFolder.getText();
         

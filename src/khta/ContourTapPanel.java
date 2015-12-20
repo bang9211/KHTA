@@ -6,7 +6,8 @@
 package khta;
 
 import evaluation.ContourPanel;
-import infra.Infra;
+import evaluation.ContourType;
+import evaluation.EvaluationOption;
 import java.awt.BorderLayout;
 
 /**
@@ -14,7 +15,9 @@ import java.awt.BorderLayout;
  * @author HanYoungTak
  */
 public class ContourTapPanel extends javax.swing.JPanel {
-    private final Infra infra;
+    private KHTAOption khtaOption;
+    private EvaluationOption evaluationOption;
+    
     private ContourPanel TTContourSetting = new ContourPanel(11, 60, false);
     private ContourPanel speedContourSetting = new ContourPanel(11, 55, true);
     private ContourPanel totalFlowContourSetting = new ContourPanel(11, 6000, false);
@@ -23,29 +26,30 @@ public class ContourTapPanel extends javax.swing.JPanel {
     /**
      * Creates new form ContourPanel
      */
-    public ContourTapPanel(Infra _infra) {
+    public ContourTapPanel(KHTAOption khtaOption) {
         initComponents();
-        infra = _infra;
+        this.khtaOption = khtaOption;
+        
         
         // if ticas option is loaded
-//        if (ticasOption.isLoaded()) {
-//            this.speedContourSetting.setContourSetting(opt.getContourSetting(ContourType.SPEED));
-//            this.totalFlowContourSetting.setContourSetting(opt.getContourSetting(ContourType.TOTAL_FLOW));
-//            this.occupancyContourSetting.setContourSetting(opt.getContourSetting(ContourType.OCCUPANCY));
-//            this.densityContourSetting.setContourSetting(opt.getContourSetting(ContourType.DENSITY));
-//            this.TTContourSetting.setContourSetting(opt.getContourSetting(ContourType.TT));
-//            applyOption(ticasOption);            
+//        if (khtaOption.isLoaded()) {
+//            this.speedContourSetting.setContourSetting(evaluationOption.getContourSetting(ContourType.SPEED));
+//            this.totalFlowContourSetting.setContourSetting(evaluationOption.getContourSetting(ContourType.TOTAL_FLOW));
+//            this.occupancyContourSetting.setContourSetting(evaluationOption.getContourSetting(ContourType.OCCUPANCY));
+//            this.densityContourSetting.setContourSetting(evaluationOption.getContourSetting(ContourType.DENSITY));
+//            this.TTContourSetting.setContourSetting(evaluationOption.getContourSetting(ContourType.TT));
+//            applyOption(khtaOption);            
 //        } else {
-//            System.err.println("Option is not loaded");
-//            // option isn't loaded
-//            this.speedContourSetting.setUnit("mile/h");
-//            this.totalFlowContourSetting.setUnit("veh/h");
-//            this.occupancyContourSetting.setUnit("%");
-//            this.densityContourSetting.setUnit("veh/mile");
-//            TTContourSetting.setUnit("min");
-//            
-//            // set excel checkbox selected by default
-//            this.chkExcel.setSelected(true);                       
+            System.err.println("Option is not loaded");
+            // option isn't loaded
+            this.speedContourSetting.setUnit("mile/h");
+            this.totalFlowContourSetting.setUnit("veh/h");
+            this.occupancyContourSetting.setUnit("%");
+            this.densityContourSetting.setUnit("veh/mile");
+            TTContourSetting.setUnit("min");
+            
+            // set excel checkbox selected by default
+            //this.chkExcel.setSelected(true);                       
 //        }
         // add contour setting panel to tab panel
         this.panContourSettingSpeed.add(speedContourSetting, BorderLayout.NORTH);
@@ -192,4 +196,85 @@ public class ContourTapPanel extends javax.swing.JPanel {
     private javax.swing.JPanel panContourSettingTT;
     private javax.swing.JPanel panContourSettingTotalFlow;
     // End of variables declaration//GEN-END:variables
+
+    public void setContourOption(){
+        this.evaluationOption = khtaOption.getEvaluationOption();
+        
+        
+        // contourTapPanel에 있는 세팅 읽기
+        evaluationOption.addContourPanel(ContourType.SPEED, speedContourSetting);
+        evaluationOption.addContourPanel(ContourType.DENSITY, this.densityContourSetting);
+        evaluationOption.addContourPanel(ContourType.TOTAL_FLOW, this.totalFlowContourSetting);
+        evaluationOption.addContourPanel(ContourType.OCCUPANCY, this.occupancyContourSetting);
+        evaluationOption.addContourPanel(ContourType.TT, this.TTContourSetting);
+        evaluationOption.addContourPanel(ContourType.STT, this.TTContourSetting);
+    }
+    
+    // 구현해야할save load
+    /**
+     * Set TICAS interface according to saved option
+     * @param opt 
+     */
+//    private void applyOption(TICASOption ticasOption) {
+//
+//        EvaluationOption opt = ticasOption.getEvaluationOption();
+//        
+//        // times
+//        this.cbxStartHour.setSelectedIndex(opt.getStartHour());
+//        this.cbxStartMin.setSelectedIndex(opt.getStartMin());
+//        
+//        // duration and times
+//        int duration = ticasOption.getDuration();
+//        if (duration > 0) {
+//            this.cbxDuration.setSelectedItem(duration);
+//            this.cbxEndHour.setEnabled(false);
+//            this.cbxEndMin.setEnabled(false);
+//        } else {
+//            this.cbxEndHour.setSelectedIndex(opt.getEndHour());
+//            this.cbxEndMin.setSelectedIndex(opt.getEndMin());
+//        }        
+//        
+//        // set all checkboxes in saved option checked
+//        for (OptionType option : opt.getOptions()) {
+//            option.getCheckBox().setSelected(true);
+//        }
+//
+//        // detector options
+//        if (opt.hasOption(OptionType.DETECTOR_OPT_WITHOUT_LANECONFIG) || opt.hasOption(OptionType.DETECTOR_OPT_WITH_LANECONFIG)) {
+//            this.chkDetectorSpeed.setEnabled(true);
+//            this.chkDetectorDensity.setEnabled(true);
+//            this.chkDetectorFlow.setEnabled(true);
+//            this.chkDetectorOccupancy.setEnabled(true);
+//        }        
+//        
+//        // output direction
+//        this.cbxOutputDirection.setSelectedItem(opt.getOutputDirection());
+//
+//        // output folder
+//        this.tbxOutputFolder.setText(ticasOption.getOutputPath());
+//
+//        // configuration values
+//        this.tbxCongestionThresholdSpeed.setText(String.format("%d", opt.getCongestionThresholdSpeed()));
+//        this.tbxCriticalDensity.setText(String.format("%d", opt.getCriticalDensity()));
+//        this.tbxLaneCapacity.setText(String.format("%d", opt.getLaneCapacity()));
+//        
+//        // selected section index
+//        int selectedSectionIndex = ticasOption.getSeletedSectionIndex();
+////        if(selectedSectionIndex < this.cbxSections.getItemCount()-1) this.cbxSections.setSelectedIndex(selectedSectionIndex);
+//        
+//        // selected interval index
+//        int selectedIntervalSeconds = ticasOption.getSelectedIntervalSeconds();
+//        for(int i = 0 ; i<cbxInterval.getItemCount();i++){
+//                Interval in = (Interval)cbxInterval.getItemAt(i);
+//                if(in.getSecond() == selectedIntervalSeconds){
+//                        cbxInterval.setSelectedIndex(i);
+//                        break;
+//                }
+//        }
+////        if(selectedIntervalSeconds < this.cbxInterval.getItemCount()-1) this.cbxInterval.setSelectedIndex(selectedIntervalIndex);        
+//        
+//        InfraConstants.TRAFFIC_DATA_URL = ticasOption.getTrafficDataUrl();
+//        InfraConstants.TRAFFIC_CONFIG_URL = ticasOption.getTrafficConfigUrl();
+//    }
+
 }
