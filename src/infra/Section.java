@@ -105,9 +105,13 @@ public class Section implements Serializable{
     
     public void loadData(final Period period, final DataLoadOption dopt, final SimObjects sobj) throws OutOfMemoryError{
         System.out.println("Load Section Data..");
+        //initialization
+        stidx = 0;
+        tidx = 0;
+        qs = 0;
         RNodeThread.Callback cbmsg = new RNodeThread.Callback() {
             @Override
-            public void IsLoaded(RNode r) {
+            public synchronized void IsLoaded(RNode r) {
                 System.out.println("Load RNode - "+r.getID()+" ["+(stidx+1)+"/"+section.size()+"]");
                 loadRNode(period, dopt, sobj, this);
                 stidx ++;
@@ -220,12 +224,6 @@ public class Section implements Serializable{
     }
     
     public Station[] getStations(){
-        for(RNode r : section){
-            if(r.getNodeType() == RnodeType.STATION){
-                Station station = (Station)r;
-                stations.add(station);
-            }
-        }
         Station[] s = new Station[stations.size()];
         return stations.toArray(s);
     }
@@ -254,6 +252,16 @@ public class Section implements Serializable{
                     AddRNode(cr);
             }
         }
+        
+        //set Stations
+        for(RNode r : section){
+            if(r.getNodeType() == RnodeType.STATION){
+                Station station = (Station)r;
+                stations.add(station);
+            }
+        }
+        
+        setStationOrganization();
         
         if(section.isEmpty())
             throw new Exception("RNode is empty");
@@ -333,6 +341,37 @@ public class Section implements Serializable{
         
         if(section.isEmpty())
             throw new Exception("RNode is empty");
+    }
+    
+    private void setStationOrganization() {
+        if(stations.size() == 0)
+            return;
+        
+        Station upStation = stations.get(0);
+        Station cstation = null;
+        double distance = 0;
+        for(int i=1;i<stations.size();i++){
+            cstation = stations.get(i);
+            upStation.setDownstreamStation(name, cstation);
+            
+            /**
+             * 순환선의 경우 마지막 노드가 끝나고 첫번째 노드가 다시 시작할 때 거리가 0부터 시작하므로 따로 계산해줘야 함
+             * End Node -> Start Node 일때
+             * |------End Node------|  |------Start Node------|
+             * SL                  EL==SL                    EL
+             * Distance End Node and Start Node => EL - End Node + StartNode - SL
+             * SL = StartLocation
+             * EL = EndLocation
+             */
+            if(cstation.isFirstNode())
+                distance = (Math.round((upStation.getEndLocation() - upStation.getLocation() + cstation.getLocation() - cstation.getStartLocation())*100d)/100d);
+            else
+                distance = Math.round(Math.abs(cstation.getLocation() - upStation.getLocation())*100d)/100d;
+            
+            upStation.setDistanceToDownstreamStation(name, distance);
+            cstation.setDistanceToUpstreamStation(name, distance);
+            upStation = cstation;
+        }
     }
     
     @Override

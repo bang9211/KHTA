@@ -244,8 +244,7 @@ public class EvalHelper {
      * @return distance in mile
      */
     public static double getDistance(String sectionName, Station station) {
-//        return roundUp((double) station.getDistanceToDownstreamStation(sectionName) / FEET_PER_MILE, 1);
-        return 0;
+        return station.getDistanceToDownstreamStation(sectionName);
     }
 //
 //    /**

@@ -22,5 +22,5 @@ package version;
  * youngtak Han <gksdudxkr@gmail.com>
  */
 public class Version {
-    public static final String version = "0.1";
+    public static final String version = "0.7";
 }

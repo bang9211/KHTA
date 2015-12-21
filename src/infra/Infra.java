@@ -137,7 +137,8 @@ public class Infra {
 //            System.out.println("RNode Distance Calibration..");
             modifyRNodeLocation(cor);
             setCorridorTotalLength(cor);
-            
+            //set First and Last Node info
+            PinNodeinfo(cor);
         }
         
     }
@@ -396,5 +397,17 @@ public class Infra {
             cor.setTotalLength(ls.getEndLocation());
         else
             cor.setTotalLength(ls.getLocation());
+    }
+
+    /**
+     * set First and Last Node
+     * @param cor 
+     */
+    private void PinNodeinfo(Corridor cor) {
+        RNode fnode = cor.getRNodes().get(0);
+        RNode lnode = cor.getRNodes().get(cor.getRNodes().size()-1);
+        
+        fnode.setFirstNode();
+        lnode.setLastNode();
     }
 }

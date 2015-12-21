@@ -52,6 +52,9 @@ public class RNode extends InfraObject implements Comparable{
     protected HashMap<String,Detector> detectors = new HashMap<String,Detector>();
     private boolean isMissing = false;
     
+    protected boolean isFirstNode = false;
+    protected boolean isLastNode = true;
+    
     public RNode(HashMap<InfraDatas,Object> datas, RnodeType _nodetype){
         super(datas);
         nodetype = _nodetype;
@@ -116,6 +119,8 @@ public class RNode extends InfraObject implements Comparable{
                     break;
                 }
             }
+            //pre processing
+            getSpeed();
         } catch (InterruptedException ex) {
             ex.printStackTrace();
         }
@@ -142,7 +147,7 @@ public class RNode extends InfraObject implements Comparable{
         int idx = 0;
         for (Detector d : this.detectors.values()) {
             ddata[idx++] = d.getData(type);
-            System.out.println("data["+(idx-1)+"]= "+d.getID()+" - "+ddata[idx-1].length);
+//            System.out.println("data["+(idx-1)+"]= "+d.getID()+" - "+ddata[idx-1].length);
         }
 
         return ddata;
@@ -208,7 +213,6 @@ public class RNode extends InfraObject implements Comparable{
             }            
         }
 //        System.out.println("========================================\n");
-        
         this.confidence = totalValidCount / totalDataCount * 100;
         if(confidence < 50) isMissing = true;
         return avg;
@@ -345,5 +349,24 @@ public class RNode extends InfraObject implements Comparable{
     public int getLaneCount(){
         return lane;
     }
+
+    public void setFirstNode() {
+        isFirstNode = true;
+    }
+
+    public void setLastNode() {
+        isLastNode = true;
+    }
     
+    public boolean isFirstNode() {
+        return isFirstNode;
+    }
+    
+    public boolean isLastNode() {
+        return isLastNode;
+    }
+    
+    public double getConfidence() {
+        return this.roundUp(this.confidence, 1);
+    }
 }
