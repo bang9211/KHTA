@@ -48,6 +48,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import util.KHTAParam;
 
 /**
  *
@@ -55,11 +56,15 @@ import javax.swing.JOptionPane;
  * youngtak Han <gksdudxkr@gmail.com>
  */
 public class TrafficAnalysis extends javax.swing.JPanel {
+
     private final Infra infra;
     private KHTAOption khtaOption;
     private ContourTapPanel contourTapPanel;
+    private final String OPTION_FILE = "khta.cfg";
+
     /**
      * Creates new form TrafficAnalysis
+     *
      * @param _infra
      * @param khtaOption
      * @param contourTapPanel
@@ -151,6 +156,8 @@ public class TrafficAnalysis extends javax.swing.JPanel {
         });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(null, "Route & Time", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12)))); // NOI18N
+
+        nATSRLCalendar1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         jLabel17.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
         jLabel17.setText("Time Interval");
@@ -725,11 +732,10 @@ public class TrafficAnalysis extends javax.swing.JPanel {
 
     private void cbxDurationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxDurationActionPerformed
 //        selectDuration();
-        if(cbxDuration.getSelectedIndex() != 0){
+        if (cbxDuration.getSelectedIndex() != 0) {
             cbxEndHour.setEnabled(false);
             cbxEndMin.setEnabled(false);
-        }
-        else{
+        } else {
             cbxEndHour.setEnabled(true);
             cbxEndMin.setEnabled(true);
         }
@@ -737,7 +743,7 @@ public class TrafficAnalysis extends javax.swing.JPanel {
 
     private void cbxSectionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxSectionsActionPerformed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_cbxSectionsActionPerformed
 
     private void cbxSectionsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbxSectionsMouseClicked
@@ -795,7 +801,7 @@ public class TrafficAnalysis extends javax.swing.JPanel {
                 evaluation();
             }
         }, 10);
-        
+
     }//GEN-LAST:event_btnExtractionActionPerformed
 
 
@@ -859,41 +865,48 @@ public class TrafficAnalysis extends javax.swing.JPanel {
 
     private void init() {
         setInterval(Interval.getMinTMCInterval());
-        
+
         // duration
         this.cbxDuration.addItem("Select");
         for (int i = 1; i <= 32; i++) {
             this.cbxDuration.addItem(i);
         }
+        
+        // load option saved perviously
+        khtaOption = KHTAOption.load(OPTION_FILE);
+        EvaluationOption opt = khtaOption.getEvaluationOption();
+        
+        
     }
 
     private void setInterval(int runningInterval) {
-        if(this.cbxInterval.getItemCount() > 0){
-                        cbxInterval.removeAllItems();
-                }
-                
-                for (Interval i : Interval.values()) {
-                        if(i.second >= runningInterval)
-                                this.cbxInterval.addItem(i);
-                }
+        if (this.cbxInterval.getItemCount() > 0) {
+            cbxInterval.removeAllItems();
+        }
+
+        for (Interval i : Interval.values()) {
+            if (i.second >= runningInterval) {
+                this.cbxInterval.addItem(i);
+            }
+        }
     }
 
     private void loadSection() {
         this.cbxSections.removeAllItems();
-        for(Section s : infra.getSections()){
+        for (Section s : infra.getSections()) {
             this.cbxSections.addItem(s);
         }
     }
 
     private void selectOutputPath() {
         JFileChooser chooser = new JFileChooser();
-        
+
         String path = ".";
         String prevPath = this.txOutputFolder.getText();
         if (!prevPath.isEmpty()) {
             path = new File(prevPath).getAbsolutePath();
         }
-        
+
         chooser.setCurrentDirectory(new java.io.File(path));
         chooser.setDialogTitle("Select output folder");
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -905,27 +918,28 @@ public class TrafficAnalysis extends javax.swing.JPanel {
 
     private void evaluation() {
         KHTAOption tempOption = getOption();
-        if(tempOption == null){
-            return ;
-        }
-        else{
+        if (tempOption == null) {
+            return;
+        } else {
             khtaOption = tempOption;
 
             EvaluationOption eo = khtaOption.getEvaluationOption();
-            if((eo != null))
-            {
+            if ((eo != null)) {
+                // save option
+                KHTAOption.save(khtaOption, OPTION_FILE);
+                
                 // open RunningDialog
                 RunningDialog rd = new RunningDialog((Frame) this.getTopLevelAncestor(), true);
                 rd.setLocationRelativeTo(this);
                 Timer t = new Timer();
                 t.schedule(new EvaluateTask(khtaOption, eo, rd), 10);
                 rd.setTimer(t);
-                rd.setVisible(true);  
+                rd.setVisible(true);
             }
-        }        
+        }
     }
-    
-    class EvaluateTask extends TimerTask{
+
+    class EvaluateTask extends TimerTask {
 
         KHTAOption ko;
         EvaluationOption eo;
@@ -934,8 +948,8 @@ public class TrafficAnalysis extends javax.swing.JPanel {
         Section selectedSection;
         String outputPath;
         ArrayList<BasicData> basicDataSet;
-        
-        public EvaluateTask(KHTAOption ko, EvaluationOption eo, RunningDialog rd){
+
+        public EvaluateTask(KHTAOption ko, EvaluationOption eo, RunningDialog rd) {
             this.ko = ko;
             this.eo = eo;
             this.rd = rd;
@@ -945,14 +959,14 @@ public class TrafficAnalysis extends javax.swing.JPanel {
             basicDataSet = new ArrayList<>();
             rd.showLog();
         }
-        
+
         @Override
         public void run() {
             runEvaluate();
-            
+
             // close RunningDialog after 1.8 seconds
             rd.close(1.8);
-            
+
             // open output folder
             Desktop desktop = Desktop.getDesktop();
             try {
@@ -963,37 +977,36 @@ public class TrafficAnalysis extends javax.swing.JPanel {
                 Logger.getLogger(TrafficAnalysis.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
-        private void runEvaluate(){
-            for(Period p : periods)
-            {
+
+        private void runEvaluate() {
+            for (Period p : periods) {
                 //해당하는 시간내 섹션의 데이터를 로드
                 selectedSection.loadData(p, null);
 
                 //체크박스에 맞춰 evaluation.process 실행
-                if(eo.getSpeedCheck()){
+                if (eo.getSpeedCheck()) {
                     //StationSpeed ss = new StationSpeed(p, selectedSection, outputPath);
                     basicDataSet.add(new StationSpeed(p, selectedSection, outputPath, eo));
                 }
-                if(eo.getDensityCheck()){
+                if (eo.getDensityCheck()) {
                     //StationDensity sd = new StationDensity(p, selectedSection, outputPath);
                     basicDataSet.add(new StationDensity(p, selectedSection, outputPath, eo));
                 }
-                if(eo.getTotalFlowCheck()){
+                if (eo.getTotalFlowCheck()) {
                     //StationTotalFlow stf = new StationTotalFlow(p, selectedSection, outputPath);
                     basicDataSet.add(new StationTotalFlow(p, selectedSection, outputPath, eo));
                 }
-                if(eo.getAverageLaneFlowCheck()){
+                if (eo.getAverageLaneFlowCheck()) {
                     //StationAverageLaneFlow salf = new StationAverageLaneFlow(p, selectedSection, outputPath);
                     basicDataSet.add(new StationAverageLaneFlow(p, selectedSection, outputPath, eo));
                 }
-                if(eo.getAccelerationCheck()){
+                if (eo.getAccelerationCheck()) {
                     //StationAcceleration sa = new StationAcceleration(p, selectedSection, outputPath);
                     basicDataSet.add(new StationAcceleration(p, selectedSection, outputPath, eo));
                 }
-                for(BasicData bd : basicDataSet){
+                for (BasicData bd : basicDataSet) {
                     bd.process();
-                    if(ko.getExcelCheck()){
+                    if (ko.getExcelCheck()) {
                         //엑셀 저장
                         try {
                             //this.saveExcel(outputPath + "speed_" + section.getName() + period.getPeriodString());
@@ -1002,14 +1015,14 @@ public class TrafficAnalysis extends javax.swing.JPanel {
                             Logger.getLogger(StationSpeed.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
-                    if(ko.getCSVCheck()){
+                    if (ko.getCSVCheck()) {
                         try {
                             bd.saveCsv(outputPath);
                         } catch (Exception ex) {
                             Logger.getLogger(TrafficAnalysis.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
-                    if(ko.getContourCheck()){
+                    if (ko.getContourCheck()) {
                         if (eo.getSpeedCheck()) {
                             saveContour(bd, ko, eo, ContourType.SPEED);
                         } else if (eo.getDensityCheck()) {
@@ -1017,15 +1030,15 @@ public class TrafficAnalysis extends javax.swing.JPanel {
                         } else if (eo.getTotalFlowCheck()) {
                             saveContour(bd, ko, eo, ContourType.TOTAL_FLOW);
                         }// else if (eo.getAverageLaneFlowCheck()) {
-    //                        saveContour(ev, selectedOption, opts, ContourType.OCCUPANCY);
-    //                    }else if (ot.equals(OptionType.EVAL_TT)){
-    //                            System.out.println("EVALTT");
-    //                            saveContour(ev, selectedOption, opts, ContourType.TT);
-    //                    } else if (ot.equals(OptionType.EVAL_TT_REALTIME)){
-    //                            saveContour(ev, selectedOption, opts, ContourType.STT);
-    //                    }
+                        //                        saveContour(ev, selectedOption, opts, ContourType.OCCUPANCY);
+                        //                    }else if (ot.equals(OptionType.EVAL_TT)){
+                        //                            System.out.println("EVALTT");
+                        //                            saveContour(ev, selectedOption, opts, ContourType.TT);
+                        //                    } else if (ot.equals(OptionType.EVAL_TT_REALTIME)){
+                        //                            saveContour(ev, selectedOption, opts, ContourType.STT);
+                        //                    }
                     }
-                }  
+                }
                 basicDataSet.clear();
             }
         }
@@ -1033,77 +1046,72 @@ public class TrafficAnalysis extends javax.swing.JPanel {
 
     /**
      * Save contour
+     *
      * @param ev
      * @param selectedOption
      * @param opts
-     * @param cType 
+     * @param cType
      */
     private void saveContour(Evaluation ev, KHTAOption selectedOption, EvaluationOption opts, ContourType cType) {
         ContourPlotter cp = new ContourPlotter(opts.getSelectedSection(), opts.getContourSetting(cType), ev, selectedOption.getOutputPath());
-        cp.saveImage(opts.getOCAE());        
-    }    
-    
-    private KHTAOption getOption(){
-        
+        cp.saveImage(opts.getOCAE());
+    }
+
+    private KHTAOption getOption() {
+
         int duration = -1;
         int selectedSectionIndex = this.cbxSections.getSelectedIndex();
-                
+
         //섹션 읽기
-        Section selectedSection = (Section)this.cbxSections.getSelectedItem();
-        
+        Section selectedSection = (Section) this.cbxSections.getSelectedItem();
+
         //달력 읽기
         ArrayList<Calendar> selectedCalendar = new ArrayList();
         Collections.addAll(selectedCalendar, nATSRLCalendar1.getSelectedDates());
-        
-        if(selectedCalendar.isEmpty()){
+
+        if (selectedCalendar.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Check Calendar options");
             return null;
         }
-        
+
         //선택한 날짜들 정렬하기
-        Collections.sort(selectedCalendar, new Comparator<Calendar>(){
+        Collections.sort(selectedCalendar, new Comparator<Calendar>() {
             @Override
             public int compare(Calendar o1, Calendar o2) {
                 return Long.compare(o1.getTimeInMillis(), o2.getTimeInMillis());
             }
         });
-        
+
         //interval 읽기
         Interval selectedInterval = null;
-        if(cbxInterval.getSelectedIndex() == 0){
+        if (cbxInterval.getSelectedIndex() == 0) {
             selectedInterval = Interval.I5MIN;
-        }
-        else if(cbxInterval.getSelectedIndex() == 1){
+        } else if (cbxInterval.getSelectedIndex() == 1) {
             selectedInterval = Interval.I10MIN;
-        }
-        else if(cbxInterval.getSelectedIndex() == 2){
+        } else if (cbxInterval.getSelectedIndex() == 2) {
             selectedInterval = Interval.I15MIN;
-        }
-        else if(cbxInterval.getSelectedIndex() == 3){
+        } else if (cbxInterval.getSelectedIndex() == 3) {
             selectedInterval = Interval.I20MIN;
-        }
-        else if(cbxInterval.getSelectedIndex() == 4){
+        } else if (cbxInterval.getSelectedIndex() == 4) {
             selectedInterval = Interval.I30MIN;
-        }
-        else if(cbxInterval.getSelectedIndex() == 5){
+        } else if (cbxInterval.getSelectedIndex() == 5) {
             selectedInterval = Interval.I1HOUR;
         }
-        
+
         //시작 시간, 끝 시간 읽기
         int shour = cbxStartHour.getSelectedIndex();
         int smin = cbxStartMin.getSelectedIndex();
         int ehour;
         int emin;
-        if(cbxEndHour.isEnabled()){
+        if (cbxEndHour.isEnabled()) {
             ehour = cbxEndHour.getSelectedIndex();
             emin = cbxEndMin.getSelectedIndex();
-        }
-        else{
+        } else {
             duration = cbxDuration.getSelectedIndex();
             ehour = smin + duration;
             emin = smin;
         }
-        
+
         //정렬된 dList를 이용하여 연결되지 않은 날짜 분리하여 sdate, edate 설정하기
         ArrayList<Period> periods = new ArrayList();
         DateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -1111,7 +1119,7 @@ public class TrafficAnalysis extends javax.swing.JPanel {
         Date edate = null;
         String stime;
         String etime;
-        for(Calendar c : selectedCalendar){
+        for (Calendar c : selectedCalendar) {
             int year = c.get(Calendar.YEAR);
             int month = c.get(Calendar.MONTH) + 1;
             int day = c.get(Calendar.DATE);
@@ -1121,51 +1129,51 @@ public class TrafficAnalysis extends javax.swing.JPanel {
 
             System.out.println(stime);
             System.out.println(etime);
-            
+
             try {
                 sdate = formatter.parse(stime);
                 edate = formatter.parse(etime);
             } catch (ParseException ex) {
 
             }
-            
-            System.out.println("Start Date : "+sdate.toString());
-            System.out.println("End Date : "+edate.toString());
+
+            System.out.println("Start Date : " + sdate.toString());
+            System.out.println("End Date : " + edate.toString());
 
             periods.add(new Period(sdate, edate, selectedInterval.getSecond()));
         }
-        
+
         EvaluationOption opt = khtaOption.getEvaluationOption();
-                
+
         opt.setSelectedSection(selectedSection);
         opt.setPeriods(periods);
-        
+
         opt.setStationData(cbxSpeed.isSelected(), cbxDensity.isSelected(), cbxTotalFlow.isSelected(),
                 cbxAverageLaneFlow.isSelected(), cbxAcceleration.isSelected());
-        
-        if((jTextField1.getText().length() != 0) && (jTextField2.getText().length() != 0) && 
-                (jTextField3.getText().length() != 0)){
-            opt.setTrafficFlowMeasurements(cbxVMT.isSelected(), cbxVMT1.isSelected(), cbxVMT2.isSelected(), 
-            cbxVMT3.isSelected(), cbxVMT4.isSelected(), cbxVMT5.isSelected(), cbxVMT6.isSelected(), 
-            cbxVMT7.isSelected(), Double.parseDouble(jTextField1.getText()), 
-            Double.parseDouble(jTextField2.getText()), Double.parseDouble(jTextField3.getText()));
+
+        if ((jTextField1.getText().length() != 0) && (jTextField2.getText().length() != 0)
+                && (jTextField3.getText().length() != 0)) {
+            opt.setTrafficFlowMeasurements(cbxVMT.isSelected(), cbxVMT1.isSelected(), cbxVMT2.isSelected(),
+                    cbxVMT3.isSelected(), cbxVMT4.isSelected(), cbxVMT5.isSelected(), cbxVMT6.isSelected(),
+                    cbxVMT7.isSelected(), Double.parseDouble(jTextField1.getText()),
+                    Double.parseDouble(jTextField2.getText()), Double.parseDouble(jTextField3.getText()));
         }
-        
+
         opt.setOutputOption(jCheckBox1.isSelected(), jCheckBox2.isSelected(), jCheckBox3.isSelected());
-        
+
         if (opt.isSelectedAnything() == false) {
             JOptionPane.showMessageDialog(this, "Check evaluation options");
             return null;
         }
-        
+
         contourTapPanel.setContourOption();
-        
+
         String outputPath = this.txOutputFolder.getText();
-        
-        khtaOption.setOptions(selectedSectionIndex, duration, selectedInterval, outputPath, 
+
+        khtaOption.setOptions(selectedSectionIndex, duration, selectedInterval, outputPath,
                 cbxExcel.isSelected(), cbxCSV.isSelected(), cbxContour.isSelected());
-                
+
         return khtaOption;
-    } 
-    
+    }
+
 }

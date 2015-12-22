@@ -156,7 +156,6 @@ public class SectionCreation extends javax.swing.JPanel {
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel5.setText("Section Name");
 
-        tbxSectionNane.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         tbxSectionNane.setPreferredSize(new java.awt.Dimension(300, 21));
 
         btnCreateSection.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -221,7 +220,6 @@ public class SectionCreation extends javax.swing.JPanel {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Section List", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
 
-        listSection.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         listSection.setPreferredSize(new java.awt.Dimension(190, 30));
         listSection.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {

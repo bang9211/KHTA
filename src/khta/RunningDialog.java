@@ -149,6 +149,7 @@ public class RunningDialog extends javax.swing.JDialog {
 
         tbxLog.setEditable(false);
         tbxLog.setColumns(20);
+        tbxLog.setFont(new java.awt.Font("굴림", 0, 13)); // NOI18N
         tbxLog.setLineWrap(true);
         tbxLog.setRows(5);
         tbxLog.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));

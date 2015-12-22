@@ -23,6 +23,7 @@ package util;
  */
 public class KHTAParam {
     public static final String SECTION_DIR = "section";
+    public static final String CONFIG_DIR = "config";
     
     //btn Text
     public static final String SECTION_SAVE = "Create Section";

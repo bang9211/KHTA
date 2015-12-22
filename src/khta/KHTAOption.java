@@ -7,48 +7,58 @@ package khta;
 
 import evaluation.EvaluationOption;
 import evaluation.Interval;
-import infra.Period;
-import infra.Section;
+import static infra.Section.getCacheFileName;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import util.KHTAParam;
+import util.PropertiesWrapper;
 
 /**
  *
  * @author HanYoungTak
  */
 public class KHTAOption {
+    public static final String OPTION_SECTION_INDEX = "option.sectionIndex";
+    public static final String OPTION_DURATION = "option.duration";
+    public static final String OPTION_INTERVAL = "option.interval";
+    public static final String OPTION_OUTPUT_PATH = "option.outputPath";
+    public static final String OPTION_EXCEL_CHECK = "option.excelCheck";
+    public static final String OPTION_CSV_CHECK = "option.csvCheck";
+    public static final String OPTION_CONTOUR_CHECK = "option.contourCheck";
     
     private boolean isLoaded;
-    private int selectedSectionIndex = 0;
-    private int duration = -1;
-    private long timestamp = 0;
+    private static int sectionIndex = 0;
+    private static int duration = -1;
     
-    private Interval selectedInterval;
+    private Interval interval;
     private String outputPath = "";
     private boolean excelCheck;
     private boolean csvCheck;
     private boolean contourCheck;
     
+    private static String savePath = KHTAParam.CONFIG_DIR + File.separator;
+    private static PropertiesWrapper prop;
+    
     private EvaluationOption evaluationOption = new EvaluationOption();
     
     public KHTAOption(){
-        this.timestamp = new Date().getTime();
+        prop = new PropertiesWrapper();
     }
     
-    public void setOptions(int selectedSectionIndex, int duration,
-            Interval selectedInterval, String outputPath, 
+    public void setOptions(int sectionIndex, int duration,
+            Interval interval, String outputPath, 
             boolean excelCheck, boolean csvCheck, boolean contourCheck){
-        this.selectedSectionIndex = selectedSectionIndex;
+        this.sectionIndex = sectionIndex;
         this.duration = duration;
-        this.selectedInterval = selectedInterval;
+        this.interval = interval;
         this.outputPath = outputPath;
         this.excelCheck = excelCheck;
         this.csvCheck = csvCheck;
@@ -62,24 +72,17 @@ public class KHTAOption {
      * @param filename 
      */
     public static void save(KHTAOption opt, String filename) {
-        FileOutputStream fileOut = null;
-        boolean isLoadedBackup = opt.isLoaded;
-        try {            
-            opt.isLoaded = false;
-            fileOut = new FileOutputStream(filename);
-            ObjectOutputStream out = new ObjectOutputStream(fileOut);
-            out.writeObject(opt);
-            out.close();
-            fileOut.close();
-        } catch (Exception ex) {
-            opt.isLoaded = isLoadedBackup;
-        } finally {
-            try {                
-                fileOut.close();
-            } catch (IOException ex) {
-                Logger.getLogger(KHTAOption.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        File configChacheDir = new File(KHTAParam.CONFIG_DIR);
+        if(!configChacheDir.mkdir() && !configChacheDir.exists()){
+            JOptionPane.showMessageDialog(null, "Fail to create cache folder\n"+configChacheDir);
         }
+        
+        prop.put(savePath, OPTION_SECTION_INDEX);
+        
+        prop.put(filename, Boolean.TRUE);
+        
+        savePath += filename;
+        prop.save(savePath, filename);
     }
     
     /**
@@ -118,20 +121,20 @@ public class KHTAOption {
         return new KHTAOption();        
     }
         
-    public void setSelectedSectionIndex(int selectedIndex) {
-        this.selectedSectionIndex = selectedIndex;
+    public void setSectionIndex(int selectedIndex) {
+        this.sectionIndex = selectedIndex;
     }
 
-    public int getSeletedSectionIndex() {
-        return selectedSectionIndex;
+    public int getSectionIndex() {
+        return sectionIndex;
     }
     
-    public void setSelectedInterval(Interval selectedInterval) {
-        this.selectedInterval = selectedInterval;
+    public void setInterval(Interval selectedInterval) {
+        this.interval = selectedInterval;
     }
     
-    public Interval getSelectedInterval() {
-        return this.selectedInterval;
+    public Interval getInterval() {
+        return this.interval;
     }
     
     public void setDuration(int duration) {
@@ -141,11 +144,7 @@ public class KHTAOption {
     public int getDuration() {
         return this.duration;
     }
-    
-    public Interval getSeInterval(){
-        return selectedInterval;
-    }
-    
+        
     public String getOutputPath(){
         return outputPath;
     }
@@ -171,7 +170,4 @@ public class KHTAOption {
         return this.evaluationOption;
     }
         
-    public long getTimestamp() {
-        return timestamp;
-    }
 }
