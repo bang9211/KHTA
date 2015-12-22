@@ -293,7 +293,7 @@ public final class ContourPlotter {
         String[] names = new String[stations.length];
         for (int i = 0; i < stations.length; i++) {
             names[i] = stations[i].toString();
-            System.out.println("=> " + names[i]);
+//            System.out.println("=> " + names[i]);
         }
         return names;
     }

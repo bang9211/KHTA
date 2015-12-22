@@ -34,7 +34,8 @@ import util.KHTAParam;
 public class RNode extends InfraObject implements Comparable{
     protected int distanceToDownstreamNode = -1;
     protected int distanceToUpstreamNode = -1;
-    
+    //Node Order
+    private int order = -1;
     protected double loc = -1;
     private Corridor corridor = null;
     private Direction direction = Direction.ALL;
@@ -66,6 +67,9 @@ public class RNode extends InfraObject implements Comparable{
         
         it = (Integer)super.getProperty(InfraDatas.LANE);
         lane = it == null ? -1 : it;
+        
+        it = (Integer)super.getProperty(InfraDatas.ORDER);
+        order = it == null ? -1 : it;
         
 //        direction = (Direction)getProperty(InfraDatas.DIRECTION);
         initDetectors();
@@ -368,5 +372,9 @@ public class RNode extends InfraObject implements Comparable{
     
     public double getConfidence() {
         return this.roundUp(this.confidence, 1);
+    }
+    
+    public int getOrder(){
+        return order;
     }
 }

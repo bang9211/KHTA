@@ -29,8 +29,6 @@ import java.util.*;
 public class Station extends RNode{
     //Station Type(VDS Zone Type CODE)
     private StationType stationtype = StationType.NONE;
-    //Node Order
-    private int order = -1;
     //Start Location from Start Point
     protected double Start_Loc = -1;
     //End Location from Start Point
@@ -57,9 +55,6 @@ public class Station extends RNode{
         Double dt;
         Float ft;
         
-        it = (Integer)super.getProperty(InfraDatas.ORDER);
-        order = it == null ? -1 : it;
-        
         it = (Integer)super.getProperty(InfraDatas.LENGTH);
         Length = it == null ? -1 : it;
         
@@ -79,17 +74,13 @@ public class Station extends RNode{
         stationtype = (StationType)super.getProperty(InfraDatas.STATION_TYPE);
     }
     
-    public int getOrder(){
-        return order;
-    }
-    
     public float getSpeedLimit(){
         return speedLimit;
     }
     
     @Override
     public String toString(){
-        return getName();
+        return getOrder() + " - "+getName();
     }
 
     public String getSectionName() {
