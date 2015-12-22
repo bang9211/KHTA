@@ -65,9 +65,9 @@ public class SectionCreation extends javax.swing.JPanel {
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         cbxCorridorList = new javax.swing.JComboBox();
-        jLabel3 = new javax.swing.JLabel();
+        lb_startStation = new javax.swing.JLabel();
         cbxStartStation = new javax.swing.JComboBox();
-        jLabel4 = new javax.swing.JLabel();
+        lb_endStation = new javax.swing.JLabel();
         cbxEndStation = new javax.swing.JComboBox();
         jPanel4 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
@@ -98,8 +98,8 @@ public class SectionCreation extends javax.swing.JPanel {
             }
         });
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel3.setText("Start Station");
+        lb_startStation.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lb_startStation.setText("Start Station");
 
         cbxStartStation.setFont(new java.awt.Font("Gulim", 0, 12)); // NOI18N
         cbxStartStation.setPreferredSize(new java.awt.Dimension(200, 30));
@@ -109,8 +109,8 @@ public class SectionCreation extends javax.swing.JPanel {
             }
         });
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel4.setText("End Station");
+        lb_endStation.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lb_endStation.setText("End Station");
 
         cbxEndStation.setFont(new java.awt.Font("Gulim", 0, 12)); // NOI18N
         cbxEndStation.setPreferredSize(new java.awt.Dimension(200, 30));
@@ -128,11 +128,11 @@ public class SectionCreation extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(cbxStartStation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4)
+                    .addComponent(lb_endStation)
                     .addComponent(cbxEndStation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cbxCorridorList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
-                    .addComponent(jLabel3))
+                    .addComponent(lb_startStation))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -143,11 +143,11 @@ public class SectionCreation extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cbxCorridorList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel3)
+                .addComponent(lb_startStation)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cbxStartStation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel4)
+                .addComponent(lb_endStation)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cbxEndStation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -220,6 +220,7 @@ public class SectionCreation extends javax.swing.JPanel {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Section List", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
 
+        listSection.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         listSection.setPreferredSize(new java.awt.Dimension(190, 30));
         listSection.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -314,23 +315,29 @@ public class SectionCreation extends javax.swing.JPanel {
 
     private void cbxStartStationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxStartStationActionPerformed
         // TODO add your handling code here:
-        int cidx = this.cbxStartStation.getSelectedIndex();
-        int eidx = this.cbxEndStation.getSelectedIndex();
-        int lidx = this.cbxEndStation.getItemCount()-1;
-        int nidx = (cidx+1) > lidx ? lidx : cidx+1;
-        
-        if(cidx > eidx)
-            this.cbxEndStation.setSelectedIndex(nidx);
+        Corridor sc = (Corridor)cbxCorridorList.getSelectedItem();
+        if(!sc.isLoopLine()){
+            int cidx = this.cbxStartStation.getSelectedIndex();
+            int eidx = this.cbxEndStation.getSelectedIndex();
+            int lidx = this.cbxEndStation.getItemCount()-1;
+            int nidx = (cidx+1) > lidx ? lidx : cidx+1;
+
+            if(cidx > eidx)
+                this.cbxEndStation.setSelectedIndex(nidx);
+        }
     }//GEN-LAST:event_cbxStartStationActionPerformed
 
     private void cbxEndStationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxEndStationActionPerformed
         // TODO add your handling code here:
-        int cidx = this.cbxEndStation.getSelectedIndex();
-        int sidx = this.cbxStartStation.getSelectedIndex();
-        int pidx = (cidx-1) < 0 ? 0 : cidx-1;
-        
-        if(cidx < sidx)
-            this.cbxStartStation.setSelectedIndex(pidx);
+        Corridor sc = (Corridor)cbxCorridorList.getSelectedItem();
+        if(!sc.isLoopLine()){
+            int cidx = this.cbxEndStation.getSelectedIndex();
+            int sidx = this.cbxStartStation.getSelectedIndex();
+            int pidx = (cidx-1) < 0 ? 0 : cidx-1;
+
+            if(cidx < sidx)
+                this.cbxStartStation.setSelectedIndex(pidx);
+        }
     }//GEN-LAST:event_cbxEndStationActionPerformed
 
     private void cbxSectionInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxSectionInfoActionPerformed
@@ -357,8 +364,6 @@ public class SectionCreation extends javax.swing.JPanel {
     private javax.swing.JComboBox cbxSectionInfo;
     private javax.swing.JComboBox cbxStartStation;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -366,6 +371,8 @@ public class SectionCreation extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lb_endStation;
+    private javax.swing.JLabel lb_startStation;
     private javax.swing.JList listSection;
     private javax.swing.JScrollPane panel11;
     private javax.swing.JTextArea tbxCorridorInfo;
@@ -384,6 +391,14 @@ public class SectionCreation extends javax.swing.JPanel {
             this.cbxStartStation.removeAllItems();
         if(this.cbxEndStation.getItemCount() != 0)
             this.cbxEndStation.removeAllItems();
+        
+        if(corridor.isLoopLine()){
+            lb_startStation.setText("Start Station (Loop Line)");
+            lb_endStation.setText("Start Station (Loop Line)");
+        }else{
+            lb_startStation.setText("Start Station");
+            lb_endStation.setText("Start Station");
+        }
         
         for(Station s : corridor.getStations()){
             this.cbxStartStation.addItem(s);

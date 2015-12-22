@@ -112,7 +112,7 @@ public class Section implements Serializable{
         RNodeThread.Callback cbmsg = new RNodeThread.Callback() {
             @Override
             public synchronized void IsLoaded(RNode r) {
-                System.out.println("Load RNode - "+r.getID()+" ["+(stidx+1)+"/"+section.size()+"]");
+//                System.out.println("Load RNode - "+r.getID()+" ["+(stidx+1)+"/"+section.size()+"]");
                 loadRNode(period, dopt, sobj, this);
                 stidx ++;
             }
@@ -246,8 +246,8 @@ public class Section implements Serializable{
         if(corridor == null)
             throw new Exception("Corridor is null");
         
-        for(RNode cr : corridor.getRNodes()){
-            for(String rid : stringList){
+        for(String rid : stringList){
+            for(RNode cr : corridor.getRNodes()){
                 if(cr.getID().equals(rid))
                     AddRNode(cr);
             }
@@ -322,7 +322,8 @@ public class Section implements Serializable{
         
         boolean addstart = false;
         boolean isLast = false;
-        for(RNode cr : corridor.getRNodes()){
+        for(int i=0;i<corridor.getRNodes().size();i++){
+            RNode cr = corridor.getRNodes().get(i);
             if(!addstart && cr.getID().equals(snid))
                 addstart = true;
             
@@ -334,11 +335,14 @@ public class Section implements Serializable{
             if(addstart || isLast){
                 AddRNode(cr);
                 if(isLast){
-                    isLast = false;
+                    break;
                 }
             }
+            
+            if(i == corridor.getRNodes().size()-1 && isLast == false)
+                i = 0;
         }
-        
+
         if(section.isEmpty())
             throw new Exception("RNode is empty");
     }
@@ -363,8 +367,17 @@ public class Section implements Serializable{
              * SL = StartLocation
              * EL = EndLocation
              */
-            if(cstation.isFirstNode())
-                distance = (Math.round((upStation.getEndLocation() - upStation.getLocation() + cstation.getLocation() - cstation.getStartLocation())*100d)/100d);
+            if(cstation.getLocation() != upStation.getLocation() && upStation.getOrder() > cstation.getOrder()){
+                double cstation_StartLoc = 0;
+                if(!cstation.isFirstNode()){
+                    RNode fn = corridor.getStations().get(0);
+                    cstation_StartLoc = fn.getLocation();
+//                    System.out.println("firstStation : "+fn.getName()+", "+cstation_StartLoc);
+                    distance = (Math.round((cstation.getLocation() - cstation_StartLoc)*100d)/100d);
+                }else
+                    distance = (Math.round((upStation.getEndLocation() - upStation.getLocation() + cstation.getLocation())*100d)/100d);
+                
+            }
             else
                 distance = Math.round(Math.abs(cstation.getLocation() - upStation.getLocation())*100d)/100d;
             

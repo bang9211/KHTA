@@ -39,6 +39,8 @@ public class Corridor extends InfraObject{
     private Direction direction = null;
     
     private double totalLength = 0;
+    
+    private boolean isLoopLine = false;
     //private String shortName = null; //short name
     //private String StartName = null; //Start Location Name
     //private String EndName = null; //End Location Name
@@ -61,6 +63,8 @@ public class Corridor extends InfraObject{
         //freeSpeed = temp == null ? -1 : temp;
         //temp = (Integer)getProperty(InfraDatas.JAMSPEED);
         //JamSpeed = temp == null ? -1 : temp;
+        
+        setLoopLine();
     }
     
     //Add RNode
@@ -179,5 +183,17 @@ public class Corridor extends InfraObject{
 
     public double getTotalLength() {
         return totalLength;
+    }
+
+    private void setLoopLine() {
+        final String s_T = "순환";
+        if(getName().contains(s_T))
+            this.isLoopLine = true;
+        else
+            this.isLoopLine = false;
+    }
+    
+    public boolean isLoopLine(){
+        return isLoopLine;
     }
 }
