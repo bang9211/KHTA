@@ -15,8 +15,8 @@ import infra.infraobject.RNode;
  */
 public class StationTotalFlow extends BasicData{
 
-    public StationTotalFlow(Period p, Section s, String op) {
-        super(p, s, op);
+    public StationTotalFlow(Period p, Section s, String op, EvaluationOption opts) {
+        super(p, s, op, opts);
     }
 
     @Override

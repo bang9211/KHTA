@@ -19,7 +19,7 @@ public class ContourTapPanel extends javax.swing.JPanel {
     private EvaluationOption evaluationOption;
     
     private ContourPanel TTContourSetting = new ContourPanel(11, 60, false);
-    private ContourPanel speedContourSetting = new ContourPanel(11, 55, true);
+    private ContourPanel speedContourSetting = new ContourPanel(11, 120, true);
     private ContourPanel totalFlowContourSetting = new ContourPanel(11, 6000, false);
     private ContourPanel occupancyContourSetting = new ContourPanel(11, 100, false);
     private ContourPanel densityContourSetting = new ContourPanel(9, 150, false);   
@@ -42,10 +42,10 @@ public class ContourTapPanel extends javax.swing.JPanel {
 //        } else {
             System.err.println("Option is not loaded");
             // option isn't loaded
-            this.speedContourSetting.setUnit("mile/h");
+            this.speedContourSetting.setUnit("km/h");
             this.totalFlowContourSetting.setUnit("veh/h");
             this.occupancyContourSetting.setUnit("%");
-            this.densityContourSetting.setUnit("veh/mile");
+            this.densityContourSetting.setUnit("veh/km");
             TTContourSetting.setUnit("min");
             
             // set excel checkbox selected by default

@@ -28,10 +28,11 @@ public abstract class BasicData extends Evaluation{
     
     protected abstract void addStationDataSet(RNode r);
     
-    protected BasicData(Period p, Section s, String op){
+    protected BasicData(Period p, Section s, String op, EvaluationOption opts){
         this.period = p;
         this.section = s;
         this.outputPath = op;
+        this.opts = opts;
         init();
     }
     
@@ -47,7 +48,6 @@ public abstract class BasicData extends Evaluation{
     @Override
     public void process() {
         //EvaluationResult 형식에 맞추어 헤더 작성
-        //0번째는 문자열 입력(colHeader)
         setTimeLine();
         double distance = 0;
         //해당 데이터를 results에 저장
@@ -68,6 +68,11 @@ public abstract class BasicData extends Evaluation{
         //speed를 EvaluationResult로 만들어 results에 넣어야 함
         EvaluationResult er = new EvaluationResult(erData);
         er.setName(period.getPeriodString());
+        
+        //옵션에 따라 fixmissingdata
+        //if()
+        fixMissingStation(er);
+
         results.add(er);
     }
 }

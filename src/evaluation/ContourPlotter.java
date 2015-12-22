@@ -264,6 +264,8 @@ public final class ContourPlotter {
         // see Evaluation.java
         Vector<EvaluationResult> results = (Vector<EvaluationResult>) this.eval.getResult().clone();
         EvaluationResult result = results.get(0);
+        result.setUseAccumulatedDistance(true);
+        result.setUseConfidence(true);
 
         // x => index of time line
         // y => index of stations with virtual stations
@@ -275,7 +277,7 @@ public final class ContourPlotter {
         int ySize = result.getColumnSize() - colDataStartPoint;
 
         // for all data according to time series
-        for (int x = 0; x < xSize; x++) {
+        for (int x = rowDataStartPoint; x < xSize; x++) {
             // for all station data
             for (int y = colDataStartPoint; y < ySize; y++) {
                 //System.out.println("x="+x+", y="+y+", z="+Double.parseDouble(result.get(y+colDataStartPoint, x+rowDataStartPoint).toString()));

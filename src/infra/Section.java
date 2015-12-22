@@ -378,4 +378,20 @@ public class Section implements Serializable{
     public String toString(){
         return getName();
     }
+    
+    public int getFeetInSection(Station upstation, Station downstation)
+    {
+        Station[] stations = this.getStations();
+        int distance = 0;
+        boolean isStarted = false;
+        for(int i=0; i<stations.length-1; i++)
+        {
+            if(stations[i].equals(upstation)) isStarted = true;
+            if(isStarted) {
+                distance += stations[i].getDistanceToDownstreamStation(this.name);
+                if(stations[i+1].equals(downstation)) break;
+            }
+        }
+        return distance;
+    }
 }

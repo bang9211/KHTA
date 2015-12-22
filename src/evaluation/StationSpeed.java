@@ -15,8 +15,8 @@ import infra.infraobject.RNode;
  */
 public class StationSpeed extends BasicData {
 
-    public StationSpeed(Period p, Section s, String op) {
-        super(p, s, op);
+    public StationSpeed(Period p, Section s, String op, EvaluationOption opts) {
+        super(p, s, op, opts);
     }
 
     @Override

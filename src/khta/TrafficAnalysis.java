@@ -928,23 +928,23 @@ public class TrafficAnalysis extends javax.swing.JPanel {
                 //체크박스에 맞춰 evaluation.process 실행
                 if(eo.getSpeedCheck()){
                     //StationSpeed ss = new StationSpeed(p, selectedSection, outputPath);
-                    basicDataSet.add(new StationSpeed(p, selectedSection, outputPath));
+                    basicDataSet.add(new StationSpeed(p, selectedSection, outputPath, eo));
                 }
                 if(eo.getDensityCheck()){
                     //StationDensity sd = new StationDensity(p, selectedSection, outputPath);
-                    basicDataSet.add(new StationDensity(p, selectedSection, outputPath));
+                    basicDataSet.add(new StationDensity(p, selectedSection, outputPath, eo));
                 }
                 if(eo.getTotalFlowCheck()){
                     //StationTotalFlow stf = new StationTotalFlow(p, selectedSection, outputPath);
-                    basicDataSet.add(new StationTotalFlow(p, selectedSection, outputPath));
+                    basicDataSet.add(new StationTotalFlow(p, selectedSection, outputPath, eo));
                 }
                 if(eo.getAverageLaneFlowCheck()){
                     //StationAverageLaneFlow salf = new StationAverageLaneFlow(p, selectedSection, outputPath);
-                    basicDataSet.add(new StationAverageLaneFlow(p, selectedSection, outputPath));
+                    basicDataSet.add(new StationAverageLaneFlow(p, selectedSection, outputPath, eo));
                 }
                 if(eo.getAccelerationCheck()){
                     //StationAcceleration sa = new StationAcceleration(p, selectedSection, outputPath);
-                    basicDataSet.add(new StationAcceleration(p, selectedSection, outputPath));
+                    basicDataSet.add(new StationAcceleration(p, selectedSection, outputPath, eo));
                 }
                 for(BasicData bd : basicDataSet){
                     bd.process();
@@ -996,7 +996,7 @@ public class TrafficAnalysis extends javax.swing.JPanel {
     private void saveContour(Evaluation ev, KHTAOption selectedOption, EvaluationOption opts, ContourType cType) {
         ContourPlotter cp = new ContourPlotter(opts.getSelectedSection(), opts.getContourSetting(cType), ev, selectedOption.getOutputPath());
 //        cp.saveImage(opts.hasOption(OptionType.OPEN_CONTOUR));        
-        cp.saveImage(false);        
+        cp.saveImage(true);        
     }    
     
     private KHTAOption getOption(){

@@ -16,6 +16,8 @@
  */
 package evaluation;
 
+import infra.Section;
+import infra.infraobject.Station;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -37,11 +39,12 @@ public abstract class Evaluation {
     
     protected Vector<EvaluationResult> results = new Vector<EvaluationResult>();
     protected String name;
+    protected EvaluationOption opts;
     
     protected abstract void init();
     
     protected abstract void process();
-    
+            
     protected boolean checkExcelDataLength() {
 
         int maxColumn = 256;
@@ -290,5 +293,88 @@ public abstract class Evaluation {
         }
 
         return filepath;
+    }
+    
+    /**
+     * Interpolate missing station data
+     * @param res 
+     */
+    public void fixMissingStation(EvaluationResult res) {
+        Section section = this.opts.getSelectedSection();
+        Station[] stations = section.getStations();
+        
+        double value, upstationValue, downstationValue;
+        int colStart = res.COL_DATA_START();
+        int rowStart = res.ROW_DATA_START();
+        int colEnd = res.getColumnSize();
+        int rowEnd = res.getRowSize(0);
+        int upstationIdx = -1, downstationIdx = -1;
+        double distance, distanceToDownstation, distanceToUpstation;
+
+        // for all stations
+        for (int c = colStart; c < colEnd; c++) {
+            // for all data (row)
+            for (int r = rowStart; r < rowEnd; r++) {
+                // retrieve data
+                value = Double.parseDouble(res.get(c, r).toString());
+                // if missing data
+                if (value < 0) {
+                    upstationValue = 0;
+                    downstationValue = 0;
+                    upstationIdx = -1;
+                    downstationIdx = -1;
+
+                    // find upstation value and index
+                    if (c > colStart) {
+                        for (int i = c - 1; i > colStart; i--) {
+                            upstationValue = Double.parseDouble(res.get(i, r).toString());
+                            if (upstationValue > 0) {
+                                upstationIdx = i - colStart;
+                                break;
+                            }
+                        }
+                    }
+
+                    // find downstation value and index
+                    if (c < colEnd - 1) {
+                        for (int i = c + 1; i < colEnd; i++) {
+                            downstationValue = Double.parseDouble(res.get(i, r).toString());
+                            if (downstationValue > 0) {
+                                downstationIdx = i - colStart;
+                                break;
+                            }
+                        }
+                    }
+
+                    // calculate interpolated value                    
+                    // if it's not first and last station
+                    if (upstationIdx > 0 && downstationIdx > 0) {
+                        distance = section.getFeetInSection(stations[upstationIdx], stations[downstationIdx]);
+                        double oneThirdDistance = distance / 3.0;
+                        distanceToUpstation = section.getFeetInSection(stations[upstationIdx], stations[c - colStart]); 
+                        distanceToDownstation = section.getFeetInSection(stations[c - colStart], stations[downstationIdx]);
+
+                        if (distanceToUpstation <= oneThirdDistance) {
+                            value = upstationValue;
+                        } else if (distanceToDownstation <= oneThirdDistance) {
+                            value = downstationValue;
+                        } else {
+                            value = (upstationValue + downstationValue) / 2;
+                        }
+
+                    } else if (downstationIdx > 0) {
+                        // if it's first station                        
+                        value = downstationValue;
+                    } else if (upstationIdx > 0) {
+                        // if it's last station
+                        value = upstationValue;
+                    }
+
+                    // update data
+                    res.set(c, r, value);
+                }
+            }
+        }
+
     }
 }
