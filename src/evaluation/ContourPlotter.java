@@ -302,7 +302,7 @@ public final class ContourPlotter {
         double prevDis = 0;
         dis[0] = 0;
         for (int i = 1; i < stations.length; i++) {
-            dis[i] = EvalHelper.getDistance(this.section.getName(), stations[i - 1]) * 10 + prevDis;
+            dis[i] = (EvalHelper.getDistance(this.section.getName(), stations[i - 1])*0.62) * 10 + prevDis;
             prevDis = dis[i];
         }
         return dis;

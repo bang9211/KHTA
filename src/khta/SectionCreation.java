@@ -39,6 +39,7 @@ import util.KHTAParam;
 public class SectionCreation extends javax.swing.JPanel {
 
     private final Infra infra;
+    private Section curentSection = null;
     /**
      * Creates new form SectionCreation
      * @param _infra
@@ -448,6 +449,7 @@ public class SectionCreation extends javax.swing.JPanel {
 
     private void ListenSectionInfo() {
         Section ss = (Section)listSection.getSelectedValue();
+        curentSection = ss;
         cbxSectionInfo.removeAllItems();
         for(RNode r : ss.getRNodes()){
             cbxSectionInfo.addItem(r);
@@ -457,6 +459,9 @@ public class SectionCreation extends javax.swing.JPanel {
     }
 
     private void selectSectionInfo(RNode rNode) {
+        if(curentSection == null)
+            return;
+        
         this.tbxSectionInfo.setText("");
         if(rNode == null) return;
         String str = "RNode Info\n";
@@ -471,6 +476,8 @@ public class SectionCreation extends javax.swing.JPanel {
             Station s = (Station)rNode;
             str += "Start Location : "+s.getStartLocation()+ " km ("+s.getStartLocation()*1000+"m)\n";
             str += "End Location : "+s.getEndLocation()+ " km ("+s.getEndLocation()*1000+"m)\n";
+            str += "Distance to Upstream : "+s.getDistanceToUpstreamStation(curentSection.getName())+ " km ("+s.getDistanceToUpstreamStation(curentSection.getName())*1000+"m)\n";
+            str += "Distance to DownStream : "+s.getDistanceToDownstreamStation(curentSection.getName())+ " km ("+s.getDistanceToDownstreamStation(curentSection.getName())*1000+"m)\n";
             str += "Order : "+s.getOrder()+ "\n";
             str += "Lane Size : "+s.getLaneCount()+ "\n";
             str += "SpeedLimit : "+s.getSpeedLimit()+ "\n";

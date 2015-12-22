@@ -51,7 +51,7 @@ public abstract class BasicData extends Evaluation{
         //EvaluationResult 형식에 맞추어 헤더 작성
         //0번째는 문자열 입력(colHeader)
         setTimeLine();
-        
+        double distance = 0;
         //해당 데이터를 results에 저장
         for (RNode r : section.getRNodes()) {
             if(r.getNodeType() == RnodeType.STATION){
@@ -59,10 +59,11 @@ public abstract class BasicData extends Evaluation{
                 //매 스테이션마다 데이터의 헤더를 추가해야함
                 data = new ArrayList();
                 data.add(s.getName());
-                data.add(100);
-                data.add(s.getLocation());
+                data.add(s.getConfidence());
+                data.add(distance);
                 addStationDataSet(r);
                 erData.add(data);
+                distance += EvalHelper.getDistance(section.getName(), s);
             }
         }
         

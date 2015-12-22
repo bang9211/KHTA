@@ -17,6 +17,7 @@
 package infra.infraobject;
 
 import infra.InfraDatas;
+import infra.Section;
 import infra.type.*;
 import java.util.*;
 
@@ -44,6 +45,11 @@ public class Station extends RNode{
     protected String SectionName;
     //DB Section ID
     protected String DB_Section_ID;
+    
+    private HashMap<String, Station> downstreamStation = new HashMap<String, Station>();
+    private HashMap<String, Station> upstreamStation = new HashMap<String, Station>();
+    private HashMap<String, Double> distanceToDownstreamStation = new HashMap<String, Double>();    // unit = km
+    private HashMap<String, Double> distanceToUpstreamStation = new HashMap<String, Double>();    // unit = km    
     
     public Station(HashMap<InfraDatas,Object> datas) {
         super(datas,RnodeType.STATION);
@@ -113,5 +119,38 @@ public class Station extends RNode{
     public void setLocation(double sloc, double eloc){
         this.Start_Loc = sloc;
         this.End_Loc = eloc;
+    }
+    
+    public void setDistanceToDownstreamStation(String sectionName, Double distance){
+        this.distanceToDownstreamStation.put(sectionName, distance);
+    }
+    
+    public void setDistanceToUpstreamStation(String sectionName, Double distance){
+        this.distanceToUpstreamStation.put(sectionName, distance);
+    }
+    
+    public double getDistanceToDownstreamStation(String sectionName){
+        if(this.distanceToDownstreamStation.get(sectionName) == null){
+            return -1;
+        }
+        Double v = this.distanceToDownstreamStation.get(sectionName);        
+        return v;
+    }
+    
+    public double getDistanceToUpstreamStation(String sectionName){
+        if(this.distanceToUpstreamStation.get(sectionName) == null){
+            return -1;
+        }
+        Double v = this.distanceToUpstreamStation.get(sectionName);        
+        return v;
+    }
+
+    public void setUpstreamStation(String sectionName, Station upStation) {
+        this.upstreamStation.put(sectionName, upStation);
+    }
+
+    public void setDownstreamStation(String sectionName, Station downStation) {
+        downstreamStation.put(sectionName, downStation);
+        downStation.setUpstreamStation(sectionName, this);
     }
 }
