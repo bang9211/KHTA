@@ -138,6 +138,10 @@ public class TrafficAnalysis extends javax.swing.JPanel {
         cbxExcel = new javax.swing.JCheckBox();
         cbxCSV = new javax.swing.JCheckBox();
         cbxContour = new javax.swing.JCheckBox();
+        jLabel10 = new javax.swing.JLabel();
+        jCheckBox1 = new javax.swing.JCheckBox();
+        jCheckBox2 = new javax.swing.JCheckBox();
+        jCheckBox3 = new javax.swing.JCheckBox();
 
         setName("Traffic Analysis"); // NOI18N
         addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -374,7 +378,7 @@ public class TrafficAnalysis extends javax.swing.JPanel {
                 .addComponent(cbxAverageLaneFlow)
                 .addGap(18, 18, 18)
                 .addComponent(cbxAcceleration)
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -484,10 +488,10 @@ public class TrafficAnalysis extends javax.swing.JPanel {
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE)
+                .addComponent(jTextField2)
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -544,7 +548,7 @@ public class TrafficAnalysis extends javax.swing.JPanel {
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 875, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -578,56 +582,87 @@ public class TrafficAnalysis extends javax.swing.JPanel {
             jLabel9.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
             jLabel9.setText("Output Format");
 
+            cbxExcel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
             cbxExcel.setSelected(true);
             cbxExcel.setText("Excel");
 
+            cbxCSV.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
             cbxCSV.setText("CSV");
 
+            cbxContour.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
             cbxContour.setText("Contour");
+
+            jLabel10.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+            jLabel10.setText("Output Option");
+
+            jCheckBox1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+            jCheckBox1.setText("Open contour after extraction");
+
+            jCheckBox2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+            jCheckBox2.setText("Interpolate missing station data");
+
+            jCheckBox3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+            jCheckBox3.setText("Interpolate '0' missing station data");
 
             javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
             jPanel7.setLayout(jPanel7Layout);
             jPanel7Layout.setHorizontalGroup(
                 jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                .addGroup(jPanel7Layout.createSequentialGroup()
+                    .addGap(7, 7, 7)
                     .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel7Layout.createSequentialGroup()
                             .addComponent(txOutputFolder, javax.swing.GroupLayout.PREFERRED_SIZE, 432, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(browser))
                         .addComponent(jLabel2)
-                        .addComponent(jLabel9)
                         .addGroup(jPanel7Layout.createSequentialGroup()
                             .addComponent(cbxExcel)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(cbxCSV)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(cbxContour)))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnExtraction, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbxContour))
+                        .addComponent(jLabel9))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel10)
+                        .addComponent(jCheckBox3)
+                        .addComponent(jCheckBox2)
+                        .addComponent(jCheckBox1))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                    .addComponent(btnExtraction)
                     .addContainerGap())
             );
             jPanel7Layout.setVerticalGroup(
                 jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel7Layout.createSequentialGroup()
-                    .addContainerGap()
                     .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel7Layout.createSequentialGroup()
-                            .addComponent(btnExtraction, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE)
-                            .addContainerGap())
-                        .addGroup(jPanel7Layout.createSequentialGroup()
-                            .addComponent(jLabel9)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(cbxExcel)
-                                .addComponent(cbxCSV)
-                                .addComponent(cbxContour))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jLabel2)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(txOutputFolder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(browser)))))
+                            .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel7Layout.createSequentialGroup()
+                                    .addComponent(jLabel10)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(jCheckBox1)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jCheckBox2)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jCheckBox3))
+                                .addGroup(jPanel7Layout.createSequentialGroup()
+                                    .addComponent(jLabel9)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(cbxExcel)
+                                        .addComponent(cbxCSV)
+                                        .addComponent(cbxContour))
+                                    .addGap(4, 4, 4)
+                                    .addComponent(jLabel2)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(txOutputFolder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(browser))))
+                            .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(btnExtraction, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addContainerGap())
             );
 
             javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -790,7 +825,11 @@ public class TrafficAnalysis extends javax.swing.JPanel {
     private javax.swing.JCheckBox cbxVMT5;
     private javax.swing.JCheckBox cbxVMT6;
     private javax.swing.JCheckBox cbxVMT7;
+    private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JCheckBox jCheckBox2;
+    private javax.swing.JCheckBox jCheckBox3;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel17;
@@ -865,19 +904,25 @@ public class TrafficAnalysis extends javax.swing.JPanel {
     }
 
     private void evaluation() {
-        
-        khtaOption = getOption();
-        EvaluationOption eo = khtaOption.getEvaluationOption();
-        if((khtaOption != null) && (eo != null))
-        {
-            // open RunningDialog
-            RunningDialog rd = new RunningDialog((Frame) this.getTopLevelAncestor(), true);
-            rd.setLocationRelativeTo(this);
-            Timer t = new Timer();
-            t.schedule(new EvaluateTask(khtaOption, eo, rd), 10);
-            rd.setTimer(t);
-            rd.setVisible(true);  
+        KHTAOption tempOption = getOption();
+        if(tempOption == null){
+            return ;
         }
+        else{
+            khtaOption = tempOption;
+
+            EvaluationOption eo = khtaOption.getEvaluationOption();
+            if((eo != null))
+            {
+                // open RunningDialog
+                RunningDialog rd = new RunningDialog((Frame) this.getTopLevelAncestor(), true);
+                rd.setLocationRelativeTo(this);
+                Timer t = new Timer();
+                t.schedule(new EvaluateTask(khtaOption, eo, rd), 10);
+                rd.setTimer(t);
+                rd.setVisible(true);  
+            }
+        }        
     }
     
     class EvaluateTask extends TimerTask{
@@ -995,15 +1040,12 @@ public class TrafficAnalysis extends javax.swing.JPanel {
      */
     private void saveContour(Evaluation ev, KHTAOption selectedOption, EvaluationOption opts, ContourType cType) {
         ContourPlotter cp = new ContourPlotter(opts.getSelectedSection(), opts.getContourSetting(cType), ev, selectedOption.getOutputPath());
-//        cp.saveImage(opts.hasOption(OptionType.OPEN_CONTOUR));        
-        cp.saveImage(true);        
+        cp.saveImage(opts.getOCAE());        
     }    
     
     private KHTAOption getOption(){
         
         int duration = -1;
-        EvaluationOption opt = khtaOption.getEvaluationOption();
-        
         int selectedSectionIndex = this.cbxSections.getSelectedIndex();
                 
         //섹션 읽기
@@ -1011,15 +1053,14 @@ public class TrafficAnalysis extends javax.swing.JPanel {
         
         //달력 읽기
         ArrayList<Calendar> selectedCalendar = new ArrayList();
-        
-        //선택한 날짜들 정렬하기
         Collections.addAll(selectedCalendar, nATSRLCalendar1.getSelectedDates());
         
         if(selectedCalendar.isEmpty()){
-            JOptionPane.showMessageDialog(this, "Check KHTA options");
+            JOptionPane.showMessageDialog(this, "Check Calendar options");
             return null;
         }
         
+        //선택한 날짜들 정렬하기
         Collections.sort(selectedCalendar, new Comparator<Calendar>(){
             @Override
             public int compare(Calendar o1, Calendar o2) {
@@ -1094,6 +1135,8 @@ public class TrafficAnalysis extends javax.swing.JPanel {
             periods.add(new Period(sdate, edate, selectedInterval.getSecond()));
         }
         
+        EvaluationOption opt = khtaOption.getEvaluationOption();
+                
         opt.setSelectedSection(selectedSection);
         opt.setPeriods(periods);
         
@@ -1107,6 +1150,8 @@ public class TrafficAnalysis extends javax.swing.JPanel {
             cbxVMT7.isSelected(), Double.parseDouble(jTextField1.getText()), 
             Double.parseDouble(jTextField2.getText()), Double.parseDouble(jTextField3.getText()));
         }
+        
+        opt.setOutputOption(jCheckBox1.isSelected(), jCheckBox2.isSelected(), jCheckBox3.isSelected());
         
         if (opt.isSelectedAnything() == false) {
             JOptionPane.showMessageDialog(this, "Check evaluation options");

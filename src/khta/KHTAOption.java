@@ -32,7 +32,7 @@ public class KHTAOption {
     private long timestamp = 0;
     
     private Interval selectedInterval;
-    private String outputPath;
+    private String outputPath = "";
     private boolean excelCheck;
     private boolean csvCheck;
     private boolean contourCheck;

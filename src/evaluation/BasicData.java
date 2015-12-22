@@ -69,9 +69,11 @@ public abstract class BasicData extends Evaluation{
         EvaluationResult er = new EvaluationResult(erData);
         er.setName(period.getPeriodString());
         
-        //옵션에 따라 fixmissingdata
-        //if()
-        fixMissingStation(er);
+        
+        if(opts.getIMSD())
+            fixMissingStation(er);
+        else if(opts.getI0MSD())
+            fixZeroMissingStation(er);
 
         results.add(er);
     }

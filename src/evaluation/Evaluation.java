@@ -375,6 +375,31 @@ public abstract class Evaluation {
                 }
             }
         }
+    }
+    
+    protected void fixZeroMissingStation(EvaluationResult res) {
+        Section section = this.opts.getSelectedSection();
+        Station[] stations = section.getStations();
+        
+        double value, upstationValue, downstationValue;
+        int colStart = res.COL_DATA_START();
+        int rowStart = res.ROW_DATA_START();
+        int colEnd = res.getColumnSize();
+        int rowEnd = res.getRowSize(0);
+        int upstationIdx = -1, downstationIdx = -1;
+        double distance, distanceToDownstation, distanceToUpstation;
 
+        // for all stations
+        for (int c = colStart; c < colEnd; c++) {
+            // for all data (row)
+            for (int r = rowStart; r < rowEnd; r++) {
+                // retrieve data
+                value = Double.parseDouble(res.get(c, r).toString());
+                // if missing data
+                if (value < 0) {
+                    res.set(c, r, 0);
+                }
+            }
+        }
     }
 }

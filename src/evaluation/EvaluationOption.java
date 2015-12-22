@@ -38,6 +38,10 @@ public class EvaluationOption {
     private double cts;         //Congestion Threshold Speed(km)
     private double cd;          //Critical Density(veh/km)
     private double dlc;         //Default Lane Capacity(veh/hr)
+    
+    private boolean ocaeCheck;
+    private boolean imsdCheck;
+    private boolean i0msdCheck;
         
     /** checked options */
 //    private HashMap<String, OptionType> options = new HashMap<String, OptionType>();
@@ -111,6 +115,12 @@ public class EvaluationOption {
             return false;
     }
     
+    public void setOutputOption(boolean ocaeCheck, boolean imsdCheck, boolean i0msdCheck){
+        this.ocaeCheck = ocaeCheck;
+        this.imsdCheck = imsdCheck;
+        this.i0msdCheck = i0msdCheck;
+    }
+    
     public boolean getSpeedCheck(){
         return speedCheck;
     }
@@ -173,6 +183,18 @@ public class EvaluationOption {
     
     public boolean getDLC(){
         return speedCheck;
+    }
+    
+    public boolean getOCAE(){
+        return ocaeCheck;
+    }
+    
+    public boolean getIMSD(){
+        return imsdCheck;
+    }
+    
+    public boolean getI0MSD(){
+        return i0msdCheck;
     }
     
     public void addContourPanel(ContourType cType, ContourPanel panel)
