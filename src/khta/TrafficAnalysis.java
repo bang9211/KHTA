@@ -946,41 +946,42 @@ public class TrafficAnalysis extends javax.swing.JPanel {
                     //StationAcceleration sa = new StationAcceleration(p, selectedSection, outputPath);
                     basicDataSet.add(new StationAcceleration(p, selectedSection, outputPath));
                 }
-            }
-            for(BasicData bd : basicDataSet){
-                bd.process();
-                if(ko.getExcelCheck()){
-                    //엑셀 저장
-                    try {
-                        //this.saveExcel(outputPath + "speed_" + section.getName() + period.getPeriodString());
-                        bd.saveExcel(outputPath);
-                    } catch (Exception ex) {
-                        Logger.getLogger(StationSpeed.class.getName()).log(Level.SEVERE, null, ex);
+                for(BasicData bd : basicDataSet){
+                    bd.process();
+                    if(ko.getExcelCheck()){
+                        //엑셀 저장
+                        try {
+                            //this.saveExcel(outputPath + "speed_" + section.getName() + period.getPeriodString());
+                            bd.saveExcel(outputPath);
+                        } catch (Exception ex) {
+                            Logger.getLogger(StationSpeed.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
-                }
-                if(ko.getCSVCheck()){
-                    try {
-                        bd.saveCsv(outputPath);
-                    } catch (Exception ex) {
-                        Logger.getLogger(TrafficAnalysis.class.getName()).log(Level.SEVERE, null, ex);
+                    if(ko.getCSVCheck()){
+                        try {
+                            bd.saveCsv(outputPath);
+                        } catch (Exception ex) {
+                            Logger.getLogger(TrafficAnalysis.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
-                }
-                if(ko.getContourCheck()){
-                    if (eo.getSpeedCheck()) {
-                        saveContour(bd, ko, eo, ContourType.SPEED);
-                    } else if (eo.getDensityCheck()) {
-                        saveContour(bd, ko, eo, ContourType.DENSITY);
-                    } else if (eo.getTotalFlowCheck()) {
-                        saveContour(bd, ko, eo, ContourType.TOTAL_FLOW);
-                    }// else if (eo.getAverageLaneFlowCheck()) {
-//                        saveContour(ev, selectedOption, opts, ContourType.OCCUPANCY);
-//                    }else if (ot.equals(OptionType.EVAL_TT)){
-//                            System.out.println("EVALTT");
-//                            saveContour(ev, selectedOption, opts, ContourType.TT);
-//                    } else if (ot.equals(OptionType.EVAL_TT_REALTIME)){
-//                            saveContour(ev, selectedOption, opts, ContourType.STT);
-//                    }
-                }
+                    if(ko.getContourCheck()){
+                        if (eo.getSpeedCheck()) {
+                            saveContour(bd, ko, eo, ContourType.SPEED);
+                        } else if (eo.getDensityCheck()) {
+                            saveContour(bd, ko, eo, ContourType.DENSITY);
+                        } else if (eo.getTotalFlowCheck()) {
+                            saveContour(bd, ko, eo, ContourType.TOTAL_FLOW);
+                        }// else if (eo.getAverageLaneFlowCheck()) {
+    //                        saveContour(ev, selectedOption, opts, ContourType.OCCUPANCY);
+    //                    }else if (ot.equals(OptionType.EVAL_TT)){
+    //                            System.out.println("EVALTT");
+    //                            saveContour(ev, selectedOption, opts, ContourType.TT);
+    //                    } else if (ot.equals(OptionType.EVAL_TT_REALTIME)){
+    //                            saveContour(ev, selectedOption, opts, ContourType.STT);
+    //                    }
+                    }
+                }  
+                basicDataSet.clear();
             }
         }
     }
