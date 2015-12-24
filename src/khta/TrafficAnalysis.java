@@ -917,7 +917,7 @@ public class TrafficAnalysis extends javax.swing.JPanel {
             khtaOption = KHTAOption.load(OPTION_FILE);
             adjustLoadOption();
         }        
-
+        contourTapPanel.setContourOption();
     }
     
     private void adjustLoadOption(){
@@ -1279,7 +1279,7 @@ public class TrafficAnalysis extends javax.swing.JPanel {
             return null;
         }
 
-        contourTapPanel.setContourOption();
+        //contourTapPanel.setContourOption();
 
         String outputPath = this.txOutputFolder.getText();
 
