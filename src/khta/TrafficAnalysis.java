@@ -32,6 +32,7 @@ import infra.Period;
 import infra.Section;
 import java.awt.Desktop;
 import java.awt.Frame;
+import java.awt.event.ItemEvent;
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -60,7 +61,7 @@ public class TrafficAnalysis extends javax.swing.JPanel {
     private final Infra infra;
     private KHTAOption khtaOption;
     private ContourTapPanel contourTapPanel;
-    private final String OPTION_FILE = "khta.cfg";
+    private final String OPTION_FILE = KHTAParam.CONFIG_DIR + File.separator + "khta.cfg";
 
     /**
      * Creates new form TrafficAnalysis
@@ -120,19 +121,19 @@ public class TrafficAnalysis extends javax.swing.JPanel {
         cbxAcceleration = new javax.swing.JCheckBox();
         jPanel4 = new javax.swing.JPanel();
         cbxVMT = new javax.swing.JCheckBox();
-        cbxVMT1 = new javax.swing.JCheckBox();
-        cbxVMT2 = new javax.swing.JCheckBox();
-        cbxVMT3 = new javax.swing.JCheckBox();
-        cbxVMT4 = new javax.swing.JCheckBox();
-        cbxVMT5 = new javax.swing.JCheckBox();
-        cbxVMT6 = new javax.swing.JCheckBox();
-        cbxVMT7 = new javax.swing.JCheckBox();
+        cbxLVMT = new javax.swing.JCheckBox();
+        cbxVHT = new javax.swing.JCheckBox();
+        cbxDVH = new javax.swing.JCheckBox();
+        cbxFlowRates = new javax.swing.JCheckBox();
+        cbxTT = new javax.swing.JCheckBox();
+        cbxSV = new javax.swing.JCheckBox();
+        cbxCM = new javax.swing.JCheckBox();
         jLabel4 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
+        jTextField_CTS = new javax.swing.JTextField();
+        jTextField_CD = new javax.swing.JTextField();
+        jTextField_DLC = new javax.swing.JTextField();
         jPanel6 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         btnExtraction = new javax.swing.JButton();
@@ -144,9 +145,9 @@ public class TrafficAnalysis extends javax.swing.JPanel {
         cbxCSV = new javax.swing.JCheckBox();
         cbxContour = new javax.swing.JCheckBox();
         jLabel10 = new javax.swing.JLabel();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jCheckBox2 = new javax.swing.JCheckBox();
-        jCheckBox3 = new javax.swing.JCheckBox();
+        jCheckBoxOCAE = new javax.swing.JCheckBox();
+        jCheckBoxIMSD = new javax.swing.JCheckBox();
+        jCheckBoxI0MSD = new javax.swing.JCheckBox();
 
         setName("Traffic Analysis"); // NOI18N
         addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -185,6 +186,7 @@ public class TrafficAnalysis extends javax.swing.JPanel {
         jLabel20.setText("End Time");
 
         cbxEndHour.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
+        cbxEndHour.setMaximumRowCount(15);
         cbxEndHour.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23" }));
         cbxEndHour.setSelectedIndex(8);
         cbxEndHour.addActionListener(new java.awt.event.ActionListener() {
@@ -407,59 +409,59 @@ public class TrafficAnalysis extends javax.swing.JPanel {
             }
         });
 
-        cbxVMT1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        cbxVMT1.setText("Lost VMT for congestion (LVMT)");
-        cbxVMT1.addActionListener(new java.awt.event.ActionListener() {
+        cbxLVMT.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        cbxLVMT.setText("Lost VMT for congestion (LVMT)");
+        cbxLVMT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbxVMT1ActionPerformed(evt);
+                cbxLVMTActionPerformed(evt);
             }
         });
 
-        cbxVMT2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        cbxVMT2.setText("Vehicle Hour Traveled (VHT)");
-        cbxVMT2.addActionListener(new java.awt.event.ActionListener() {
+        cbxVHT.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        cbxVHT.setText("Vehicle Hour Traveled (VHT)");
+        cbxVHT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbxVMT2ActionPerformed(evt);
+                cbxVHTActionPerformed(evt);
             }
         });
 
-        cbxVMT3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        cbxVMT3.setText("Delayed Vehicle Hours (DVH)");
-        cbxVMT3.addActionListener(new java.awt.event.ActionListener() {
+        cbxDVH.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        cbxDVH.setText("Delayed Vehicle Hours (DVH)");
+        cbxDVH.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbxVMT3ActionPerformed(evt);
+                cbxDVHActionPerformed(evt);
             }
         });
 
-        cbxVMT4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        cbxVMT4.setText("Mainlane and Ramp Flow Rates");
-        cbxVMT4.addActionListener(new java.awt.event.ActionListener() {
+        cbxFlowRates.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        cbxFlowRates.setText("Mainlane and Ramp Flow Rates");
+        cbxFlowRates.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbxVMT4ActionPerformed(evt);
+                cbxFlowRatesActionPerformed(evt);
             }
         });
 
-        cbxVMT5.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        cbxVMT5.setText("Travel Time (TT)");
-        cbxVMT5.addActionListener(new java.awt.event.ActionListener() {
+        cbxTT.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        cbxTT.setText("Travel Time (TT)");
+        cbxTT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbxVMT5ActionPerformed(evt);
+                cbxTTActionPerformed(evt);
             }
         });
 
-        cbxVMT6.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        cbxVMT6.setText("Speed Variations (SV)");
-        cbxVMT6.addActionListener(new java.awt.event.ActionListener() {
+        cbxSV.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        cbxSV.setText("Speed Variations (SV)");
+        cbxSV.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbxVMT6ActionPerformed(evt);
+                cbxSVActionPerformed(evt);
             }
         });
 
-        cbxVMT7.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        cbxVMT7.setText("Congested Miles (CM)");
-        cbxVMT7.addActionListener(new java.awt.event.ActionListener() {
+        cbxCM.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        cbxCM.setText("Congested Miles (CM)");
+        cbxCM.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbxVMT7ActionPerformed(evt);
+                cbxCMActionPerformed(evt);
             }
         });
 
@@ -472,6 +474,12 @@ public class TrafficAnalysis extends javax.swing.JPanel {
         jLabel8.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel8.setText("Critical Density (veh/km)");
 
+        jTextField_CTS.setText("0.0");
+
+        jTextField_CD.setText("0.0");
+
+        jTextField_DLC.setText("0.0");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -482,23 +490,23 @@ public class TrafficAnalysis extends javax.swing.JPanel {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jTextField_CTS, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(cbxVMT)
-                    .addComponent(cbxVMT1)
-                    .addComponent(cbxVMT2)
-                    .addComponent(cbxVMT3)
-                    .addComponent(cbxVMT4)
-                    .addComponent(cbxVMT5)
-                    .addComponent(cbxVMT6)
-                    .addComponent(cbxVMT7)
+                    .addComponent(cbxLVMT)
+                    .addComponent(cbxVHT)
+                    .addComponent(cbxDVH)
+                    .addComponent(cbxFlowRates)
+                    .addComponent(cbxTT)
+                    .addComponent(cbxSV)
+                    .addComponent(cbxCM)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jTextField_DLC, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField2)
+                .addComponent(jTextField_CD)
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -507,29 +515,29 @@ public class TrafficAnalysis extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(cbxVMT)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cbxVMT1)
+                .addComponent(cbxLVMT)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cbxVMT2)
+                .addComponent(cbxVHT)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cbxVMT3)
+                .addComponent(cbxDVH)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cbxVMT4)
+                .addComponent(cbxFlowRates)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cbxVMT5)
+                .addComponent(cbxTT)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cbxVMT6)
+                .addComponent(cbxSV)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cbxVMT7)
+                .addComponent(cbxCM)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(jLabel8)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextField_CTS, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField_CD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextField_DLC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -602,14 +610,24 @@ public class TrafficAnalysis extends javax.swing.JPanel {
             jLabel10.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
             jLabel10.setText("Output Option");
 
-            jCheckBox1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-            jCheckBox1.setText("Open contour after extraction");
+            jCheckBoxOCAE.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+            jCheckBoxOCAE.setText("Open contour after extraction");
 
-            jCheckBox2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-            jCheckBox2.setText("Interpolate missing station data");
+            jCheckBoxIMSD.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+            jCheckBoxIMSD.setText("Interpolate missing station data");
+            jCheckBoxIMSD.addItemListener(new java.awt.event.ItemListener() {
+                public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                    jCheckBoxIMSDItemStateChanged(evt);
+                }
+            });
 
-            jCheckBox3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-            jCheckBox3.setText("Interpolate '0' missing station data");
+            jCheckBoxI0MSD.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+            jCheckBoxI0MSD.setText("Interpolate '0' missing station data");
+            jCheckBoxI0MSD.addItemListener(new java.awt.event.ItemListener() {
+                public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                    jCheckBoxI0MSDItemStateChanged(evt);
+                }
+            });
 
             javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
             jPanel7.setLayout(jPanel7Layout);
@@ -633,9 +651,9 @@ public class TrafficAnalysis extends javax.swing.JPanel {
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel10)
-                        .addComponent(jCheckBox3)
-                        .addComponent(jCheckBox2)
-                        .addComponent(jCheckBox1))
+                        .addComponent(jCheckBoxI0MSD)
+                        .addComponent(jCheckBoxIMSD)
+                        .addComponent(jCheckBoxOCAE))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
                     .addComponent(btnExtraction)
                     .addContainerGap())
@@ -649,11 +667,11 @@ public class TrafficAnalysis extends javax.swing.JPanel {
                                 .addGroup(jPanel7Layout.createSequentialGroup()
                                     .addComponent(jLabel10)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(jCheckBox1)
+                                    .addComponent(jCheckBoxOCAE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jCheckBox2)
+                                    .addComponent(jCheckBoxIMSD)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jCheckBox3))
+                                    .addComponent(jCheckBoxI0MSD))
                                 .addGroup(jPanel7Layout.createSequentialGroup()
                                     .addComponent(jLabel9)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -752,40 +770,40 @@ public class TrafficAnalysis extends javax.swing.JPanel {
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         // TODO add your handling code here:
-        loadSection();
+        //loadSection();
     }//GEN-LAST:event_formComponentShown
 
     private void cbxVMTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxVMTActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cbxVMTActionPerformed
 
-    private void cbxVMT1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxVMT1ActionPerformed
+    private void cbxLVMTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxLVMTActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cbxVMT1ActionPerformed
+    }//GEN-LAST:event_cbxLVMTActionPerformed
 
-    private void cbxVMT2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxVMT2ActionPerformed
+    private void cbxVHTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxVHTActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cbxVMT2ActionPerformed
+    }//GEN-LAST:event_cbxVHTActionPerformed
 
-    private void cbxVMT3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxVMT3ActionPerformed
+    private void cbxDVHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxDVHActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cbxVMT3ActionPerformed
+    }//GEN-LAST:event_cbxDVHActionPerformed
 
-    private void cbxVMT4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxVMT4ActionPerformed
+    private void cbxFlowRatesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxFlowRatesActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cbxVMT4ActionPerformed
+    }//GEN-LAST:event_cbxFlowRatesActionPerformed
 
-    private void cbxVMT5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxVMT5ActionPerformed
+    private void cbxTTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxTTActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cbxVMT5ActionPerformed
+    }//GEN-LAST:event_cbxTTActionPerformed
 
-    private void cbxVMT6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxVMT6ActionPerformed
+    private void cbxSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxSVActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cbxVMT6ActionPerformed
+    }//GEN-LAST:event_cbxSVActionPerformed
 
-    private void cbxVMT7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxVMT7ActionPerformed
+    private void cbxCMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxCMActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cbxVMT7ActionPerformed
+    }//GEN-LAST:event_cbxCMActionPerformed
 
     private void browserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browserActionPerformed
         // TODO add your handling code here:
@@ -804,36 +822,46 @@ public class TrafficAnalysis extends javax.swing.JPanel {
 
     }//GEN-LAST:event_btnExtractionActionPerformed
 
+    private void jCheckBoxIMSDItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBoxIMSDItemStateChanged
+        if(evt.getStateChange() == ItemEvent.SELECTED)
+            jCheckBoxI0MSD.setSelected(false);
+    }//GEN-LAST:event_jCheckBoxIMSDItemStateChanged
+
+    private void jCheckBoxI0MSDItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBoxI0MSDItemStateChanged
+        if(evt.getStateChange() == ItemEvent.SELECTED)
+            jCheckBoxIMSD.setSelected(false);
+    }//GEN-LAST:event_jCheckBoxI0MSDItemStateChanged
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton browser;
     private javax.swing.JButton btnExtraction;
     private javax.swing.JCheckBox cbxAcceleration;
     private javax.swing.JCheckBox cbxAverageLaneFlow;
+    private javax.swing.JCheckBox cbxCM;
     private javax.swing.JCheckBox cbxCSV;
     private javax.swing.JCheckBox cbxContour;
+    private javax.swing.JCheckBox cbxDVH;
     private javax.swing.JCheckBox cbxDensity;
     private javax.swing.JComboBox cbxDuration;
     private javax.swing.JComboBox cbxEndHour;
     private javax.swing.JComboBox cbxEndMin;
     private javax.swing.JCheckBox cbxExcel;
+    private javax.swing.JCheckBox cbxFlowRates;
     private javax.swing.JComboBox cbxInterval;
+    private javax.swing.JCheckBox cbxLVMT;
+    private javax.swing.JCheckBox cbxSV;
     private javax.swing.JComboBox cbxSections;
     private javax.swing.JCheckBox cbxSpeed;
     private javax.swing.JComboBox cbxStartHour;
     private javax.swing.JComboBox cbxStartMin;
+    private javax.swing.JCheckBox cbxTT;
     private javax.swing.JCheckBox cbxTotalFlow;
+    private javax.swing.JCheckBox cbxVHT;
     private javax.swing.JCheckBox cbxVMT;
-    private javax.swing.JCheckBox cbxVMT1;
-    private javax.swing.JCheckBox cbxVMT2;
-    private javax.swing.JCheckBox cbxVMT3;
-    private javax.swing.JCheckBox cbxVMT4;
-    private javax.swing.JCheckBox cbxVMT5;
-    private javax.swing.JCheckBox cbxVMT6;
-    private javax.swing.JCheckBox cbxVMT7;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox2;
-    private javax.swing.JCheckBox jCheckBox3;
+    private javax.swing.JCheckBox jCheckBoxI0MSD;
+    private javax.swing.JCheckBox jCheckBoxIMSD;
+    private javax.swing.JCheckBox jCheckBoxOCAE;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel14;
@@ -856,14 +884,15 @@ public class TrafficAnalysis extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextField_CD;
+    private javax.swing.JTextField jTextField_CTS;
+    private javax.swing.JTextField jTextField_DLC;
     private gadget.calendar.NATSRLCalendar nATSRLCalendar1;
     private javax.swing.JTextField txOutputFolder;
     // End of variables declaration//GEN-END:variables
 
     private void init() {
+        loadSection();
         setInterval(Interval.getMinTMCInterval());
 
         // duration
@@ -873,10 +902,92 @@ public class TrafficAnalysis extends javax.swing.JPanel {
         }
         
         // load option saved perviously
-        khtaOption = KHTAOption.load(OPTION_FILE);
+        File optFile = new File(OPTION_FILE);
+        if(!optFile.exists()) 
+        {
+            System.err.println("Option file does not be found");
+        }
+        else
+        {
+            khtaOption = KHTAOption.load(OPTION_FILE);
+            adjustLoadOption();
+        }
+        
+    }
+    
+    private void adjustLoadOption(){
         EvaluationOption opt = khtaOption.getEvaluationOption();
+        Calendar c = null;
         
+        //섹션 설정
+        if(cbxSections.getItemCount() >= khtaOption.getSectionIndex()){
+            cbxSections.setSelectedIndex(khtaOption.getSectionIndex());
+        }
+        //달력 설정
+        ArrayList<Period> periods = opt.getPeriods();
+        if(periods.size() > 0)
+        {
+            //시작 시간 설정
+            cbxStartHour.setSelectedIndex(periods.get(0).start_hour);
+            cbxStartMin.setSelectedIndex(periods.get(0).start_min);
+            for(Period p : periods){
+                c = Calendar.getInstance();
+                c.setTime(p.startDate);
+                nATSRLCalendar1.preselectDate(c);
+            }
+
+            //Interval 설정
+            cbxInterval.setSelectedIndex(khtaOption.getIntervalIndex());
+
+            //Duration 설정
+            if(khtaOption.getDuration() > 0)
+            {
+                cbxEndHour.disable();
+                cbxEndMin.disable();
+                cbxDuration.setSelectedIndex(khtaOption.getDuration());
+            }
+            else
+            {
+                cbxEndHour.setSelectedIndex(periods.get(0).end_hour);
+                cbxEndMin.setSelectedIndex(periods.get(0).end_min);
+            }
+        }
         
+        //Station Data 설정
+        cbxSpeed.setSelected(opt.getSpeedCheck());
+        cbxDensity.setSelected(opt.getDensityCheck());
+        cbxTotalFlow.setSelected(opt.getTotalFlowCheck());
+        cbxAverageLaneFlow.setSelected(opt.getAverageLaneFlowCheck());
+        cbxAcceleration.setSelected(opt.getAccelerationCheck());
+        
+        //Traffic Flow Measurements 설정
+        cbxVMT.setSelected(opt.getVMT());
+        cbxLVMT.setSelected(opt.getLVMT());
+        cbxVHT.setSelected(opt.getVHT());
+        cbxDVH.setSelected(opt.getDVH());
+        cbxFlowRates.setSelected(opt.getFlowRates());
+        cbxTT.setSelected(opt.getTT());
+        cbxSV.setSelected(opt.getSV());
+        cbxCM.setSelected(opt.getCM());
+        if(opt.getCTS() > 0)
+            jTextField_CTS.setText("" + opt.getCTS());
+        if(opt.getCD() > 0)
+            jTextField_CD.setText("" + opt.getCD());
+        if(opt.getDLC() > 0)
+            jTextField_DLC.setText("" + opt.getDLC());
+        
+        //Output Format 설정
+        cbxExcel.setSelected(khtaOption.getExcelCheck());
+        cbxCSV.setSelected(khtaOption.getCSVCheck());
+        cbxContour.setSelected(khtaOption.getContourCheck());
+        
+        //Output Folder 설정
+        txOutputFolder.setText(khtaOption.getOutputPath());
+        
+        //Output Option 설정
+        jCheckBoxOCAE.setSelected(opt.getOCAE());
+        jCheckBoxIMSD.setSelected(opt.getIMSD());
+        jCheckBoxI0MSD.setSelected(opt.getI0MSD());
     }
 
     private void setInterval(int runningInterval) {
@@ -1060,7 +1171,7 @@ public class TrafficAnalysis extends javax.swing.JPanel {
     private KHTAOption getOption() {
 
         int duration = -1;
-        int selectedSectionIndex = this.cbxSections.getSelectedIndex();
+        int sectionIndex = this.cbxSections.getSelectedIndex();
 
         //섹션 읽기
         Section selectedSection = (Section) this.cbxSections.getSelectedItem();
@@ -1108,7 +1219,7 @@ public class TrafficAnalysis extends javax.swing.JPanel {
             emin = cbxEndMin.getSelectedIndex();
         } else {
             duration = cbxDuration.getSelectedIndex();
-            ehour = smin + duration;
+            ehour = shour + duration;
             emin = smin;
         }
 
@@ -1151,15 +1262,12 @@ public class TrafficAnalysis extends javax.swing.JPanel {
         opt.setStationData(cbxSpeed.isSelected(), cbxDensity.isSelected(), cbxTotalFlow.isSelected(),
                 cbxAverageLaneFlow.isSelected(), cbxAcceleration.isSelected());
 
-        if ((jTextField1.getText().length() != 0) && (jTextField2.getText().length() != 0)
-                && (jTextField3.getText().length() != 0)) {
-            opt.setTrafficFlowMeasurements(cbxVMT.isSelected(), cbxVMT1.isSelected(), cbxVMT2.isSelected(),
-                    cbxVMT3.isSelected(), cbxVMT4.isSelected(), cbxVMT5.isSelected(), cbxVMT6.isSelected(),
-                    cbxVMT7.isSelected(), Double.parseDouble(jTextField1.getText()),
-                    Double.parseDouble(jTextField2.getText()), Double.parseDouble(jTextField3.getText()));
-        }
-
-        opt.setOutputOption(jCheckBox1.isSelected(), jCheckBox2.isSelected(), jCheckBox3.isSelected());
+        opt.setTrafficFlowMeasurements(cbxVMT.isSelected(), cbxLVMT.isSelected(), cbxVHT.isSelected(),
+                cbxDVH.isSelected(), cbxFlowRates.isSelected(), cbxTT.isSelected(), cbxSV.isSelected(),
+                cbxCM.isSelected(), Double.parseDouble(jTextField_CTS.getText()),
+                Double.parseDouble(jTextField_CD.getText()), Double.parseDouble(jTextField_DLC.getText()));
+        
+        opt.setOutputOption(jCheckBoxOCAE.isSelected(), jCheckBoxIMSD.isSelected(), jCheckBoxI0MSD.isSelected());
 
         if (opt.isSelectedAnything() == false) {
             JOptionPane.showMessageDialog(this, "Check evaluation options");
@@ -1170,7 +1278,7 @@ public class TrafficAnalysis extends javax.swing.JPanel {
 
         String outputPath = this.txOutputFolder.getText();
 
-        khtaOption.setOptions(selectedSectionIndex, duration, selectedInterval, outputPath,
+        khtaOption.setOptions(sectionIndex, duration, cbxInterval.getSelectedIndex(), outputPath,
                 cbxExcel.isSelected(), cbxCSV.isSelected(), cbxContour.isSelected());
 
         return khtaOption;

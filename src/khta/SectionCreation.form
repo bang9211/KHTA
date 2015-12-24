@@ -266,6 +266,9 @@
             <Component class="javax.swing.JTextArea" name="tbxCorridorInfo">
               <Properties>
                 <Property name="columns" type="int" value="20"/>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="&#xad74;&#xb9bc;" size="13" style="0"/>
+                </Property>
                 <Property name="rows" type="int" value="5"/>
               </Properties>
             </Component>
