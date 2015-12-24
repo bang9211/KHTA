@@ -993,6 +993,8 @@ public class TrafficAnalysis extends javax.swing.JPanel {
         jCheckBoxOCAE.setSelected(opt.getOCAE());
         jCheckBoxIMSD.setSelected(opt.getIMSD());
         jCheckBoxI0MSD.setSelected(opt.getI0MSD());
+        
+        contourTapPanel.setContourOption();
     }
 
     private void setInterval(int runningInterval) {
@@ -1279,7 +1281,7 @@ public class TrafficAnalysis extends javax.swing.JPanel {
             return null;
         }
 
-        contourTapPanel.setContourOption();
+        //contourTapPanel.setContourOption();
 
         String outputPath = this.txOutputFolder.getText();
 
