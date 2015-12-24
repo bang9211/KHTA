@@ -367,6 +367,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Verdana" size="10" style="0"/>
                 </Property>
+                <Property name="maximumRowCount" type="int" value="15"/>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                   <StringArray count="24">
                     <StringItem index="0" value="00"/>
@@ -697,26 +698,26 @@
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jTextField1" min="-2" pref="68" max="-2" attributes="0"/>
+                              <Component id="jTextField_CTS" min="-2" pref="68" max="-2" attributes="0"/>
                           </Group>
                           <Component id="cbxVMT" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="cbxVMT1" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="cbxVMT2" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="cbxVMT3" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="cbxVMT4" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="cbxVMT5" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="cbxVMT6" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="cbxVMT7" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="cbxLVMT" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="cbxVHT" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="cbxDVH" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="cbxFlowRates" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="cbxTT" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="cbxSV" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="cbxCM" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jTextField3" min="-2" pref="68" max="-2" attributes="0"/>
+                              <Component id="jTextField_DLC" min="-2" pref="68" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jTextField2" max="32767" attributes="0"/>
+                      <Component id="jTextField_CD" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -727,30 +728,30 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="cbxVMT" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="cbxVMT1" min="-2" max="-2" attributes="0"/>
+                      <Component id="cbxLVMT" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="cbxVMT2" min="-2" max="-2" attributes="0"/>
+                      <Component id="cbxVHT" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="cbxVMT3" min="-2" max="-2" attributes="0"/>
+                      <Component id="cbxDVH" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="cbxVMT4" min="-2" max="-2" attributes="0"/>
+                      <Component id="cbxFlowRates" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="cbxVMT5" min="-2" max="-2" attributes="0"/>
+                      <Component id="cbxTT" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="cbxVMT6" min="-2" max="-2" attributes="0"/>
+                      <Component id="cbxSV" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="cbxVMT7" min="-2" max="-2" attributes="0"/>
+                      <Component id="cbxCM" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jTextField1" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jTextField2" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jTextField_CTS" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jTextField_CD" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jTextField3" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jTextField_DLC" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -769,7 +770,7 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbxVMTActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JCheckBox" name="cbxVMT1">
+            <Component class="javax.swing.JCheckBox" name="cbxLVMT">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="12" style="0"/>
@@ -777,10 +778,10 @@
                 <Property name="text" type="java.lang.String" value="Lost VMT for congestion (LVMT)"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbxVMT1ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbxLVMTActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JCheckBox" name="cbxVMT2">
+            <Component class="javax.swing.JCheckBox" name="cbxVHT">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="12" style="0"/>
@@ -788,10 +789,10 @@
                 <Property name="text" type="java.lang.String" value="Vehicle Hour Traveled (VHT)"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbxVMT2ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbxVHTActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JCheckBox" name="cbxVMT3">
+            <Component class="javax.swing.JCheckBox" name="cbxDVH">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="12" style="0"/>
@@ -799,10 +800,10 @@
                 <Property name="text" type="java.lang.String" value="Delayed Vehicle Hours (DVH)"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbxVMT3ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbxDVHActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JCheckBox" name="cbxVMT4">
+            <Component class="javax.swing.JCheckBox" name="cbxFlowRates">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="12" style="0"/>
@@ -810,10 +811,10 @@
                 <Property name="text" type="java.lang.String" value="Mainlane and Ramp Flow Rates"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbxVMT4ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbxFlowRatesActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JCheckBox" name="cbxVMT5">
+            <Component class="javax.swing.JCheckBox" name="cbxTT">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="12" style="0"/>
@@ -821,10 +822,10 @@
                 <Property name="text" type="java.lang.String" value="Travel Time (TT)"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbxVMT5ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbxTTActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JCheckBox" name="cbxVMT6">
+            <Component class="javax.swing.JCheckBox" name="cbxSV">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="12" style="0"/>
@@ -832,10 +833,10 @@
                 <Property name="text" type="java.lang.String" value="Speed Variations (SV)"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbxVMT6ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbxSVActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JCheckBox" name="cbxVMT7">
+            <Component class="javax.swing.JCheckBox" name="cbxCM">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="12" style="0"/>
@@ -843,7 +844,7 @@
                 <Property name="text" type="java.lang.String" value="Congested Miles (CM)"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbxVMT7ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbxCMActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel4">
@@ -870,11 +871,20 @@
                 <Property name="text" type="java.lang.String" value="Critical Density (veh/km)"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="jTextField1">
+            <Component class="javax.swing.JTextField" name="jTextField_CTS">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="0.0"/>
+              </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="jTextField2">
+            <Component class="javax.swing.JTextField" name="jTextField_CD">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="0.0"/>
+              </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="jTextField3">
+            <Component class="javax.swing.JTextField" name="jTextField_DLC">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="0.0"/>
+              </Properties>
             </Component>
           </SubComponents>
         </Container>
@@ -939,9 +949,9 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
-                      <Component id="jCheckBox3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jCheckBox2" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="jCheckBox1" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="jCheckBoxI0MSD" min="-2" max="-2" attributes="0"/>
+                      <Component id="jCheckBoxIMSD" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="jCheckBoxOCAE" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="13" max="32767" attributes="0"/>
                   <Component id="btnExtraction" min="-2" max="-2" attributes="0"/>
@@ -958,11 +968,11 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="jCheckBox1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jCheckBoxOCAE" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="jCheckBox2" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jCheckBoxIMSD" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="jCheckBox3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jCheckBoxI0MSD" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
@@ -1070,7 +1080,7 @@
             <Property name="text" type="java.lang.String" value="Output Option"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JCheckBox" name="jCheckBox1">
+        <Component class="javax.swing.JCheckBox" name="jCheckBoxOCAE">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="12" style="0"/>
@@ -1078,21 +1088,27 @@
             <Property name="text" type="java.lang.String" value="Open contour after extraction"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JCheckBox" name="jCheckBox2">
+        <Component class="javax.swing.JCheckBox" name="jCheckBoxIMSD">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="12" style="0"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Interpolate missing station data"/>
           </Properties>
+          <Events>
+            <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="jCheckBoxIMSDItemStateChanged"/>
+          </Events>
         </Component>
-        <Component class="javax.swing.JCheckBox" name="jCheckBox3">
+        <Component class="javax.swing.JCheckBox" name="jCheckBoxI0MSD">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="12" style="0"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Interpolate &apos;0&apos; missing station data"/>
           </Properties>
+          <Events>
+            <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="jCheckBoxI0MSDItemStateChanged"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

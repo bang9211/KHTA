@@ -7,6 +7,7 @@ package evaluation;
 
 import infra.Period;
 import infra.Section;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -14,7 +15,7 @@ import java.util.HashMap;
  *
  * @author HanYoungTak
  */
-public class EvaluationOption {
+public class EvaluationOption implements Serializable{
     
     private Section selectedSection;
     /** selected period, it may be multiple period because user can select multiple dates */
@@ -26,18 +27,18 @@ public class EvaluationOption {
     private boolean averageLaneFlowCheck;
     private boolean accelerationCheck;
     
-    private boolean vmt;        //Vehicle Miles Traveled
-    private boolean lvmt;       //Lost VMT for congestion
-    private boolean vht;        //Vehicle Hour Traveled
-    private boolean dvh;        //Delayed Vehicle Hours
-    private boolean flowRates;  //Mainlane and Ramp Flow Rates
-    private boolean tt;         //Travel Time
-    private boolean sv;         //Speed Variations
-    private boolean cm;         //Congested Miles
+    private boolean vmtCheck;        //Vehicle Miles Traveled
+    private boolean lvmtCheck;       //Lost VMT for congestion
+    private boolean vhtCheck;        //Vehicle Hour Traveled
+    private boolean dvhCheck;        //Delayed Vehicle Hours
+    private boolean flowRatesCheck;  //Mainlane and Ramp Flow Rates
+    private boolean ttCheck;         //Travel Time
+    private boolean svCheck;         //Speed Variations
+    private boolean cmCheck;         //Congested Miles
     
-    private double cts;         //Congestion Threshold Speed(km)
-    private double cd;          //Critical Density(veh/km)
-    private double dlc;         //Default Lane Capacity(veh/hr)
+    private double cts = 0;         //Congestion Threshold Speed(km)
+    private double cd = 0;          //Critical Density(veh/km)
+    private double dlc = 0;         //Default Lane Capacity(veh/hr)
     
     private boolean ocaeCheck;
     private boolean imsdCheck;
@@ -79,20 +80,20 @@ public class EvaluationOption {
         this.accelerationCheck = accelerationCheck;
     }
     
-    public void setTrafficFlowMeasurements(boolean vmt, boolean lvmt, boolean vht,
-            boolean dvh, boolean flowRates, boolean tt, boolean sv, boolean cm, 
-            double cts, double cd, double dlc){
-        this.vmt = vmt;
-        this.lvmt = lvmt;
-        this.vht = vht;
-        this.dvh = dvh;
-        this.flowRates = flowRates;
-        this.tt = tt;
-        this.sv = sv;
-        this.cm = cm;
-        this.cts = cts;
-        this.cd = cd;
-        this.dlc = dlc;
+    public void setTrafficFlowMeasurements(boolean vmtCheck, boolean lvmtCheck, boolean vhtCheck,
+            boolean dvhCheck, boolean flowRatesCheck, boolean ttCheck, boolean svCheck, boolean cmCheck, 
+            double ctsCheck, double cdCheck, double dlcCheck){
+        this.vmtCheck = vmtCheck;
+        this.lvmtCheck = lvmtCheck;
+        this.vhtCheck = vhtCheck;
+        this.dvhCheck = dvhCheck;
+        this.flowRatesCheck = flowRatesCheck;
+        this.ttCheck = ttCheck;
+        this.svCheck = svCheck;
+        this.cmCheck = cmCheck;
+        this.cts = ctsCheck;
+        this.cd = cdCheck;
+        this.dlc = dlcCheck;
     }
     
     public boolean isSelectedAnything(){
@@ -101,14 +102,14 @@ public class EvaluationOption {
                 (totalFlowCheck == true) ||
                 (averageLaneFlowCheck == true) ||
                 (accelerationCheck == true) ||
-                (vmt == true) ||
-                (lvmt == true) ||
-                (vht == true) ||
-                (dvh == true) ||
-                (flowRates == true) ||
-                (tt == true) ||
-                (sv == true) ||
-                (cm == true)){
+                (vmtCheck == true) ||
+                (lvmtCheck == true) ||
+                (vhtCheck == true) ||
+                (dvhCheck == true) ||
+                (flowRatesCheck == true) ||
+                (ttCheck == true) ||
+                (svCheck == true) ||
+                (cmCheck == true)){
             return true;
         }
         else
@@ -142,47 +143,47 @@ public class EvaluationOption {
     }
     
     public boolean getVMT(){
-        return speedCheck;
+        return vmtCheck;
     }
     
     public boolean getLVMT(){
-        return speedCheck;
+        return lvmtCheck;
     }
     
     public boolean getVHT(){
-        return speedCheck;
+        return vhtCheck;
     }
     
     public boolean getDVH(){
-        return speedCheck;
+        return dvhCheck;
     }
     
     public boolean getFlowRates(){
-        return speedCheck;
+        return flowRatesCheck;
     }
     
     public boolean getTT(){
-        return speedCheck;
+        return ttCheck;
     }
     
     public boolean getSV(){
-        return speedCheck;
+        return svCheck;
     }
     
     public boolean getCM(){
-        return speedCheck;
+        return cmCheck;
     }
     
-    public boolean getCTS(){
-        return speedCheck;
+    public double getCTS(){
+        return cts;
     }
     
-    public boolean getCD(){
-        return speedCheck;
+    public double getCD(){
+        return cd;
     }
     
-    public boolean getDLC(){
-        return speedCheck;
+    public double getDLC(){
+        return dlc;
     }
     
     public boolean getOCAE(){

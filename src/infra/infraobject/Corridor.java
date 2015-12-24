@@ -19,6 +19,7 @@ package infra.infraobject;
 import infra.*;
 import infra.type.NodeOrder;
 import infra.type.RoadType;
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -26,7 +27,7 @@ import java.util.*;
  * @author soobin Jeon <j.soobin@gmail.com>, chungsan Lee <dj.zlee@gmail.com>,
  * youngtak Han <gksdudxkr@gmail.com>
  */
-public class Corridor extends InfraObject{
+public class Corridor extends InfraObject implements Serializable{
     private ArrayList<RNode> rnodes = new ArrayList();
     private ArrayList<Station> stations = new ArrayList();
     private ArrayList<Entrance> entrances = new ArrayList();

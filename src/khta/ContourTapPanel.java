@@ -29,34 +29,6 @@ public class ContourTapPanel extends javax.swing.JPanel {
     public ContourTapPanel(KHTAOption khtaOption) {
         initComponents();
         this.khtaOption = khtaOption;
-        
-        
-        // if ticas option is loaded
-//        if (khtaOption.isLoaded()) {
-//            this.speedContourSetting.setContourSetting(evaluationOption.getContourSetting(ContourType.SPEED));
-//            this.totalFlowContourSetting.setContourSetting(evaluationOption.getContourSetting(ContourType.TOTAL_FLOW));
-//            this.occupancyContourSetting.setContourSetting(evaluationOption.getContourSetting(ContourType.OCCUPANCY));
-//            this.densityContourSetting.setContourSetting(evaluationOption.getContourSetting(ContourType.DENSITY));
-//            this.TTContourSetting.setContourSetting(evaluationOption.getContourSetting(ContourType.TT));
-//            applyOption(khtaOption);            
-//        } else {
-            System.err.println("Option is not loaded");
-            // option isn't loaded
-            this.speedContourSetting.setUnit("km/h");
-            this.totalFlowContourSetting.setUnit("veh/h");
-            this.occupancyContourSetting.setUnit("%");
-            this.densityContourSetting.setUnit("veh/km");
-            TTContourSetting.setUnit("min");
-            
-            // set excel checkbox selected by default
-            //this.chkExcel.setSelected(true);                       
-//        }
-        // add contour setting panel to tab panel
-        this.panContourSettingSpeed.add(speedContourSetting, BorderLayout.NORTH);
-        this.panContourSettingTotalFlow.add(totalFlowContourSetting, BorderLayout.NORTH);
-        this.panContourSettingAverageFlow.add(occupancyContourSetting, BorderLayout.NORTH);
-        this.panContourSettingDensity.add(densityContourSetting, BorderLayout.NORTH);
-        this.panContourSettingTT.add(TTContourSetting, BorderLayout.NORTH);
     }
 
     /**
@@ -200,6 +172,29 @@ public class ContourTapPanel extends javax.swing.JPanel {
     public void setContourOption(){
         this.evaluationOption = khtaOption.getEvaluationOption();
         
+        // if ticas option is loaded
+        if (khtaOption.isLoaded()) {
+            this.speedContourSetting.setContourSetting(evaluationOption.getContourSetting(ContourType.SPEED));
+            this.totalFlowContourSetting.setContourSetting(evaluationOption.getContourSetting(ContourType.TOTAL_FLOW));
+            this.occupancyContourSetting.setContourSetting(evaluationOption.getContourSetting(ContourType.OCCUPANCY));
+            this.densityContourSetting.setContourSetting(evaluationOption.getContourSetting(ContourType.DENSITY));
+            this.TTContourSetting.setContourSetting(evaluationOption.getContourSetting(ContourType.TT));
+//          applyOption(khtaOption);            
+        } else {
+            System.err.println("Option is not loaded");
+            // option isn't loaded
+            this.speedContourSetting.setUnit("km/h");
+            this.totalFlowContourSetting.setUnit("veh/h");
+            this.occupancyContourSetting.setUnit("%");
+            this.densityContourSetting.setUnit("veh/km");
+            TTContourSetting.setUnit("min");
+        }
+        // add contour setting panel to tab panel
+        this.panContourSettingSpeed.add(speedContourSetting, BorderLayout.NORTH);
+        this.panContourSettingTotalFlow.add(totalFlowContourSetting, BorderLayout.NORTH);
+        this.panContourSettingAverageFlow.add(occupancyContourSetting, BorderLayout.NORTH);
+        this.panContourSettingDensity.add(densityContourSetting, BorderLayout.NORTH);
+        this.panContourSettingTT.add(TTContourSetting, BorderLayout.NORTH);
         
         // contourTapPanel에 있는 세팅 읽기
         evaluationOption.addContourPanel(ContourType.SPEED, speedContourSetting);

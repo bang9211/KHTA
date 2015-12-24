@@ -16,6 +16,7 @@
  */
 package infra;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Vector;
 
@@ -24,7 +25,7 @@ import java.util.Vector;
  * @author soobin Jeon <j.soobin@gmail.com>, chungsan Lee <dj.zlee@gmail.com>,
  * youngtak Han <gksdudxkr@gmail.com>
  */
-public class InfraObject {
+public class InfraObject implements Serializable{
     private final String id;
     private String name;
     private HashMap<InfraDatas, Object> properties = new HashMap();

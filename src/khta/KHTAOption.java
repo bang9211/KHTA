@@ -6,83 +6,72 @@
 package khta;
 
 import evaluation.EvaluationOption;
-import evaluation.Interval;
-import static infra.Section.getCacheFileName;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.Date;
+import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
-import util.KHTAParam;
-import util.PropertiesWrapper;
 
 /**
  *
  * @author HanYoungTak
  */
-public class KHTAOption {
-    public static final String OPTION_SECTION_INDEX = "option.sectionIndex";
-    public static final String OPTION_DURATION = "option.duration";
-    public static final String OPTION_INTERVAL = "option.interval";
-    public static final String OPTION_OUTPUT_PATH = "option.outputPath";
-    public static final String OPTION_EXCEL_CHECK = "option.excelCheck";
-    public static final String OPTION_CSV_CHECK = "option.csvCheck";
-    public static final String OPTION_CONTOUR_CHECK = "option.contourCheck";
-    
+public class KHTAOption implements Serializable{
     private boolean isLoaded;
-    private static int sectionIndex = 0;
-    private static int duration = -1;
     
-    private Interval interval;
+    private int sectionIndex = 0;
+    private int duration = 0;
+    private int intervalIndex = 0;
     private String outputPath = "";
-    private boolean excelCheck;
-    private boolean csvCheck;
-    private boolean contourCheck;
-    
-    private static String savePath = KHTAParam.CONFIG_DIR + File.separator;
-    private static PropertiesWrapper prop;
-    
+    private boolean excelCheck = false;
+    private boolean csvCheck = false;
+    private boolean contourCheck = false;
+        
     private EvaluationOption evaluationOption = new EvaluationOption();
     
     public KHTAOption(){
-        prop = new PropertiesWrapper();
     }
     
     public void setOptions(int sectionIndex, int duration,
-            Interval interval, String outputPath, 
+            int intervalIndex, String outputPath, 
             boolean excelCheck, boolean csvCheck, boolean contourCheck){
         this.sectionIndex = sectionIndex;
         this.duration = duration;
-        this.interval = interval;
+        this.intervalIndex = intervalIndex;
         this.outputPath = outputPath;
         this.excelCheck = excelCheck;
         this.csvCheck = csvCheck;
         this.contourCheck = contourCheck;
     }
     
-    
     /**
      * Saves option to file
      * @param opt
      * @param filename 
      */
-    public static void save(KHTAOption opt, String filename) {
-        File configChacheDir = new File(KHTAParam.CONFIG_DIR);
-        if(!configChacheDir.mkdir() && !configChacheDir.exists()){
-            JOptionPane.showMessageDialog(null, "Fail to create cache folder\n"+configChacheDir);
+    public static void save(KHTAOption opt, String path) {
+        FileOutputStream fileOut = null;
+        boolean isLoadedBackup = opt.isLoaded;
+        try {            
+            opt.isLoaded = false;
+            fileOut = new FileOutputStream(path);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(opt);
+            out.close();
+            fileOut.close();
+        } catch (Exception ex) {
+            opt.isLoaded = isLoadedBackup;
+        } finally {
+            try {                
+                fileOut.close();
+            } catch (IOException ex) {
+                Logger.getLogger(KHTAOption.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-        
-        prop.put(savePath, OPTION_SECTION_INDEX);
-        
-        prop.put(filename, Boolean.TRUE);
-        
-        savePath += filename;
-        prop.save(savePath, filename);
     }
     
     /**
@@ -90,14 +79,9 @@ public class KHTAOption {
      * @param filename
      * @return 
      */
-    public static KHTAOption load(String filename) {
-        File optFile = new File(filename);
-        if(!optFile.exists()) 
-        {
-            System.err.println("Option file does not be found");
-            return new KHTAOption();
-        }
-        
+    public static KHTAOption load(String path) {
+        File optFile = new File(path);
+                
         FileInputStream fileIn = null;
         try {
             fileIn = new FileInputStream(optFile);
@@ -129,12 +113,12 @@ public class KHTAOption {
         return sectionIndex;
     }
     
-    public void setInterval(Interval selectedInterval) {
-        this.interval = selectedInterval;
+    public void setIntervalIndex(int interval) {
+        this.intervalIndex = interval;
     }
     
-    public Interval getInterval() {
-        return this.interval;
+    public int getIntervalIndex() {
+        return this.intervalIndex;
     }
     
     public void setDuration(int duration) {

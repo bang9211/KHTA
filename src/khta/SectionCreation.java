@@ -191,6 +191,7 @@ public class SectionCreation extends javax.swing.JPanel {
         );
 
         tbxCorridorInfo.setColumns(20);
+        tbxCorridorInfo.setFont(new java.awt.Font("굴림", 0, 13)); // NOI18N
         tbxCorridorInfo.setRows(5);
         panel11.setViewportView(tbxCorridorInfo);
 
@@ -220,7 +221,6 @@ public class SectionCreation extends javax.swing.JPanel {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Section List", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
 
-        listSection.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         listSection.setPreferredSize(new java.awt.Dimension(190, 30));
         listSection.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
