@@ -917,6 +917,7 @@ public class TrafficAnalysis extends javax.swing.JPanel {
             khtaOption = KHTAOption.load(OPTION_FILE);
             adjustLoadOption();
         }        
+
     }
     
     private void adjustLoadOption(){
