@@ -1281,7 +1281,7 @@ public class TrafficAnalysis extends javax.swing.JPanel {
             return null;
         }
 
-        //contourTapPanel.setContourOption();
+//        contourTapPanel.setContourOption(khtaOption);
 
         String outputPath = this.txOutputFolder.getText();
 

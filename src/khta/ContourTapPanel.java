@@ -6,6 +6,7 @@
 package khta;
 
 import evaluation.ContourPanel;
+import evaluation.ContourPanel_Speed;
 import evaluation.ContourType;
 import evaluation.EvaluationOption;
 import java.awt.BorderLayout;
@@ -18,9 +19,9 @@ public class ContourTapPanel extends javax.swing.JPanel {
     private KHTAOption khtaOption;
     private EvaluationOption evaluationOption;
     
-    private ContourPanel TTContourSetting = new ContourPanel(11, 60, false);
-    private ContourPanel speedContourSetting = new ContourPanel(11, 120, true);
-    private ContourPanel totalFlowContourSetting = new ContourPanel(11, 6000, false);
+    private ContourPanel TTContourSetting = new ContourPanel(8, 60, false);
+    private ContourPanel speedContourSetting = new ContourPanel(7, 100, true);
+    private ContourPanel totalFlowContourSetting = new ContourPanel(8, 6000, false);
     private ContourPanel occupancyContourSetting = new ContourPanel(11, 100, false);
     private ContourPanel densityContourSetting = new ContourPanel(9, 150, false);   
     /**
@@ -204,7 +205,7 @@ public class ContourTapPanel extends javax.swing.JPanel {
         evaluationOption.addContourPanel(ContourType.TT, this.TTContourSetting);
         evaluationOption.addContourPanel(ContourType.STT, this.TTContourSetting);
     }
-    
+
     // 구현해야할save load
     /**
      * Set TICAS interface according to saved option
