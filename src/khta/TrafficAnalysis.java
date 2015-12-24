@@ -61,7 +61,8 @@ public class TrafficAnalysis extends javax.swing.JPanel {
     private final Infra infra;
     private KHTAOption khtaOption;
     private ContourTapPanel contourTapPanel;
-    private final String OPTION_FILE = KHTAParam.CONFIG_DIR + File.separator + "khta.cfg";
+    private final String OPTION_FILE_DIR = KHTAParam.CONFIG_DIR + File.separator;
+    private final String OPTION_FILE = OPTION_FILE_DIR + "khta.cfg";
 
     /**
      * Creates new form TrafficAnalysis
@@ -902,6 +903,10 @@ public class TrafficAnalysis extends javax.swing.JPanel {
         }
         
         // load option saved perviously
+        File optFileDir = new File(OPTION_FILE_DIR);
+        if(!optFileDir.mkdir() && !optFileDir.exists()){
+            JOptionPane.showMessageDialog(null, "Fail to create cache folder\n"+optFileDir);
+        }
         File optFile = new File(OPTION_FILE);
         if(!optFile.exists()) 
         {
@@ -911,8 +916,8 @@ public class TrafficAnalysis extends javax.swing.JPanel {
         {
             khtaOption = KHTAOption.load(OPTION_FILE);
             adjustLoadOption();
-        }
-        
+        }        
+
     }
     
     private void adjustLoadOption(){
