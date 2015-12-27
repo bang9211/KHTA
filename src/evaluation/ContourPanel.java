@@ -32,13 +32,13 @@ import javax.swing.JColorChooser;
  */
 public class ContourPanel extends javax.swing.JPanel {
 
-    private JButton[] buttons;
-    private JTextField[] rangeStarts;
-    private JTextField[] rangeEnds;
-    private Color[] colors;
-    private float maxValue = 0;
-    private int steps = 0;
-    private boolean isReverse = false;
+    protected JButton[] buttons;
+    protected JTextField[] rangeStarts;
+    protected JTextField[] rangeEnds;
+    protected Color[] colors;
+    protected float maxValue = 0;
+    protected int steps = 0;
+    protected boolean isReverse = false;
     
     public ContourPanel(int interval, float maxValue, boolean isreverse) {
         initComponents();
@@ -154,7 +154,7 @@ public class ContourPanel extends javax.swing.JPanel {
         }
     }
 
-    private void setColors() {
+    protected void setColors() {
         int step = this.steps;
 
         Arrays.fill(colors, new Color(-1250856));
@@ -167,7 +167,7 @@ public class ContourPanel extends javax.swing.JPanel {
         if(this.isReverse) reverse();
     }
 
-    private void setValues() {
+    protected void setValues() {
         int offset = Math.round(this.maxValue / this.steps);
 
         for (int i = 1; i < this.rangeStarts.length; i++) {
@@ -198,7 +198,7 @@ public class ContourPanel extends javax.swing.JPanel {
 
 
     
-    private void reverse()
+    protected void reverse()
     {
         for (int l=0, r=steps; l<r; l++, r--) {
             Color temp = colors[l]; 

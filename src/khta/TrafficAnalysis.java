@@ -771,7 +771,7 @@ public class TrafficAnalysis extends javax.swing.JPanel {
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         // TODO add your handling code here:
-        //loadSection();
+        loadSection();
     }//GEN-LAST:event_formComponentShown
 
     private void cbxVMTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxVMTActionPerformed
@@ -993,6 +993,8 @@ public class TrafficAnalysis extends javax.swing.JPanel {
         jCheckBoxOCAE.setSelected(opt.getOCAE());
         jCheckBoxIMSD.setSelected(opt.getIMSD());
         jCheckBoxI0MSD.setSelected(opt.getI0MSD());
+        
+        contourTapPanel.setContourOption();
     }
 
     private void setInterval(int runningInterval) {

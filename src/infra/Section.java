@@ -254,12 +254,7 @@ public class Section implements Serializable{
         }
         
         //set Stations
-        for(RNode r : section){
-            if(r.getNodeType() == RnodeType.STATION){
-                Station station = (Station)r;
-                stations.add(station);
-            }
-        }
+        setStation();
         
         setStationOrganization();
         
@@ -345,6 +340,11 @@ public class Section implements Serializable{
 
         if(section.isEmpty())
             throw new Exception("RNode is empty");
+        else{
+            setStation();
+            setStationOrganization();
+        }
+            
     }
     
     private void setStationOrganization() {
@@ -406,5 +406,14 @@ public class Section implements Serializable{
             }
         }
         return distance;
+    }
+
+    private void setStation() {
+        for(RNode r : section){
+            if(r.getNodeType() == RnodeType.STATION){
+                Station station = (Station)r;
+                stations.add(station);
+            }
+        }
     }
 }

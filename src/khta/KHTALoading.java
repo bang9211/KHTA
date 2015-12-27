@@ -23,6 +23,7 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import version.Version;
 
 /**
  *
@@ -46,6 +47,7 @@ public class KHTALoading extends javax.swing.JDialog {
         setLocation((dim.width - abounds.width) / 2,
                 (dim.height - abounds.height) / 2 - 100);
         
+        label_title.setText("Korea Highway Traffic Analysis Tool " + Version.getVersionInfo());
     }
 
     /**
@@ -59,7 +61,7 @@ public class KHTALoading extends javax.swing.JDialog {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        label_title = new javax.swing.JLabel();
         lbStatus = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -72,8 +74,8 @@ public class KHTALoading extends javax.swing.JDialog {
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 80)); // NOI18N
         jLabel1.setText("KHTA");
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel2.setText("Korea Highway Traffic Analysis Tool");
+        label_title.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        label_title.setText("Korea Highway Traffic Analysis Tool");
 
         lbStatus.setText("Loading..");
         lbStatus.setToolTipText("");
@@ -87,7 +89,7 @@ public class KHTALoading extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lbStatus)
                     .addComponent(jLabel1)
-                    .addComponent(jLabel2))
+                    .addComponent(label_title))
                 .addContainerGap(226, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -95,7 +97,7 @@ public class KHTALoading extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jLabel1)
                 .addGap(1, 1, 1)
-                .addComponent(jLabel2)
+                .addComponent(label_title)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lbStatus)
                 .addGap(0, 14, Short.MAX_VALUE))
@@ -182,8 +184,8 @@ public class KHTALoading extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel label_title;
     private javax.swing.JLabel lbStatus;
     // End of variables declaration//GEN-END:variables
 
