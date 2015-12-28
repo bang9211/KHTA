@@ -18,11 +18,13 @@
 
 package evaluation;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Chongmyung Park
  */
-public enum ContourType {
+public enum ContourType implements Serializable{
     
     SPEED("Station Speed"),
     TOTAL_FLOW("Station Total Flow"),

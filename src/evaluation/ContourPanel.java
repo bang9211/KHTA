@@ -39,6 +39,7 @@ public class ContourPanel extends javax.swing.JPanel {
     protected float maxValue = 0;
     protected int steps = 0;
     protected boolean isReverse = false;
+    protected boolean isSet = false;
     
     public ContourPanel(int interval, float maxValue, boolean isreverse) {
         initComponents();
@@ -108,6 +109,7 @@ public class ContourPanel extends javax.swing.JPanel {
         this.isReverse = setting.isReverse();
         this.maxValue = setting.getMaxValue();
         float[] sv = setting.getContourStepValues();
+        isSet = true;
         
         for(int i=0; i<sv.length; i++)
         {
@@ -115,9 +117,19 @@ public class ContourPanel extends javax.swing.JPanel {
             rangeEnds[i].setText(v);
             rangeStarts[i+1].setText(v);
             buttons[i].setBackground(colors[i]);
+            
+            this.rangeStarts[i].setEnabled(true);
+            this.rangeEnds[i].setEnabled(true);
         }
         rangeStarts[0].setText("0");
+        rangeStarts[steps].setEnabled(true);
         rangeEnds[steps].setText("+++");
+        
+        cbxIntervals.setSelectedIndex(steps - 3);
+    }
+    
+    public int getStepBox(){
+        return cbxIntervals.getSelectedIndex();
     }
     
     private void init() {
@@ -149,6 +161,7 @@ public class ContourPanel extends javax.swing.JPanel {
         this.steps = Integer.parseInt((String) this.cbxIntervals.getSelectedItem());
         setColors();
         setValues();
+        
         for (int i = 0; i < buttons.length; i++) {
             buttons[i].setBackground(colors[i]);
         }
@@ -205,6 +218,10 @@ public class ContourPanel extends javax.swing.JPanel {
             colors[l]  = colors[r]; 
             colors[r] = temp;
         }        
+    }
+    
+    public boolean getIsSet(){
+        return isSet;
     }
         
 
@@ -657,7 +674,7 @@ public class ContourPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cbxIntervalsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxIntervalsActionPerformed
-        if(colors != null) applySetting();
+        if((colors != null)) applySetting();
 }//GEN-LAST:event_cbxIntervalsActionPerformed
 
 

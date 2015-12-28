@@ -1,4 +1,4 @@
-<?xml version="1.1" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.3" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <AuxValues>
@@ -82,152 +82,144 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
+              <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="btnColor01" min="-2" pref="53" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="tbxRangeStart01" min="-2" pref="59" max="-2" attributes="1"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="tbxRangeEnd01" min="-2" pref="59" max="-2" attributes="1"/>
-                  <EmptySpace max="32767" attributes="0"/>
-              </Group>
-              <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace pref="181" max="32767" attributes="0"/>
-                  <Component id="lbUnit" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-              </Group>
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="btnColor02" min="-2" pref="53" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="tbxRangeStart02" min="-2" pref="59" max="-2" attributes="1"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="tbxRangeEnd02" min="-2" pref="59" max="-2" attributes="1"/>
-                  <EmptySpace max="32767" attributes="0"/>
-              </Group>
-              <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace max="32767" attributes="0"/>
-                  <Component id="btnColor03" min="-2" pref="53" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="tbxRangeStart03" min="-2" pref="59" max="-2" attributes="1"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="tbxRangeEnd03" min="-2" pref="59" max="-2" attributes="1"/>
-                  <EmptySpace max="-2" attributes="0"/>
-              </Group>
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="btnColor04" min="-2" pref="53" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="tbxRangeStart04" min="-2" pref="59" max="-2" attributes="1"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="tbxRangeEnd04" min="-2" pref="59" max="-2" attributes="1"/>
-                  <EmptySpace max="32767" attributes="0"/>
-              </Group>
-              <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace max="32767" attributes="0"/>
-                  <Component id="btnColor05" min="-2" pref="53" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="tbxRangeStart05" min="-2" pref="59" max="-2" attributes="1"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="tbxRangeEnd05" min="-2" pref="59" max="-2" attributes="1"/>
-                  <EmptySpace max="-2" attributes="0"/>
-              </Group>
-              <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace max="32767" attributes="0"/>
-                  <Component id="btnColor06" min="-2" pref="53" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="tbxRangeStart06" min="-2" pref="59" max="-2" attributes="1"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="tbxRangeEnd06" min="-2" pref="59" max="-2" attributes="1"/>
-                  <EmptySpace max="-2" attributes="0"/>
-              </Group>
-              <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace max="32767" attributes="0"/>
-                  <Component id="btnColor07" min="-2" pref="53" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="tbxRangeStart07" min="-2" pref="59" max="-2" attributes="1"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="tbxRangeEnd07" min="-2" pref="59" max="-2" attributes="1"/>
-                  <EmptySpace max="-2" attributes="0"/>
-              </Group>
-              <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace max="32767" attributes="0"/>
-                  <Component id="btnColor08" min="-2" pref="53" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="tbxRangeStart08" min="-2" pref="59" max="-2" attributes="1"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="tbxRangeEnd08" min="-2" pref="59" max="-2" attributes="1"/>
-                  <EmptySpace max="-2" attributes="0"/>
-              </Group>
-              <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace max="32767" attributes="0"/>
-                  <Component id="btnColor09" min="-2" pref="53" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="tbxRangeStart09" min="-2" pref="59" max="-2" attributes="1"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="tbxRangeEnd09" min="-2" pref="59" max="-2" attributes="1"/>
-                  <EmptySpace max="-2" attributes="0"/>
-              </Group>
-              <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace max="32767" attributes="0"/>
-                  <Component id="btnColor10" min="-2" pref="53" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="tbxRangeStart10" min="-2" pref="59" max="-2" attributes="1"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="tbxRangeEnd10" min="-2" pref="59" max="-2" attributes="1"/>
-                  <EmptySpace max="-2" attributes="0"/>
-              </Group>
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="btnColor11" min="-2" pref="53" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="tbxRangeStart11" min="-2" pref="59" max="-2" attributes="1"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="jLabel13" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="tbxRangeEnd11" min="-2" pref="59" max="-2" attributes="1"/>
-                  <EmptySpace max="32767" attributes="0"/>
-              </Group>
-              <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace max="32767" attributes="0"/>
-                  <Component id="btnColor12" min="-2" pref="53" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="tbxRangeStart12" min="-2" pref="59" max="-2" attributes="1"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="tbxRangeEnd12" min="-2" pref="59" max="-2" attributes="1"/>
-                  <EmptySpace max="-2" attributes="0"/>
-              </Group>
-              <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace max="32767" attributes="0"/>
-                  <Component id="btnColor13" min="-2" pref="53" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="tbxRangeStart13" min="-2" pref="59" max="-2" attributes="1"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="jLabel14" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="tbxRangeEnd13" min="-2" pref="59" max="-2" attributes="1"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="btnColor01" min="-2" pref="53" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="tbxRangeStart01" min="-2" pref="59" max="-2" attributes="1"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="tbxRangeEnd01" min="-2" pref="59" max="-2" attributes="1"/>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <Component id="lbUnit" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="btnColor02" min="-2" pref="53" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="tbxRangeStart02" min="-2" pref="59" max="-2" attributes="1"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="tbxRangeEnd02" min="-2" pref="59" max="-2" attributes="1"/>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <Component id="btnColor03" min="-2" pref="53" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="tbxRangeStart03" min="-2" pref="59" max="-2" attributes="1"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="tbxRangeEnd03" min="-2" pref="59" max="-2" attributes="1"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="btnColor04" min="-2" pref="53" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="tbxRangeStart04" min="-2" pref="59" max="-2" attributes="1"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="tbxRangeEnd04" min="-2" pref="59" max="-2" attributes="1"/>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <Component id="btnColor05" min="-2" pref="53" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="tbxRangeStart05" min="-2" pref="59" max="-2" attributes="1"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="tbxRangeEnd05" min="-2" pref="59" max="-2" attributes="1"/>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <Component id="btnColor06" min="-2" pref="53" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="tbxRangeStart06" min="-2" pref="59" max="-2" attributes="1"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="tbxRangeEnd06" min="-2" pref="59" max="-2" attributes="1"/>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <Component id="btnColor07" min="-2" pref="53" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="tbxRangeStart07" min="-2" pref="59" max="-2" attributes="1"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="tbxRangeEnd07" min="-2" pref="59" max="-2" attributes="1"/>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <Component id="btnColor08" min="-2" pref="53" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="tbxRangeStart08" min="-2" pref="59" max="-2" attributes="1"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="tbxRangeEnd08" min="-2" pref="59" max="-2" attributes="1"/>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <Component id="btnColor09" min="-2" pref="53" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="tbxRangeStart09" min="-2" pref="59" max="-2" attributes="1"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="tbxRangeEnd09" min="-2" pref="59" max="-2" attributes="1"/>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <Component id="btnColor10" min="-2" pref="53" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="tbxRangeStart10" min="-2" pref="59" max="-2" attributes="1"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="tbxRangeEnd10" min="-2" pref="59" max="-2" attributes="1"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="btnColor11" min="-2" pref="53" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="tbxRangeStart11" min="-2" pref="59" max="-2" attributes="1"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="jLabel13" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="tbxRangeEnd11" min="-2" pref="59" max="-2" attributes="1"/>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <Component id="btnColor12" min="-2" pref="53" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="tbxRangeStart12" min="-2" pref="59" max="-2" attributes="1"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="tbxRangeEnd12" min="-2" pref="59" max="-2" attributes="1"/>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <Component id="btnColor13" min="-2" pref="53" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="tbxRangeStart13" min="-2" pref="59" max="-2" attributes="1"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="jLabel14" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="tbxRangeEnd13" min="-2" pref="59" max="-2" attributes="1"/>
+                      </Group>
+                  </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -238,7 +230,7 @@
                   <Component id="lbUnit" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="btnColor01" alignment="0" pref="22" max="32767" attributes="1"/>
+                      <Component id="btnColor01" alignment="0" max="32767" attributes="1"/>
                       <Component id="tbxRangeEnd01" alignment="0" max="32767" attributes="1"/>
                       <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                           <Component id="tbxRangeStart01" alignment="3" max="32767" attributes="1"/>
@@ -247,7 +239,7 @@
                   </Group>
                   <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="btnColor02" alignment="0" pref="22" max="32767" attributes="1"/>
+                      <Component id="btnColor02" alignment="0" max="32767" attributes="1"/>
                       <Component id="tbxRangeEnd02" alignment="0" max="32767" attributes="1"/>
                       <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                           <Component id="tbxRangeStart02" alignment="3" max="32767" attributes="1"/>
@@ -256,7 +248,7 @@
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="btnColor03" alignment="0" pref="22" max="32767" attributes="1"/>
+                      <Component id="btnColor03" alignment="0" max="32767" attributes="1"/>
                       <Component id="tbxRangeEnd03" alignment="0" max="32767" attributes="1"/>
                       <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                           <Component id="tbxRangeStart03" alignment="3" max="32767" attributes="1"/>
@@ -265,7 +257,7 @@
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="btnColor04" alignment="0" pref="22" max="32767" attributes="1"/>
+                      <Component id="btnColor04" alignment="0" max="32767" attributes="1"/>
                       <Component id="tbxRangeEnd04" alignment="0" max="32767" attributes="1"/>
                       <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                           <Component id="tbxRangeStart04" alignment="3" max="32767" attributes="1"/>
@@ -274,7 +266,7 @@
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="btnColor05" alignment="0" pref="22" max="32767" attributes="1"/>
+                      <Component id="btnColor05" alignment="0" max="32767" attributes="1"/>
                       <Component id="tbxRangeEnd05" alignment="0" max="32767" attributes="1"/>
                       <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                           <Component id="tbxRangeStart05" alignment="3" max="32767" attributes="1"/>
@@ -283,7 +275,7 @@
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="btnColor06" alignment="0" pref="22" max="32767" attributes="1"/>
+                      <Component id="btnColor06" alignment="0" max="32767" attributes="1"/>
                       <Component id="tbxRangeEnd06" alignment="0" max="32767" attributes="1"/>
                       <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                           <Component id="tbxRangeStart06" alignment="3" max="32767" attributes="1"/>
@@ -292,7 +284,7 @@
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="btnColor07" alignment="0" pref="22" max="32767" attributes="1"/>
+                      <Component id="btnColor07" alignment="0" max="32767" attributes="1"/>
                       <Component id="tbxRangeEnd07" alignment="0" max="32767" attributes="1"/>
                       <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                           <Component id="tbxRangeStart07" alignment="3" max="32767" attributes="1"/>
@@ -301,7 +293,7 @@
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="btnColor08" alignment="0" pref="22" max="32767" attributes="1"/>
+                      <Component id="btnColor08" alignment="0" max="32767" attributes="1"/>
                       <Component id="tbxRangeEnd08" alignment="0" max="32767" attributes="1"/>
                       <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                           <Component id="tbxRangeStart08" alignment="3" max="32767" attributes="1"/>
@@ -310,7 +302,7 @@
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="btnColor09" alignment="0" pref="22" max="32767" attributes="1"/>
+                      <Component id="btnColor09" alignment="0" max="32767" attributes="1"/>
                       <Component id="tbxRangeEnd09" alignment="0" max="32767" attributes="1"/>
                       <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                           <Component id="tbxRangeStart09" alignment="3" max="32767" attributes="1"/>
@@ -319,7 +311,7 @@
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="btnColor10" alignment="0" pref="22" max="32767" attributes="1"/>
+                      <Component id="btnColor10" alignment="0" max="32767" attributes="1"/>
                       <Component id="tbxRangeEnd10" alignment="0" max="32767" attributes="1"/>
                       <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                           <Component id="tbxRangeStart10" alignment="3" max="32767" attributes="1"/>
@@ -328,7 +320,7 @@
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="btnColor11" alignment="0" pref="22" max="32767" attributes="1"/>
+                      <Component id="btnColor11" alignment="0" max="32767" attributes="1"/>
                       <Component id="tbxRangeEnd11" alignment="0" max="32767" attributes="1"/>
                       <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                           <Component id="tbxRangeStart11" alignment="3" max="32767" attributes="1"/>
@@ -337,7 +329,7 @@
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="btnColor12" alignment="0" pref="22" max="32767" attributes="1"/>
+                      <Component id="btnColor12" alignment="0" max="32767" attributes="1"/>
                       <Component id="tbxRangeEnd12" alignment="0" max="32767" attributes="1"/>
                       <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                           <Component id="tbxRangeStart12" alignment="3" max="32767" attributes="1"/>
@@ -346,7 +338,7 @@
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="btnColor13" alignment="0" pref="22" max="32767" attributes="1"/>
+                      <Component id="btnColor13" alignment="0" max="32767" attributes="1"/>
                       <Component id="tbxRangeEnd13" alignment="0" max="32767" attributes="1"/>
                       <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                           <Component id="tbxRangeStart13" alignment="3" max="32767" attributes="1"/>

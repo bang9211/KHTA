@@ -61,20 +61,18 @@ public class TrafficAnalysis extends javax.swing.JPanel {
     private final Infra infra;
     private KHTAOption khtaOption;
     private ContourTapPanel contourTapPanel;
-    private final String OPTION_FILE_DIR = KHTAParam.CONFIG_DIR + File.separator;
-    private final String OPTION_FILE = OPTION_FILE_DIR + "khta.cfg";
+    final static String OPTION_FILE_DIR = KHTAParam.CONFIG_DIR + File.separator;
+    final static String OPTION_FILE = OPTION_FILE_DIR + "khta.cfg";
 
     /**
      * Creates new form TrafficAnalysis
      *
      * @param _infra
-     * @param khtaOption
      * @param contourTapPanel
      */
-    public TrafficAnalysis(Infra _infra, KHTAOption khtaOption, ContourTapPanel contourTapPanel) {
+    public TrafficAnalysis(Infra _infra, ContourTapPanel contourTapPanel) {
         initComponents();
         infra = _infra;
-        this.khtaOption = khtaOption;
         this.contourTapPanel = contourTapPanel;
         new Timer().schedule(new TimerTask() {
 
@@ -771,7 +769,7 @@ public class TrafficAnalysis extends javax.swing.JPanel {
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         // TODO add your handling code here:
-        loadSection();
+        //loadSection();
     }//GEN-LAST:event_formComponentShown
 
     private void cbxVMTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxVMTActionPerformed
@@ -911,18 +909,20 @@ public class TrafficAnalysis extends javax.swing.JPanel {
         if(!optFile.exists()) 
         {
             System.err.println("Option file does not be found");
+            khtaOption = new KHTAOption();
         }
         else
         {
             khtaOption = KHTAOption.load(OPTION_FILE);
             adjustLoadOption();
         }        
-        contourTapPanel.setContourOption();
+        contourTapPanel.setContourOption(khtaOption);
     }
     
     private void adjustLoadOption(){
         EvaluationOption opt = khtaOption.getEvaluationOption();
         Calendar c = null;
+       
         
         //섹션 설정
         if(cbxSections.getItemCount() >= khtaOption.getSectionIndex()){
@@ -993,8 +993,6 @@ public class TrafficAnalysis extends javax.swing.JPanel {
         jCheckBoxOCAE.setSelected(opt.getOCAE());
         jCheckBoxIMSD.setSelected(opt.getIMSD());
         jCheckBoxI0MSD.setSelected(opt.getI0MSD());
-        
-        contourTapPanel.setContourOption();
     }
 
     private void setInterval(int runningInterval) {
@@ -1281,13 +1279,13 @@ public class TrafficAnalysis extends javax.swing.JPanel {
             return null;
         }
 
-        //contourTapPanel.setContourOption();
-
         String outputPath = this.txOutputFolder.getText();
 
         khtaOption.setOptions(sectionIndex, duration, cbxInterval.getSelectedIndex(), outputPath,
                 cbxExcel.isSelected(), cbxCSV.isSelected(), cbxContour.isSelected());
 
+        contourTapPanel.addContour();
+                        
         return khtaOption;
     }
 

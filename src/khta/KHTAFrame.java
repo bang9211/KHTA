@@ -30,7 +30,6 @@ import version.Version;
 public class KHTAFrame extends javax.swing.JFrame {
 
     private Infra infra;
-    private KHTAOption khtaOption;
     private final int width = 1000;
     private final int height = 780;
     
@@ -136,9 +135,8 @@ public class KHTAFrame extends javax.swing.JFrame {
         initPanels();
     }
     private void initPanels(){
-        khtaOption = new KHTAOption();
-        cp = new ContourTapPanel(khtaOption);
-        ta = new TrafficAnalysis(infra, khtaOption, cp);
+        cp = new ContourTapPanel();
+        ta = new TrafficAnalysis(infra, cp);
         sc = new SectionCreation(infra);
         
         initMainFrame(ta);

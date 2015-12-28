@@ -6,7 +6,6 @@
 package khta;
 
 import evaluation.ContourPanel;
-import evaluation.ContourPanel_Speed;
 import evaluation.ContourType;
 import evaluation.EvaluationOption;
 import java.awt.BorderLayout;
@@ -27,9 +26,8 @@ public class ContourTapPanel extends javax.swing.JPanel {
     /**
      * Creates new form ContourPanel
      */
-    public ContourTapPanel(KHTAOption khtaOption) {
+    public ContourTapPanel() {
         initComponents();
-        this.khtaOption = khtaOption;
     }
 
     /**
@@ -152,8 +150,8 @@ public class ContourTapPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSaveConfigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveConfigActionPerformed
-//        TICASOption.save(getOption(false), OPTION_FILE);
-//        JOptionPane.showMessageDialog(this, "Configuration has been saved", "Info", JOptionPane.PLAIN_MESSAGE);
+        addContour();
+        KHTAOption.save(khtaOption, TrafficAnalysis.OPTION_FILE);
     }//GEN-LAST:event_btnSaveConfigActionPerformed
 
 
@@ -170,7 +168,8 @@ public class ContourTapPanel extends javax.swing.JPanel {
     private javax.swing.JPanel panContourSettingTotalFlow;
     // End of variables declaration//GEN-END:variables
 
-    public void setContourOption(){
+    public void setContourOption(KHTAOption khtaOption){
+        this.khtaOption = khtaOption;
         this.evaluationOption = khtaOption.getEvaluationOption();
         
         // if ticas option is loaded
@@ -180,15 +179,16 @@ public class ContourTapPanel extends javax.swing.JPanel {
             this.occupancyContourSetting.setContourSetting(evaluationOption.getContourSetting(ContourType.OCCUPANCY));
             this.densityContourSetting.setContourSetting(evaluationOption.getContourSetting(ContourType.DENSITY));
             this.TTContourSetting.setContourSetting(evaluationOption.getContourSetting(ContourType.TT));
+            
 //          applyOption(khtaOption);            
         } else {
-            System.err.println("Option is not loaded");
             // option isn't loaded
+            System.err.println("Option is not loaded");
             this.speedContourSetting.setUnit("km/h");
             this.totalFlowContourSetting.setUnit("veh/h");
             this.occupancyContourSetting.setUnit("%");
             this.densityContourSetting.setUnit("veh/km");
-            TTContourSetting.setUnit("min");
+            this.TTContourSetting.setUnit("min");
         }
         // add contour setting panel to tab panel
         this.panContourSettingSpeed.add(speedContourSetting, BorderLayout.NORTH);
@@ -196,8 +196,11 @@ public class ContourTapPanel extends javax.swing.JPanel {
         this.panContourSettingAverageFlow.add(occupancyContourSetting, BorderLayout.NORTH);
         this.panContourSettingDensity.add(densityContourSetting, BorderLayout.NORTH);
         this.panContourSettingTT.add(TTContourSetting, BorderLayout.NORTH);
-        
-        // contourTapPanel에 있는 세팅 읽기
+    }
+    
+    // evaluationOption에 ContourPanel 세팅저장
+    public void addContour(){
+        evaluationOption.setContourPanels();
         evaluationOption.addContourPanel(ContourType.SPEED, speedContourSetting);
         evaluationOption.addContourPanel(ContourType.DENSITY, this.densityContourSetting);
         evaluationOption.addContourPanel(ContourType.TOTAL_FLOW, this.totalFlowContourSetting);
@@ -205,72 +208,4 @@ public class ContourTapPanel extends javax.swing.JPanel {
         evaluationOption.addContourPanel(ContourType.TT, this.TTContourSetting);
         evaluationOption.addContourPanel(ContourType.STT, this.TTContourSetting);
     }
-
-    // 구현해야할save load
-    /**
-     * Set TICAS interface according to saved option
-     * @param opt 
-     */
-//    private void applyOption(TICASOption ticasOption) {
-//
-//        EvaluationOption opt = ticasOption.getEvaluationOption();
-//        
-//        // times
-//        this.cbxStartHour.setSelectedIndex(opt.getStartHour());
-//        this.cbxStartMin.setSelectedIndex(opt.getStartMin());
-//        
-//        // duration and times
-//        int duration = ticasOption.getDuration();
-//        if (duration > 0) {
-//            this.cbxDuration.setSelectedItem(duration);
-//            this.cbxEndHour.setEnabled(false);
-//            this.cbxEndMin.setEnabled(false);
-//        } else {
-//            this.cbxEndHour.setSelectedIndex(opt.getEndHour());
-//            this.cbxEndMin.setSelectedIndex(opt.getEndMin());
-//        }        
-//        
-//        // set all checkboxes in saved option checked
-//        for (OptionType option : opt.getOptions()) {
-//            option.getCheckBox().setSelected(true);
-//        }
-//
-//        // detector options
-//        if (opt.hasOption(OptionType.DETECTOR_OPT_WITHOUT_LANECONFIG) || opt.hasOption(OptionType.DETECTOR_OPT_WITH_LANECONFIG)) {
-//            this.chkDetectorSpeed.setEnabled(true);
-//            this.chkDetectorDensity.setEnabled(true);
-//            this.chkDetectorFlow.setEnabled(true);
-//            this.chkDetectorOccupancy.setEnabled(true);
-//        }        
-//        
-//        // output direction
-//        this.cbxOutputDirection.setSelectedItem(opt.getOutputDirection());
-//
-//        // output folder
-//        this.tbxOutputFolder.setText(ticasOption.getOutputPath());
-//
-//        // configuration values
-//        this.tbxCongestionThresholdSpeed.setText(String.format("%d", opt.getCongestionThresholdSpeed()));
-//        this.tbxCriticalDensity.setText(String.format("%d", opt.getCriticalDensity()));
-//        this.tbxLaneCapacity.setText(String.format("%d", opt.getLaneCapacity()));
-//        
-//        // selected section index
-//        int selectedSectionIndex = ticasOption.getSeletedSectionIndex();
-////        if(selectedSectionIndex < this.cbxSections.getItemCount()-1) this.cbxSections.setSelectedIndex(selectedSectionIndex);
-//        
-//        // selected interval index
-//        int selectedIntervalSeconds = ticasOption.getSelectedIntervalSeconds();
-//        for(int i = 0 ; i<cbxInterval.getItemCount();i++){
-//                Interval in = (Interval)cbxInterval.getItemAt(i);
-//                if(in.getSecond() == selectedIntervalSeconds){
-//                        cbxInterval.setSelectedIndex(i);
-//                        break;
-//                }
-//        }
-////        if(selectedIntervalSeconds < this.cbxInterval.getItemCount()-1) this.cbxInterval.setSelectedIndex(selectedIntervalIndex);        
-//        
-//        InfraConstants.TRAFFIC_DATA_URL = ticasOption.getTrafficDataUrl();
-//        InfraConstants.TRAFFIC_CONFIG_URL = ticasOption.getTrafficConfigUrl();
-//    }
-
 }

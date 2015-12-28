@@ -47,7 +47,7 @@ public class EvaluationOption implements Serializable{
     /** checked options */
 //    private HashMap<String, OptionType> options = new HashMap<String, OptionType>();
     
-    private transient HashMap<ContourType, ContourPanel> contourPanels = new HashMap<ContourType, ContourPanel>();    
+    private transient HashMap<ContourType, ContourPanel> contourPanels;    
     private HashMap<ContourType, ContourSetting> contourSettings = new HashMap<ContourType, ContourSetting>();    
     
     
@@ -196,6 +196,11 @@ public class EvaluationOption implements Serializable{
     
     public boolean getI0MSD(){
         return i0msdCheck;
+    }
+    
+    public void setContourPanels(){
+        if(contourPanels == null)
+            contourPanels = new HashMap<ContourType, ContourPanel>();
     }
     
     public void addContourPanel(ContourType cType, ContourPanel panel)
