@@ -748,7 +748,7 @@ public class TrafficAnalysis extends javax.swing.JPanel {
     }//GEN-LAST:event_cbxEndHourActionPerformed
 
     private void cbxDurationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxDurationActionPerformed
-//        selectDuration();
+//      selectDuration();
         if (cbxDuration.getSelectedIndex() != 0) {
             cbxEndHour.setEnabled(false);
             cbxEndMin.setEnabled(false);
@@ -760,7 +760,6 @@ public class TrafficAnalysis extends javax.swing.JPanel {
 
     private void cbxSectionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxSectionsActionPerformed
         // TODO add your handling code here:
-
     }//GEN-LAST:event_cbxSectionsActionPerformed
 
     private void cbxSectionsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbxSectionsMouseClicked

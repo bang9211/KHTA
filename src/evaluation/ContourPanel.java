@@ -22,6 +22,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import java.awt.Color;
+import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.util.Arrays;
 import javax.swing.JColorChooser;
@@ -39,7 +40,8 @@ public class ContourPanel extends javax.swing.JPanel {
     protected float maxValue = 0;
     protected int steps = 0;
     protected boolean isReverse = false;
-    protected boolean isSet = false;
+    private int selectCount = 0;
+    private int count = 0;
     
     public ContourPanel(int interval, float maxValue, boolean isreverse) {
         initComponents();
@@ -51,7 +53,9 @@ public class ContourPanel extends javax.swing.JPanel {
         }
         this.steps = interval;
         this.maxValue = maxValue;
+        
         this.cbxIntervals.setSelectedIndex(interval - 3);
+        
         this.isReverse = isreverse;
               
         init();
@@ -88,46 +92,6 @@ public class ContourPanel extends javax.swing.JPanel {
         return this.lbUnit.getText();
     }
     
-    public ContourSetting getContourSetting()
-    {
-        ContourSetting setting = new ContourSetting();        
-        setting.setContourColors(colors);
-        setting.setContourStepValues(getStepValues());
-        setting.setContourStep(steps);
-        setting.setContourUnit(getUnit());
-        setting.setIsReverse(isReverse);
-        setting.setMaxValue(this.maxValue);
-       
-        return setting;
-    }
-    
-    public void setContourSetting(ContourSetting setting)
-    {
-        this.colors = setting.getContourColors();
-        this.steps = setting.getContourStep();
-        this.lbUnit.setText(setting.getContourUnit());
-        this.isReverse = setting.isReverse();
-        this.maxValue = setting.getMaxValue();
-        float[] sv = setting.getContourStepValues();
-        isSet = true;
-        
-        for(int i=0; i<sv.length; i++)
-        {
-            String v = String.format("%.0f", sv[i]);
-            rangeEnds[i].setText(v);
-            rangeStarts[i+1].setText(v);
-            buttons[i].setBackground(colors[i]);
-            
-            this.rangeStarts[i].setEnabled(true);
-            this.rangeEnds[i].setEnabled(true);
-        }
-        rangeStarts[0].setText("0");
-        rangeStarts[steps].setEnabled(true);
-        rangeEnds[steps].setText("+++");
-        
-        cbxIntervals.setSelectedIndex(steps - 3);
-    }
-    
     public int getStepBox(){
         return cbxIntervals.getSelectedIndex();
     }
@@ -154,33 +118,36 @@ public class ContourPanel extends javax.swing.JPanel {
         for (int i = 0; i < buttons.length; i++) {
             buttons[i].addMouseListener(mouseAdapter);
         }
-        applySetting();        
+        initSetting();        
     }
 
-    private void applySetting() {
+    private void initSetting() {
         this.steps = Integer.parseInt((String) this.cbxIntervals.getSelectedItem());
-        setColors();
-        setValues();
+        initColors();
+        initValues();
+        //System.out.println("init Settings");        
+    }
+    
+    protected void initColors() {
+        int step = this.steps;
+
+        Arrays.fill(colors, new Color(-1250856));
+        colors[0] = new Color(-1250856);
+        for (int i = 0; i < step; i++) {
+            colors[i+1] = new Color(-1250856);
+//          colors[i+1]=Color.getHSBColor((float)(300-(300/(step-1))*i)/360, 1f, 1f);
+            colors[i+1]=Color.getHSBColor((float)(60+(i*30))/360, 1f, 1f);
+        }
+        colors[0] = Color.getHSBColor(0, 0, 1.0f);
+        if(this.isReverse) reverse();
         
+        //버튼색 설정
         for (int i = 0; i < buttons.length; i++) {
             buttons[i].setBackground(colors[i]);
         }
     }
 
-    protected void setColors() {
-        int step = this.steps;
-
-        Arrays.fill(colors, new Color(-1250856));
-        
-        for (int i = 0; i < step; i++) {
-//            colors[i+1]=Color.getHSBColor((float)(300-(300/(step-1))*i)/360, 1f, 1f);
-                colors[i+1]=Color.getHSBColor((float)(60+(i*30))/360, 1f, 1f);
-        }
-        colors[0] = Color.getHSBColor(0, 0, 1.0f);
-        if(this.isReverse) reverse();
-    }
-
-    protected void setValues() {
+    protected void initValues() {
         int offset = Math.round(this.maxValue / this.steps);
 
         for (int i = 1; i < this.rangeStarts.length; i++) {
@@ -202,14 +169,82 @@ public class ContourPanel extends javax.swing.JPanel {
         }
         this.rangeEnds[this.steps].setText("+++");
     }
+    
+    public ContourSetting getContourSetting()
+    {
+        ContourSetting setting = new ContourSetting();        
+        setting.setContourColors(colors);
+        setting.setContourStepValues(getStepValues());
+        setting.setContourStep(steps);
+        setting.setContourUnit(getUnit());
+        setting.setIsReverse(isReverse);
+        setting.setMaxValue(this.maxValue);
+       
+        return setting;
+    }
+    
+    //Load 성공 후에 실행되는 함수
+    //Load된 데이터를 가져와 저장하고, GUI에 설정 및 갱신
+    public void setContourSetting(ContourSetting setting)
+    {
+        this.colors = setting.getContourColors();
+        this.steps = setting.getContourStep();
+        this.lbUnit.setText(setting.getContourUnit());
+        this.isReverse = setting.isReverse();
+        this.maxValue = setting.getMaxValue();
+        float[] sv = setting.getContourStepValues();
+        
+        applySetting(sv);
+    }
+
+    private void applySetting(float[] sv){
+        //Load한 Interval 입력
+        cbxIntervals.setSelectedIndex(steps - 3);
+        
+        setColors();
+        setValues(sv);
+        
+        //System.out.println("apply Settings");        
+    }
+
+    protected void setColors(){
+        //버튼색 설정
+        for (int i = 0; i < buttons.length; i++) {
+            buttons[i].setBackground(colors[i]);
+        }
+    }
+    
+    protected void setValues(float[] sv){
+        //Load한 value값 입력
+        for(int i=0; i<sv.length; i++)
+        {
+            String v = String.format("%.0f", sv[i]);
+            rangeEnds[i].setText(v);
+            rangeStarts[i+1].setText(v);
+            buttons[i].setBackground(colors[i]);
+            
+            this.rangeStarts[i].setEnabled(true);
+            this.rangeEnds[i].setEnabled(true);
+            
+        }
+        rangeStarts[0].setText("0");
+        rangeStarts[steps].setEnabled(true);
+        rangeEnds[steps].setText("+++");
+        rangeEnds[steps].disable();
+        for(int i=steps+1; i<12; i++)
+        {
+            rangeStarts[i].setText("");
+            rangeStarts[i].disable();
+            rangeEnds[i].setText("");
+            rangeEnds[i].disable();
+        }
+    }
 
     private void updateColor() {
         for (int i = 0; i < this.buttons.length; i++) {
             this.colors[i] = this.buttons[i].getBackground();
         }
     }
-
-
     
     protected void reverse()
     {
@@ -219,12 +254,7 @@ public class ContourPanel extends javax.swing.JPanel {
             colors[r] = temp;
         }        
     }
-    
-    public boolean getIsSet(){
-        return isSet;
-    }
         
-
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -291,44 +321,49 @@ public class ContourPanel extends javax.swing.JPanel {
         tbxRangeEnd13 = new javax.swing.JTextField();
         lbUnit = new javax.swing.JLabel();
 
-        jLabel1.setFont(new java.awt.Font("Verdana 12", 1, 12));
+        jLabel1.setFont(new java.awt.Font("Verdana 12", 1, 12)); // NOI18N
         jLabel1.setText("Number of Contour Intervals");
 
         cbxIntervals.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" }));
+        cbxIntervals.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbxIntervalsItemStateChanged(evt);
+            }
+        });
         cbxIntervals.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbxIntervalsActionPerformed(evt);
             }
         });
 
-        tbxRangeStart01.setFont(new java.awt.Font("Verdana 12", 0, 12));
+        tbxRangeStart01.setFont(new java.awt.Font("Verdana 12", 0, 12)); // NOI18N
         tbxRangeStart01.setText("0");
 
         jLabel2.setText("-");
 
-        tbxRangeEnd01.setFont(new java.awt.Font("Verdana 12", 0, 12));
+        tbxRangeEnd01.setFont(new java.awt.Font("Verdana 12", 0, 12)); // NOI18N
         tbxRangeEnd01.setText("0");
 
-        tbxRangeStart02.setFont(new java.awt.Font("Verdana 12", 0, 12));
+        tbxRangeStart02.setFont(new java.awt.Font("Verdana 12", 0, 12)); // NOI18N
         tbxRangeStart02.setText("0");
 
         jLabel3.setText("-");
 
-        tbxRangeEnd02.setFont(new java.awt.Font("Verdana 12", 0, 12));
+        tbxRangeEnd02.setFont(new java.awt.Font("Verdana 12", 0, 12)); // NOI18N
         tbxRangeEnd02.setText("0");
 
-        tbxRangeEnd04.setFont(new java.awt.Font("Verdana 12", 0, 12));
+        tbxRangeEnd04.setFont(new java.awt.Font("Verdana 12", 0, 12)); // NOI18N
         tbxRangeEnd04.setText("0");
 
-        tbxRangeStart04.setFont(new java.awt.Font("Verdana 12", 0, 12));
+        tbxRangeStart04.setFont(new java.awt.Font("Verdana 12", 0, 12)); // NOI18N
         tbxRangeStart04.setText("0");
 
         jLabel4.setText("-");
 
-        tbxRangeStart03.setFont(new java.awt.Font("Verdana 12", 0, 12));
+        tbxRangeStart03.setFont(new java.awt.Font("Verdana 12", 0, 12)); // NOI18N
         tbxRangeStart03.setText("0");
 
-        tbxRangeEnd03.setFont(new java.awt.Font("Verdana 12", 0, 12));
+        tbxRangeEnd03.setFont(new java.awt.Font("Verdana 12", 0, 12)); // NOI18N
         tbxRangeEnd03.setText("0");
 
         jLabel5.setText("-");
@@ -337,75 +372,75 @@ public class ContourPanel extends javax.swing.JPanel {
 
         jLabel7.setText("-");
 
-        tbxRangeStart07.setFont(new java.awt.Font("Verdana 12", 0, 12));
+        tbxRangeStart07.setFont(new java.awt.Font("Verdana 12", 0, 12)); // NOI18N
         tbxRangeStart07.setText("0");
 
-        tbxRangeEnd07.setFont(new java.awt.Font("Verdana 12", 0, 12));
+        tbxRangeEnd07.setFont(new java.awt.Font("Verdana 12", 0, 12)); // NOI18N
         tbxRangeEnd07.setText("0");
 
-        tbxRangeEnd08.setFont(new java.awt.Font("Verdana 12", 0, 12));
+        tbxRangeEnd08.setFont(new java.awt.Font("Verdana 12", 0, 12)); // NOI18N
         tbxRangeEnd08.setText("0");
 
-        tbxRangeStart08.setFont(new java.awt.Font("Verdana 12", 0, 12));
+        tbxRangeStart08.setFont(new java.awt.Font("Verdana 12", 0, 12)); // NOI18N
         tbxRangeStart08.setText("0");
 
-        tbxRangeStart05.setFont(new java.awt.Font("Verdana 12", 0, 12));
+        tbxRangeStart05.setFont(new java.awt.Font("Verdana 12", 0, 12)); // NOI18N
         tbxRangeStart05.setText("0");
 
-        tbxRangeStart06.setFont(new java.awt.Font("Verdana 12", 0, 12));
+        tbxRangeStart06.setFont(new java.awt.Font("Verdana 12", 0, 12)); // NOI18N
         tbxRangeStart06.setText("0");
 
-        tbxRangeEnd06.setFont(new java.awt.Font("Verdana 12", 0, 12));
+        tbxRangeEnd06.setFont(new java.awt.Font("Verdana 12", 0, 12)); // NOI18N
         tbxRangeEnd06.setText("0");
 
-        tbxRangeEnd05.setFont(new java.awt.Font("Verdana 12", 0, 12));
+        tbxRangeEnd05.setFont(new java.awt.Font("Verdana 12", 0, 12)); // NOI18N
         tbxRangeEnd05.setText("0");
 
         jLabel8.setText("-");
 
         jLabel9.setText("-");
 
-        tbxRangeStart11.setFont(new java.awt.Font("Verdana 12", 0, 12));
+        tbxRangeStart11.setFont(new java.awt.Font("Verdana 12", 0, 12)); // NOI18N
         tbxRangeStart11.setText("0");
 
-        tbxRangeStart10.setFont(new java.awt.Font("Verdana 12", 0, 12));
+        tbxRangeStart10.setFont(new java.awt.Font("Verdana 12", 0, 12)); // NOI18N
         tbxRangeStart10.setText("0");
 
-        tbxRangeStart09.setFont(new java.awt.Font("Verdana 12", 0, 12));
+        tbxRangeStart09.setFont(new java.awt.Font("Verdana 12", 0, 12)); // NOI18N
         tbxRangeStart09.setText("0");
 
         jLabel10.setText("-");
 
-        tbxRangeEnd09.setFont(new java.awt.Font("Verdana 12", 0, 12));
+        tbxRangeEnd09.setFont(new java.awt.Font("Verdana 12", 0, 12)); // NOI18N
         tbxRangeEnd09.setText("0");
 
-        tbxRangeEnd10.setFont(new java.awt.Font("Verdana 12", 0, 12));
+        tbxRangeEnd10.setFont(new java.awt.Font("Verdana 12", 0, 12)); // NOI18N
         tbxRangeEnd10.setText("0");
 
         jLabel11.setText("-");
 
-        tbxRangeEnd11.setFont(new java.awt.Font("Verdana 12", 0, 12));
+        tbxRangeEnd11.setFont(new java.awt.Font("Verdana 12", 0, 12)); // NOI18N
         tbxRangeEnd11.setText("0");
 
         jLabel13.setText("-");
 
-        tbxRangeStart12.setFont(new java.awt.Font("Verdana 12", 0, 12));
+        tbxRangeStart12.setFont(new java.awt.Font("Verdana 12", 0, 12)); // NOI18N
         tbxRangeStart12.setText("0");
 
         jLabel12.setText("-");
 
-        tbxRangeEnd12.setFont(new java.awt.Font("Verdana 12", 0, 12));
+        tbxRangeEnd12.setFont(new java.awt.Font("Verdana 12", 0, 12)); // NOI18N
         tbxRangeEnd12.setText("0");
 
-        tbxRangeStart13.setFont(new java.awt.Font("Verdana", 0, 12));
+        tbxRangeStart13.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         tbxRangeStart13.setText("0");
 
         jLabel14.setText("-");
 
-        tbxRangeEnd13.setFont(new java.awt.Font("Verdana", 0, 12));
+        tbxRangeEnd13.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         tbxRangeEnd13.setText("0");
 
-        lbUnit.setFont(new java.awt.Font("Verdana 12", 1, 12));
+        lbUnit.setFont(new java.awt.Font("Verdana 12", 1, 12)); // NOI18N
         lbUnit.setText("[UNIT]");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -414,137 +449,127 @@ public class ContourPanel extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnColor01, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(tbxRangeStart01, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(tbxRangeEnd01, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(181, Short.MAX_VALUE)
-                .addComponent(lbUnit)
-                .addContainerGap())
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnColor02, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(tbxRangeStart02, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(tbxRangeEnd02, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnColor03, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(tbxRangeStart03, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(tbxRangeEnd03, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnColor04, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(tbxRangeStart04, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(tbxRangeEnd04, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnColor05, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(tbxRangeStart05, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(tbxRangeEnd05, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnColor06, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(tbxRangeStart06, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel9)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(tbxRangeEnd06, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnColor07, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(tbxRangeStart07, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(tbxRangeEnd07, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnColor08, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(tbxRangeStart08, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(tbxRangeEnd08, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnColor09, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(tbxRangeStart09, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel10)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(tbxRangeEnd09, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnColor10, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(tbxRangeStart10, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel11)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(tbxRangeEnd10, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnColor11, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(tbxRangeStart11, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel13)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(tbxRangeEnd11, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnColor12, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(tbxRangeStart12, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel12)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(tbxRangeEnd12, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnColor13, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(tbxRangeStart13, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel14)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(tbxRangeEnd13, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnColor01, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(tbxRangeStart01, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(tbxRangeEnd01, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(lbUnit))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnColor02, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(tbxRangeStart02, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(tbxRangeEnd02, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnColor03, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(tbxRangeStart03, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(tbxRangeEnd03, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnColor04, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(tbxRangeStart04, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(tbxRangeEnd04, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnColor05, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(tbxRangeStart05, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(tbxRangeEnd05, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnColor06, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(tbxRangeStart06, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(tbxRangeEnd06, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnColor07, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(tbxRangeStart07, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(tbxRangeEnd07, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnColor08, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(tbxRangeStart08, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(tbxRangeEnd08, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnColor09, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(tbxRangeStart09, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel10)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(tbxRangeEnd09, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnColor10, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(tbxRangeStart10, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel11)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(tbxRangeEnd10, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnColor11, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(tbxRangeStart11, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel13)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(tbxRangeEnd11, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnColor12, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(tbxRangeStart12, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel12)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(tbxRangeEnd12, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnColor13, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(tbxRangeStart13, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel14)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(tbxRangeEnd13, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -553,91 +578,91 @@ public class ContourPanel extends javax.swing.JPanel {
                 .addComponent(lbUnit)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnColor01, javax.swing.GroupLayout.DEFAULT_SIZE, 22, Short.MAX_VALUE)
+                    .addComponent(btnColor01, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(tbxRangeEnd01)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(tbxRangeStart01)
                         .addComponent(jLabel2)))
                 .addGap(4, 4, 4)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnColor02, javax.swing.GroupLayout.DEFAULT_SIZE, 22, Short.MAX_VALUE)
+                    .addComponent(btnColor02, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(tbxRangeEnd02)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(tbxRangeStart02)
                         .addComponent(jLabel3)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnColor03, javax.swing.GroupLayout.DEFAULT_SIZE, 22, Short.MAX_VALUE)
+                    .addComponent(btnColor03, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(tbxRangeEnd03)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(tbxRangeStart03)
                         .addComponent(jLabel5)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnColor04, javax.swing.GroupLayout.DEFAULT_SIZE, 22, Short.MAX_VALUE)
+                    .addComponent(btnColor04, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(tbxRangeEnd04)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(tbxRangeStart04)
                         .addComponent(jLabel4)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnColor05, javax.swing.GroupLayout.DEFAULT_SIZE, 22, Short.MAX_VALUE)
+                    .addComponent(btnColor05, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(tbxRangeEnd05)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(tbxRangeStart05)
                         .addComponent(jLabel8)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnColor06, javax.swing.GroupLayout.DEFAULT_SIZE, 22, Short.MAX_VALUE)
+                    .addComponent(btnColor06, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(tbxRangeEnd06)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(tbxRangeStart06)
                         .addComponent(jLabel9)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnColor07, javax.swing.GroupLayout.DEFAULT_SIZE, 22, Short.MAX_VALUE)
+                    .addComponent(btnColor07, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(tbxRangeEnd07)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(tbxRangeStart07)
                         .addComponent(jLabel6)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnColor08, javax.swing.GroupLayout.DEFAULT_SIZE, 22, Short.MAX_VALUE)
+                    .addComponent(btnColor08, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(tbxRangeEnd08)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(tbxRangeStart08)
                         .addComponent(jLabel7)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnColor09, javax.swing.GroupLayout.DEFAULT_SIZE, 22, Short.MAX_VALUE)
+                    .addComponent(btnColor09, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(tbxRangeEnd09)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(tbxRangeStart09)
                         .addComponent(jLabel10)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnColor10, javax.swing.GroupLayout.DEFAULT_SIZE, 22, Short.MAX_VALUE)
+                    .addComponent(btnColor10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(tbxRangeEnd10)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(tbxRangeStart10)
                         .addComponent(jLabel11)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnColor11, javax.swing.GroupLayout.DEFAULT_SIZE, 22, Short.MAX_VALUE)
+                    .addComponent(btnColor11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(tbxRangeEnd11)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(tbxRangeStart11)
                         .addComponent(jLabel13)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnColor12, javax.swing.GroupLayout.DEFAULT_SIZE, 22, Short.MAX_VALUE)
+                    .addComponent(btnColor12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(tbxRangeEnd12)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(tbxRangeStart12)
                         .addComponent(jLabel12)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnColor13, javax.swing.GroupLayout.DEFAULT_SIZE, 22, Short.MAX_VALUE)
+                    .addComponent(btnColor13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(tbxRangeEnd13)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(tbxRangeStart13)
@@ -674,8 +699,23 @@ public class ContourPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cbxIntervalsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxIntervalsActionPerformed
-        if((colors != null)) applySetting();
+        //System.out.println("Action Performed");        
+//        if((colors != null)) initSetting();        
 }//GEN-LAST:event_cbxIntervalsActionPerformed
+
+    private void cbxIntervalsItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxIntervalsItemStateChanged
+        count++;
+        //System.out.println(count);
+        
+        if(steps == 7)
+            selectCount = 2;
+        else
+            selectCount = 4;
+        if(count > selectCount && evt.getStateChange() == ItemEvent.SELECTED){
+            //System.out.println("State Changed");
+            initSetting();
+        }
+    }//GEN-LAST:event_cbxIntervalsItemStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
