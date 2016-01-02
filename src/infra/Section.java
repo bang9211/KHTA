@@ -416,4 +416,23 @@ public class Section implements Serializable{
             }
         }
     }
+    
+    public RNode[] getRNodesWithExitEntrance()
+    {      
+        List<RNode> fsection = section;
+        
+        List<RNode> list = new ArrayList<RNode>();
+        
+        for(RNode rn : fsection) {                
+            
+            if(rn.getNodeType().isStation())
+                list.add(rn);
+            else if(rn.getNodeType().isEntrance())
+                    list.add(rn);
+            else if(rn.getNodeType().isExit())
+                    list.add(rn);
+        }
+        
+        return list.toArray(new RNode[list.size()]);
+    }
 }

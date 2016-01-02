@@ -17,6 +17,8 @@
 package infra.simobjects;
 
 import infra.Infra;
+import infra.infraobject.Detector;
+import infra.infraobject.Station;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -30,20 +32,20 @@ public class SimObjects {
 
     private Infra infra = Infra.getInstance();
 //    
-    private static SimObjects realInstance = new SimObjects();
-//    private static ArrayList<SimObjects> simInstances = new ArrayList<SimObjects>();
+//    private static SimObjects realInstance = new SimObjects();
+    private static ArrayList<SimObjects> simInstances = new ArrayList<SimObjects>();
 //    
-//    private HashMap<String, SimStation> stations = new HashMap<String, SimStation>();
-//    private HashMap<String, SimDMS> dmss = new HashMap<String, SimDMS>();
-//    private HashMap<String, SimMeter> meters = new HashMap<String, SimMeter>();
-//    private HashMap<String, SimDetector> detectors = new HashMap<String, SimDetector>();
+    private HashMap<String, SimStation> stations = new HashMap<String, SimStation>();
+    private HashMap<String, SimDMS> dmss = new HashMap<String, SimDMS>();
+    private HashMap<String, SimMeter> meters = new HashMap<String, SimMeter>();
+    private HashMap<String, SimDetector> detectors = new HashMap<String, SimDetector>();
 //
 //    //Random seed
-//    private int Randomseed = -1;
+    private int Randomseed = -1;
 //    
-    public static SimObjects getInstance() {
-        return realInstance;
-    }
+//    public static SimObjects getInstance() {
+//        return realInstance;
+//    }
 //    
 //    public static ArrayList<SimObjects> getArrayListInstance(){
 //        return simInstances;
@@ -52,47 +54,48 @@ public class SimObjects {
     public SimObjects(){
         
     }
-//    
-//    /**
-//     * 
-//     * @param station_id station id (e.g. S42)
-//     * @return simulation station object
-//     */    
-//    public SimStation getStation(String station_id)
-//    {
-//        SimStation s = stations.get(station_id);
-//        if(s == null) {
-//            Station st = tmo.getInfra().getStation(station_id);
-//            if(st == null) return null;
-//            else {
-//                SimStation ss = new SimStation(st);
-//                this.stations.put(station_id, ss);
-//                return ss;
-//            }
-//        } else return s;
-//    }
-//    
-//    public SimDetector getDetector(String detector_id)
-//    {
-//        SimDetector sd = detectors.get(detector_id);
-//        if(sd == null) {
-//            Detector d = tmo.getInfra().getDetector(detector_id);
-//            if(d == null) return null;
-//            else {
-//                SimDetector dd = new SimDetector(d);
-//                this.detectors.put(detector_id, dd);
-//                return dd;
-//            }
-//        } else return sd;
-//    }    
-//    
-//    public SimDetector getDetectorWithoutNull(String detector_id){
-//        SimDetector sd = detectors.get(detector_id);
-//        return sd;
-//    }
-//
-//    public SimMeter getMeter(String meter_id)
-//    {
+    
+    /**
+     * 
+     * @param station_id station id (e.g. S42)
+     * @return simulation station object
+     */    
+    public SimStation getStation(String station_id)
+    {
+        SimStation s = stations.get(station_id);
+        if(s == null) {
+            Station st = infra.getStation(station_id);
+            if(st == null) return null;
+            else {
+                SimStation ss = new SimStation(st, this);
+                this.stations.put(station_id, ss);
+                return ss;
+            }
+        } else return s;
+    }
+    
+    public SimDetector getDetector(String detector_id)
+    {
+        SimDetector sd = detectors.get(detector_id);
+        if(sd == null) {
+            Detector d = infra.getDetector(detector_id);
+            if(d == null) return null;
+            else {
+                SimDetector dd = new SimDetector(d);
+                this.detectors.put(detector_id, dd);
+                return dd;
+            }
+        } else return sd;
+    }    
+    
+    public SimDetector getDetectorWithoutNull(String detector_id){
+        SimDetector sd = detectors.get(detector_id);
+        return sd;
+    }
+
+    public SimMeter getMeter(String meter_id)
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
 //        SimMeter sd = meters.get(meter_id);
 //        if(sd == null) {
 //            RampMeter d = tmo.getInfra().getMeter(meter_id);
@@ -109,12 +112,13 @@ public class SimObjects {
 //                return sd;
 //            }
 //        } else return sd;
-//    }       
-//
-//    // FIXME : infra doesn't have DMS objects 
-//    // because tms_xml.config doesn't include DMS information
-//    public SimDMS getDms(String dms_id)
-//    {
+    }       
+
+    // FIXME : infra doesn't have DMS objects 
+    // because tms_xml.config doesn't include DMS information
+    public SimDMS getDms(String dms_id)
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
 //        SimDMS sd = dmss.get(dms_id);
 //        if(sd == null) {
 //            // it may be returned null
@@ -133,26 +137,26 @@ public class SimObjects {
 //                return dd;
 //            }
 //        } else return sd;
-//    }       
-//
-//    public void reset() {
-//        loopReset(this.detectors);
-//        loopReset(this.dmss);
-//        loopReset(this.meters);
-//        loopReset(this.stations);
-//    }
-//    
-//    private <T> void loopReset(HashMap<String, T> map) {
-//        Iterator<T> itr = map.values().iterator();
-//        while(itr.hasNext()) {
-//            ((SimObject)itr.next()).reset();            
-//        }
-//    }
-//    
-//    public void setRandomSeed(int seed){
-//        this.Randomseed = seed;
-//    }
-//    public int getRandomSeed(){
-//        return this.Randomseed;
-//    }
+    }       
+
+    public void reset() {
+        loopReset(this.detectors);
+        loopReset(this.dmss);
+        loopReset(this.meters);
+        loopReset(this.stations);
+    }
+    
+    private <T> void loopReset(HashMap<String, T> map) {
+        Iterator<T> itr = map.values().iterator();
+        while(itr.hasNext()) {
+            ((SimObject)itr.next()).reset();            
+        }
+    }
+    
+    public void setRandomSeed(int seed){
+        this.Randomseed = seed;
+    }
+    public int getRandomSeed(){
+        return this.Randomseed;
+    }
 }

@@ -27,8 +27,12 @@ import java.util.Vector;
  */
 public class InfraObject implements Serializable{
     private final String id;
-    private String name;
+    private String name = "";
     private HashMap<InfraDatas, Object> properties = new HashMap();
+    
+    public InfraObject(String _id){
+        id = _id;
+    }
     
     public InfraObject(HashMap<InfraDatas, Object> _pro){
         properties = _pro;

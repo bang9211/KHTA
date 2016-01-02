@@ -326,6 +326,21 @@ public class RNode extends InfraObject implements Comparable{
     public HashMap<String, Detector> getDetectors(){
         return detectors;
     }
+    
+    public Detector[] getDetectorList(){
+        Vector<Detector> dlist = new Vector<Detector>();
+        for(Detector d : this.detectors.values()) {
+            dlist.add(d);
+        }
+        return dlist.toArray(new Detector[dlist.size()]);
+    }
+    
+    public boolean hasDetector(String id) {
+        for(Detector d : this.detectors.values()){
+            if(d.getID().equals(id)) return true;
+        }
+        return false;
+    }
 
     public void setLocation(double loc) {
         this.loc = loc;

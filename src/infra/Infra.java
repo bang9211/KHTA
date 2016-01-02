@@ -17,6 +17,7 @@
 package infra;
 
 import infra.infraobject.Corridor;
+import infra.infraobject.Detector;
 import infra.infraobject.Entrance;
 import infra.infraobject.Exit;
 import infra.infraobject.RNode;
@@ -294,6 +295,28 @@ public class Infra {
         for(Corridor c : corridors){
             if(c.getID().equals(get))
                 return c;
+        }
+        return null;
+    }
+    
+    public Station getStation(String get){
+        for(Corridor c : corridors){
+            for(Station s : c.getStations()){
+                if(s.getID().equals(get))
+                    return s;
+            }
+        }
+        return null;
+    }
+    
+    public Detector getDetector(String detector_id) {
+        for(Corridor c : corridors){
+            for(Station s : c.getStations()){
+                for(Detector d : s.getDetectorList()){
+                    if(d.getID().equals(detector_id))
+                        return d;
+                }
+            }
         }
         return null;
     }

@@ -33,5 +33,9 @@ public class RampMeter extends InfraObject{
     public RampMeter(HashMap<InfraDatas,Object> datas) {
         super(datas);
     }
+
+    public double getStorage() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }
