@@ -33,7 +33,7 @@ public class SimObjects {
     private Infra infra = Infra.getInstance();
 //    
 //    private static SimObjects realInstance = new SimObjects();
-    private static ArrayList<SimObjects> simInstances = new ArrayList<SimObjects>();
+//    private static ArrayList<SimObjects> simInstances = new ArrayList<SimObjects>();
 //    
     private HashMap<String, SimStation> stations = new HashMap<String, SimStation>();
     private HashMap<String, SimDMS> dmss = new HashMap<String, SimDMS>();

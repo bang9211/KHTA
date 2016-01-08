@@ -150,7 +150,7 @@ public class RandomSeeds {
             PropertiesWrapper prop = PropertiesWrapper.load(_path);
             return new RandomSeeds(prop);
         }catch(Exception ex){
-            ex.printStackTrace();
+            System.out.println("There is no random seed in directory : " + _path);
             return new RandomSeeds();
         }
     }

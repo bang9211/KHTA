@@ -41,6 +41,7 @@ public class Detector extends InfraObject{
     transient private Period period;
     transient private int MinInterval;
     private RNode r_node;
+    private Station station = null;
     private double confidence = -1;
     
     transient private Vector<Double> volume = new Vector<Double>();
@@ -270,6 +271,9 @@ public class Detector extends InfraObject{
      */
     private void setRNode(RNode rnode){
         r_node = rnode;
+        if(r_node.nodetype.isStation()){
+            station = (Station)r_node;
+        }
     }
     
     /**
@@ -286,6 +290,10 @@ public class Detector extends InfraObject{
      */
     public RNode getRNode(){
         return r_node;
+    }
+    
+    public Station getStation(){
+        return station;
     }
     
     

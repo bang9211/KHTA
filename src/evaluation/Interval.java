@@ -23,8 +23,8 @@ package evaluation;
  */
 public enum Interval {
     
-//    I10SEC(10, "10 second"),
-//    I30SEC(30, "30 second"),
+    I10SEC(10, "10 second"),
+    I30SEC(30, "30 second"),
 //    I1MIN(60, "1 min"),
 //    I2MIN(120, "2 min"),
 //    I3MIN(180, "3 min"),

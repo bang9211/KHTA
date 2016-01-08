@@ -215,12 +215,18 @@ public class Section implements Serializable{
      * get Rnode Ids for Save
      * @return 
      */
-    private List<String> getRnodeIds() {
+    public List<String> getRnodeIds() {
         List<String> rid = new ArrayList();
         for(RNode r : section){
             rid.add(r.getID());
         }
         return rid;
+    }
+    
+    public void setRnodeIds(List<String> rid) {
+        for(RNode r : section){
+            //////////
+        }
     }
     
     public Station[] getStations(){
@@ -286,7 +292,7 @@ public class Section implements Serializable{
      * get Corridor ID
      * @return 
      */
-    private String getCorridorID() {
+    public String getCorridorID() {
         return corridor.getID();
     }
 
