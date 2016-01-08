@@ -41,7 +41,8 @@ public class SectionHelper {
     private ArrayList<SimDMS> simDMSs;
     private SimInterval SimulationInterval;
     
-    public SectionHelper(Section section, ArrayList<SimDetector> detectors, ArrayList<SimMeter> meters, ArrayList<SimDMS> simdms,
+    public SectionHelper(Section section, ArrayList<SimDetector> detectors, 
+            ArrayList<SimMeter> meters, ArrayList<SimDMS> simdms,
             SimInterval simInterval, SimObjects sobj) {
         this.section = section;
         this.detectors = detectors; 

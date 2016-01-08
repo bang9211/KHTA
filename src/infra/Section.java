@@ -112,7 +112,7 @@ public class Section implements Serializable{
         RNodeThread.Callback cbmsg = new RNodeThread.Callback() {
             @Override
             public synchronized void IsLoaded(RNode r) {
-//                System.out.println("Load RNode - "+r.getID()+" ["+(stidx+1)+"/"+section.size()+"]");
+                System.out.println("Load RNode - "+r.getID()+" ["+(stidx+1)+"/"+section.size()+"]");
                 loadRNode(period, dopt, sobj, this);
                 stidx ++;
             }
@@ -135,13 +135,13 @@ public class Section implements Serializable{
     private synchronized void loadRNode(Period period, DataLoadOption dopt, SimObjects sobj, RNodeThread.Callback cbmsg){
         if(qs != 0)
             qs--;
-//        System.out.println("Load RNode 11"+"Qsize : "+QueueSize+", rnodesize : "+section.size()+", ("+qs+","+tidx+")");
+        System.out.println("Load RNode 11"+"Qsize : "+QueueSize+", rnodesize : "+section.size()+", ("+qs+","+tidx+")");
         while(qs < QueueSize && tidx < section.size()){
             RNode r = section.get(tidx);
             RNodeThread rn = new RNodeThread(r, period, dopt, sobj);
             rn.setCallback(cbmsg);
             rn.start();
-//            System.out.println("RNode["+qs+"] :"+r.getID()+" Start!");
+            System.out.println("RNode["+qs+"] :"+r.getID()+" Start!");
             qs ++;
             tidx ++;
         }
@@ -215,12 +215,18 @@ public class Section implements Serializable{
      * get Rnode Ids for Save
      * @return 
      */
-    private List<String> getRnodeIds() {
+    public List<String> getRnodeIds() {
         List<String> rid = new ArrayList();
         for(RNode r : section){
             rid.add(r.getID());
         }
         return rid;
+    }
+    
+    public void setRnodeIds(List<String> rid) {
+        for(RNode r : section){
+            //////////
+        }
     }
     
     public Station[] getStations(){
@@ -286,7 +292,7 @@ public class Section implements Serializable{
      * get Corridor ID
      * @return 
      */
-    private String getCorridorID() {
+    public String getCorridorID() {
         return corridor.getID();
     }
 

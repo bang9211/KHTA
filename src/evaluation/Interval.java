@@ -23,8 +23,8 @@ package evaluation;
  */
 public enum Interval {
     
-//    I10SEC(10, "10 second"),
-//    I30SEC(30, "30 second"),
+    I10SEC(10, "10 second"),
+    I30SEC(30, "30 second"),
 //    I1MIN(60, "1 min"),
 //    I2MIN(120, "2 min"),
 //    I3MIN(180, "3 min"),
@@ -37,11 +37,12 @@ public enum Interval {
     I1HOUR(3600, "1 hour");
 
         public static int getMinInterval() {
-                int cstep = Integer.MAX_VALUE;
-                for(Interval in : Interval.values()){
-                        cstep = Math.min(cstep, in.second);
-                }
-                return cstep;
+//                int cstep = Integer.MAX_VALUE;
+//                for(Interval in : Interval.values()){
+//                        cstep = Math.min(cstep, in.second);
+//                }
+//                return cstep;
+            return I5MIN.second;
         }
         
         public static int getMinTMCInterval(){
