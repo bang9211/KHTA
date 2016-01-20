@@ -50,6 +50,8 @@ public class EvaluationOption implements Serializable{
     private transient HashMap<ContourType, ContourPanel> contourPanels;    
     private HashMap<ContourType, ContourSetting> contourSettings = new HashMap<ContourType, ContourSetting>();    
     
+    private boolean simulationMode = false;
+    private Interval simInterval;
     
     public EvaluationOption(){
         
@@ -69,6 +71,18 @@ public class EvaluationOption implements Serializable{
     
     public ArrayList<Period> getPeriods(){
         return this.periods;
+    }
+
+    public boolean isSimulationMode() {
+        return simulationMode;
+    }
+    
+    public void setSimulationMode(boolean simulationMode) {
+        this.simulationMode = simulationMode;
+    }
+    
+    public void setSimulationInterval(Interval sitv){
+            simInterval = sitv;
     }
     
     public void setStationData(boolean speedCheck, boolean densityCheck, 

@@ -1044,6 +1044,7 @@ public class VissimCalibration2GUI extends javax.swing.JPanel implements ISimEnd
             this.randomseeds.RemoveRandomSeed(gseed);
             else
                 System.out.println("null!!!");
+
             this.ReflashGroupList();
         }catch(Exception e){
             e.printStackTrace();

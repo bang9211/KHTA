@@ -31,7 +31,7 @@ import infra.Infra;
 import infra.Period;
 import infra.Section;
 import infra.simobjects.RandomSeed;
-import static infra.simulation.SimulationUtil.loadSimulationResults;
+import infra.simulation.SimulationUtil;
 import java.awt.Desktop;
 import java.awt.Frame;
 import java.awt.event.ItemEvent;
@@ -78,6 +78,8 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
     
     private Section simSection;
     private Period simPeriod;
+    
+    private SimulationResult selectedSimulationResult;
     
     /**
      * Creates new form TrafficAnalysis
@@ -904,7 +906,13 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
 
             @Override
             public void run() {
-                evaluation();
+                //주석 풀어야함
+//                if(cbxUseSimulationData.isSelected()){
+//                    evaluateWithSimulationResult((SimulationResult)cbxsimulationresult.getSelectedItem());
+//                }else{
+                    evaluation();
+//                }
+                
             }
         }, 10);
 
@@ -1626,5 +1634,188 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
         }
 
     }
-
+    
+    /**
+     * load simulation results from local disk
+     * set data to table
+     */
+    private void loadSimulationResults() {
+        this.cbxsimulationresult.setEnabled(false);
+        if(this.cbxsimulationresult != null)
+            this.cbxsimulationresult.removeAllItems();
+        cbxsimulationresult.addItem("Loading Datas.....");
+        
+        ArrayList<SimulationResult> res = SimulationUtil.loadSimulationResults();
+        
+        if(this.cbxsimulationresult != null)
+            this.cbxsimulationresult.removeAllItems();
+        
+        
+        for(SimulationResult s : res)
+        {
+            if(s != null) {
+                cbxsimulationresult.addItem(s);
+            } else {
+                System.out.println("Loaded is null");
+            }           
+        }           
+        this.cbxsimulationresult.setEnabled(true);
+    }
+    
+//이 밑으로 주석 처리 풀어서 에러해결 필요
+//     /**
+//     * Evaluate with selected simulation result
+//     */
+//    private void evaluateWithSimulationResult(SimulationResult sr) {
+//        selectedSimulationResult = sr;
+//        if(this.selectedSimulationResult == null) {
+//            JOptionPane.showMessageDialog(this.getRootPane(), "Select simulation result");            
+//            return;
+//        }
+//        
+//        this.simSection = selectedSimulationResult.getSection();
+//        this.simPeriod = selectedSimulationResult.getPeriod();
+//        
+////        if(!selectedSimulationResult.IsListData()){
+////            SimObjects.getInstance().reset();        
+////            // set simulation results to detectors
+////            selectedSimulationResult.setTrafficDataToDetectors();
+////        }
+//        
+//        
+//        //String sh = this.tbxSimStartHour.getText();
+//        //String sm = this.tbxSimStartMin.getText();
+//        
+//        int start_hour=-1, start_min = -1;
+//        try {
+//            start_hour = Integer.parseInt(this.cbxStartHour.getSelectedItem().toString());//Integer.parseInt(sh);
+//            start_min = Integer.parseInt(this.cbxStartMin.getSelectedItem().toString());//Integer.parseInt(sm);
+//        } catch(Exception ex) {}
+//        
+//        
+//        Calendar[] selectedDates = this.nATSRLCalendar1.getSelectedDates();
+//        if(this.cbxSimulationForCalibration.isSelected()){
+//            if(selectedDates.length < 1){
+//                JOptionPane.showMessageDialog(this.getRootPane(), "Select \'date and time\' of Real Data");
+//                return;
+//            }else if(selectedDates.length > 1){
+//                JOptionPane.showMessageDialog(this.getRootPane(), "Select just one date");
+//                return;
+//            }
+//        }
+//        
+//        if( ( start_hour >= 0 && start_hour < 24) && ( start_min >= 0 && start_min < 60)) {
+//            Date sDate = simPeriod.startDate;
+//            Date eDate = simPeriod.endDate;
+//            int diff = (int)(eDate.getTime() - sDate.getTime());
+//            Calendar c;
+//            if(this.cbxSimulationForCalibration.isSelected())
+//                c = (Calendar)selectedDates[0].clone();////Calendar.getInstance();//
+//            else
+//                c = Calendar.getInstance();
+//            
+//            c.set(Calendar.HOUR_OF_DAY, start_hour);
+//            c.set(Calendar.MINUTE, start_min);
+//            c.set(Calendar.SECOND, 0);
+//            sDate = c.getTime();
+//            c.add(Calendar.MILLISECOND, diff);
+//            eDate = c.getTime();
+//            this.simPeriod = new Period(sDate, eDate, 30);
+//        }
+//        
+//        this.evaluateSimulation();        
+//    }    
+//    
+//    /**
+//     * Executes evaluation with simulation results
+//     */
+//    public void evaluateSimulation() {
+//            
+//        if(simSection == null || simPeriod == null) {
+//            JOptionPane.showMessageDialog(this.getRootPane(), "Section or Period is null");
+//            return;
+//        }
+//        
+//        simPeriod.interval = ((Interval)this.cbxInterval.getSelectedItem()).getSecond();        
+//        
+//        
+////        try {
+////            System.out.println("= Simulation =======");
+////            System.out.println("Period : data=" + simPeriod.getTimeline().length + ", interval="+simPeriod.interval);
+////            System.out.println("Data Length = " + simSection.getRNodes().get(0).getDetectors()[0].getSpeed().length);
+////        } catch(Exception ex) {
+////            ex.printStackTrace();
+////        }        
+//        
+//        KHTAOption selectedOption = getOption();
+//        EvaluationOption opt = selectedOption.getEvaluationOption();
+//        
+//        if(!this.cbxSimulationForCalibration.isSelected()){
+//            //process Single 
+//            ArrayList<Period> periods = new ArrayList<>();
+//            periods.add(simPeriod);
+//            opt.setPeriods(periods);
+////            if(!this.selectedSimulationResult.IsListData())
+////                simSection.loadData(simPeriod, true);
+//        }
+//        
+//        opt.setSelectedSection(simSection);
+//        
+//        
+//        opt.setSimulationMode(true);
+//        opt.setSimulationInterval(this.selectedSimulationResult.getRunningInterval());
+//        
+//        if (selectedOption == null) {
+//            JOptionPane.showMessageDialog(null, "Check options");
+//            return;
+//        }
+//        
+//        // save option
+//        KHTAOption.save(selectedOption, OPTION_FILE);
+//        
+//        //Output Option Check
+//        if(this.cbxSimulationForCalibration.isSelected()){
+//            opt.removeOption(OptionType.OUT_CONTOUR);
+//            opt.removeOption(OptionType.OUT_EXCEL);
+//            opt.removeOption(OptionType.OUT_CSV);
+//            opt.removeOption((OptionType.STATION_ACCEL));
+//            opt.removeOption((OptionType.STATION_AVG_LANE_FLOW));
+//            opt.removeOption((OptionType.STATION_DENSITY));
+//            opt.removeOption((OptionType.STATION_OCCUPANCY));
+//            opt.removeOption((OptionType.STATION_SPEED));
+//            opt.removeOption((OptionType.STATION_TOTAL_FLOW));
+//            opt.removeOption((OptionType.STATION_VOLUME));
+//            if(this.chkExcel.isSelected()){
+//                opt.addOption(OptionType.OUT_EXCEL);
+//            }
+//            if(this.chkCSV.isSelected()){
+//                opt.addOption(OptionType.OUT_CSV);
+//            }
+//            if(this.chkContour.isSelected()){
+//                opt.addOption(OptionType.OUT_CONTOUR);
+//                opt.addOption(OptionType.STATION_SPEED);
+//                opt.addOption(OptionType.STATION_TOTAL_FLOW);
+//            }
+//        }
+//        
+//        OptionType[] options = opt.getOptions();
+//        
+//        // check options
+//        if (!checkOptions(selectedOption, true)) {
+//            return;
+//        } 
+//        
+//        // open RunningDialog
+//        RunningDialog rd = new RunningDialog((Frame)this.getTopLevelAncestor(), true);
+//        rd.setLocationRelativeTo(this);       
+//        Timer t = new Timer();
+//        if(this.cbxSimulationForCalibration.isSelected())
+//            t.schedule(new EvaluationForCalibration(selectedOption, options, rd,this.selectedSimulationResult), 10);
+//        else{
+//            t.schedule(new EvaluateTask(selectedOption, options, rd,this.selectedSimulationResult), 10);
+//        }
+//        rd.setTimer(t);
+//        rd.setVisible(true);            
+//
+//    }
 }

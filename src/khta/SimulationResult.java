@@ -232,7 +232,9 @@ public class SimulationResult implements Comparable {
         double[] k=d.getDensity(), q=d.getFlow(), u=d.getSpeed(), v=d.getVolume();
 //        System.err.println("-"+d.getDensity().length+ ", "+d.getFlow().length+", "+d.getOccupancy().length
 //                + ", "+d.getScan().length+ ", "+d.getSpeed().length+", "+d.getVolume().length);
+
         System.err.println("-"+d.getDensity().length+ ", "+d.getFlow().length+ ", "+d.getSpeed().length+", "+d.getVolume().length);
+
         data.put(getKey(d.getID(), TrafficType.DENSITY), getCsv(k));
         data.put(getKey(d.getID(), TrafficType.FLOW), getCsv(q));
         //data.put(getKey(d.getID(), TrafficType.OCCUPANCY), getCsv(o));

@@ -27,7 +27,7 @@ public enum Interval {
     I30SEC(30, "30 second"),
 //    I1MIN(60, "1 min"),
 //    I2MIN(120, "2 min"),
-//    I3MIN(180, "3 min"),
+//    I3MIN(180, "3 min"),  
 //    I4MIN(240, "4 min"),
     I5MIN(300, "5 min"),
     I10MIN(600, "10 min"),
