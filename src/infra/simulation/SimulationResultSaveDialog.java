@@ -79,7 +79,7 @@ public class SimulationResultSaveDialog extends javax.swing.JDialog {
 //            sr = new SimulationResult(fname, desc, section, period,RunningInterval,false,SimulationSeveralResult.getKey(this.SimRandom.getName(), this.SimRandom.getSimulationKey()),this.SimRandom.getLength());
         else
             sr = new SimulationResult(fname, desc, section, period,RunningInterval);
-        
+       
         try {
             sr.save();
             this.isSaved = true;
