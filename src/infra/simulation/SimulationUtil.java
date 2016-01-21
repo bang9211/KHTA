@@ -19,6 +19,8 @@ package infra.simulation;
 
 import infra.Period;
 import infra.Section;
+import infra.simobjects.SimObject;
+import infra.simobjects.SimObjects;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,13 +57,13 @@ public class SimulationUtil {
         return res;
     }
     
-    public static void SaveSimulation(Section simSection, Period simPeriod,PluginFrame simFrame) {
+    public static void SaveSimulation(Section simSection, Period simPeriod,PluginFrame simFrame, SimObjects simObjects) {
         if(simSection == null || simPeriod == null) {
             JOptionPane.showMessageDialog(simFrame, "Empty simulation result");
             return;
         }
         // Detectors must have data, before this routine
-        SimulationResultSaveDialog srd = new SimulationResultSaveDialog(simFrame, simSection, simPeriod);
+        SimulationResultSaveDialog srd = new SimulationResultSaveDialog(simFrame, simSection, simPeriod,simObjects);
         srd.setLocationRelativeTo(simFrame);
         srd.setVisible(true);
     }

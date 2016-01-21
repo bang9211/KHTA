@@ -147,7 +147,7 @@ public class VISSIMHelper {
         ArrayList<String> detectors = new ArrayList<String>();
 
         // get detector id from text
-        String regx = strx + " (.*?) NAME \"(DM............)";
+        String regx = strx + " (.*?) NAME \"(DM.............)";
 //        System.out.println(regx);
         Pattern p = Pattern.compile(regx);
         Matcher matcher = p.matcher(contents);

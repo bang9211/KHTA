@@ -17,6 +17,7 @@
 package infra.infraobject;
 
 import evaluation.DataLoadOption;
+import exception.DBException;
 import infra.Direction;
 import infra.InfraDatas;
 import infra.InfraObject;
@@ -24,6 +25,8 @@ import infra.Period;
 import infra.simobjects.SimObjects;
 import infra.type.*;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import util.KHTAParam;
 
 /**
@@ -44,14 +47,22 @@ public class RNode extends InfraObject implements Comparable{
     //ISBUSLANE
     protected boolean isBusLane = false;
     
-    protected double confidence = -1;    
+    protected double confidence = -1;     
     
     //lane
     protected int lane = 1;
     
     //Detectors must include the Mainline, Bus lane and so on
     protected HashMap<String,Detector> detectors = new HashMap<String,Detector>();
-    private boolean isMissing = false;
+    //Detectors for Simulation
+    protected HashMap<String,Detector> simdetectors = new HashMap<String,Detector>();
+    
+    /**
+     * Simulation Mode check
+     * if Simulation mode -> rnode's data is simulation data
+     * else -> rnode's data is real data
+     */
+    private boolean isSimMode = false;
     
     protected boolean isFirstNode = false;
     protected boolean isLastNode = true;
@@ -72,7 +83,8 @@ public class RNode extends InfraObject implements Comparable{
         order = it == null ? -1 : it;
         
 //        direction = (Direction)getProperty(InfraDatas.DIRECTION);
-        initDetectors();
+        initRealDetectors();
+        initSimulationDetectors();
     }
     
     //Set Corridor
@@ -103,30 +115,40 @@ public class RNode extends InfraObject implements Comparable{
      * @param sobj 
      */
     public void loadData(Period period, DataLoadOption dopt, SimObjects sobj){
-        DetectorThread[] dtlist = new DetectorThread[detectors.size()];
-        int cnt = 0;
-        for(Detector d : this.detectors.values()){
-            dtlist[cnt] = new DetectorThread(d, period, dopt, sobj);
-            dtlist[cnt].start();
-            cnt ++;
-//            if(sobj == null)
-//                d.loadData(period, dopt);
-//            else
-//                d.loadData(period, dopt,sobj);
-        }
-        
-        cnt = 0;
-        try {
-            while (true) {
-                dtlist[cnt++].join();
-                if (cnt == dtlist.length) {
-                    break;
+        if(sobj != null){
+            isSimMode = true;
+            try {
+                for(Detector d : this.simdetectors.values()){
+                        d.loadData(period, dopt, sobj);
                 }
+            } catch (DBException ex) {
+                
             }
-            //pre processing
             getSpeed();
-        } catch (InterruptedException ex) {
-            ex.printStackTrace();
+        }else{            
+            isSimMode = false;
+            
+            DetectorThread[] dtlist = new DetectorThread[detectors.size()];
+            int cnt = 0;
+            for(Detector d : this.detectors.values()){
+                dtlist[cnt] = new DetectorThread(d, period, dopt, sobj);
+                dtlist[cnt].start();
+                cnt ++;
+            }
+
+            cnt = 0;
+            try {
+                while (true) {
+                    dtlist[cnt++].join();
+                    if (cnt == dtlist.length) {
+                        break;
+                    }
+                }
+                //pre processing
+                getSpeed();
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
         }
     }
     
@@ -147,9 +169,14 @@ public class RNode extends InfraObject implements Comparable{
      * @return 
      */
     private double[][] MakeData(TrafficType type){
-        double[][] ddata = new double[this.detectors.size()][];
+        HashMap<String,Detector> ds = null;
+        if(!isSimMode)
+            ds = detectors;
+        else
+            ds = simdetectors;
+        double[][] ddata = new double[ds.size()][];
         int idx = 0;
-        for (Detector d : this.detectors.values()) {
+        for (Detector d : ds.values()) {
             ddata[idx++] = d.getData(type);
 //            System.out.println("data["+(idx-1)+"]= "+d.getID()+" - "+ddata[idx-1].length);
         }
@@ -166,8 +193,6 @@ public class RNode extends InfraObject implements Comparable{
     private double[] makeAdjustData(double[][] data, TrafficType atype){
         if(data == null || data.length == 0) return null;
         double[] avg = new double[data[0].length];
-        Detector[] ds = this.detectors.values().toArray(new Detector[this.detectors.size()]);
-        
         double totalValidCount = 0;
         double totalDataCount = 0;
         
@@ -218,14 +243,14 @@ public class RNode extends InfraObject implements Comparable{
         }
 //        System.out.println("========================================\n");
         this.confidence = totalValidCount / totalDataCount * 100;
-        if(confidence < 50) isMissing = true;
+//        if(confidence < 50) isMissing = true;
         return avg;
     }
     
     /**
      * init Detectors
      */
-    private void initDetectors() {
+    private void initRealDetectors() {
         if(nodetype.isDMS()) return;
         if(detectors != null && !detectors.isEmpty()) return;
         if(detectors == null) detectors = new HashMap<String, Detector>();
@@ -260,6 +285,37 @@ public class RNode extends InfraObject implements Comparable{
             dd.put(InfraDatas.ID, did);
             dd.put(InfraDatas.NAME, getDetectorName(LaneType.PASSAGE));
             detectors.put(did, new Detector(dd, LaneType.PASSAGE, this));
+        }
+    }
+    
+    private void initSimulationDetectors() {
+        if(nodetype.isDMS()) return;
+        if(simdetectors != null && !simdetectors.isEmpty()) return;
+        
+        //init Default Detector
+        if(!nodetype.isEntrance()){
+            for(int i=0;i<getLaneCount();i++){
+                String dnum = String.valueOf(i+1);
+                String did = getDetectorID(LaneType.MAINLINE) + dnum;
+                String dname = getDetectorName(LaneType.MAINLINE) + dnum;
+                HashMap<InfraDatas, Object> dd = new HashMap();
+                dd.put(InfraDatas.ID, did);
+                dd.put(InfraDatas.NAME, dname);
+                simdetectors.put(did, new Detector(dd, LaneType.MAINLINE, this));
+            }
+        }else{ //
+            HashMap<InfraDatas, Object> dd = new HashMap();
+            //Queue Detector
+            String did = getDetectorID(LaneType.QUEUE);
+            dd.put(InfraDatas.ID, did);
+            dd.put(InfraDatas.NAME, getDetectorName(LaneType.QUEUE));
+            simdetectors.put(did, new Detector(dd, LaneType.QUEUE, this));
+            //Passage Detector
+            dd.clear();
+            did = getDetectorID(LaneType.PASSAGE);
+            dd.put(InfraDatas.ID, did);
+            dd.put(InfraDatas.NAME, getDetectorName(LaneType.PASSAGE));
+            simdetectors.put(did, new Detector(dd, LaneType.PASSAGE, this));
         }
     }
     
@@ -323,6 +379,9 @@ public class RNode extends InfraObject implements Comparable{
         return nodetype;
     }
     
+    /**
+     * for Real Detectors
+     */
     public HashMap<String, Detector> getDetectors(){
         return detectors;
     }
@@ -341,6 +400,31 @@ public class RNode extends InfraObject implements Comparable{
         }
         return false;
     }
+    //-------------------------------------------------------------//
+    
+    /**
+     * for Sim Detectors
+     */
+    
+    public HashMap<String, Detector> getSimDetectors(){
+        return simdetectors;
+    }
+    
+    public Detector[] getSimDetectorList(){
+        Vector<Detector> dlist = new Vector<Detector>();
+        for(Detector d : this.simdetectors.values()) {
+            dlist.add(d);
+        }
+        return dlist.toArray(new Detector[dlist.size()]);
+    }
+    
+    public boolean hasSimDetector(String id) {
+        for(Detector d : this.simdetectors.values()){
+            if(d.getID().equals(id)) return true;
+        }
+        return false;
+    }
+    //-------------------------------------------------------------//
 
     public void setLocation(double loc) {
         this.loc = loc;
@@ -350,7 +434,7 @@ public class RNode extends InfraObject implements Comparable{
         return lt.dbsuffix+getID();
     }
 
-    private Object getDetectorName(LaneType laneType) {
+    private String getDetectorName(LaneType laneType) {
         return laneType.dbsuffix+this.getName();
     }
     

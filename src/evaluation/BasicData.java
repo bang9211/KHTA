@@ -71,7 +71,7 @@ public abstract class BasicData extends Evaluation{
         
         
         if(opts.getIMSD())
-            fixMissingStation(er);
+             fixMissingStation(er);
         else if(opts.getI0MSD())
             fixZeroMissingStation(er);
 

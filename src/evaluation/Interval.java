@@ -37,25 +37,25 @@ public enum Interval {
     I1HOUR(3600, "1 hour");
 
         public static int getMinInterval() {
-//                int cstep = Integer.MAX_VALUE;
-//                for(Interval in : Interval.values()){
-//                        cstep = Math.min(cstep, in.second);
-//                }
-//                return cstep;
             return I5MIN.second;
         }
         
         public static int getMinTMCInterval(){
                 return Interval.I5MIN.second;
         }
-        
+        public static int getSIMInterval(){
+            return Interval.I30SEC.second;
+        }
         public static int getMinSimulationInterval(){
-                return getMinInterval();
-//                return Interval.I30SEC.second;
+                int cstep = Integer.MAX_VALUE;
+                for(Interval in : Interval.values()){
+                        cstep = Math.min(cstep, in.second);
+                }
+                return cstep;
         }
         
         public static Interval getDefaultSimulationInterval(){
-                return Interval.I5MIN;
+                return Interval.I30SEC;
         }
     
     // interval in second

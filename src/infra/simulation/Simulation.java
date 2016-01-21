@@ -422,7 +422,7 @@ public class Simulation extends Thread implements IStepListener, ITravelTimeList
         System.out.println("Check Detector VISSIM to TICAS Section");
         for(Station s : section.getStations()){
             System.out.println("Check Station - "+s.getID());
-            for(Detector d : s.getDetectorList()){
+            for(Detector d : s.getSimDetectorList()){
                 boolean hasdec = false;
                 for(SimDetector sd : detectors){
                     if(sd.getID().equals(d.getID()))

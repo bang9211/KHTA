@@ -136,7 +136,7 @@ public class SimulationResult implements Comparable {
         this.prop = p.clone();
         this.name = prop.get(K_NAME);
         this.desc = prop.get(K_DESC);
-        RIntv = prop.getInteger(K_RUNNING_INTV) == 0 ? Interval.getMinTMCInterval() : prop.getInteger(K_RUNNING_INTV);
+        RIntv = prop.getInteger(K_RUNNING_INTV) == 0 ? Interval.getSIMInterval(): prop.getInteger(K_RUNNING_INTV);
         
         try{
             this.DataKey = prop.get(K_DATAKEY);
@@ -222,7 +222,7 @@ public class SimulationResult implements Comparable {
     // add traffic data into property
     private void readTrafficDataFromDetectors() {
         for(RNode rn : section.getRNodesWithExitEntrance()) {
-            for(Detector d : rn.getDetectors().values()) {
+            for(Detector d : rn.getSimDetectors().values()) {
                 addTrafficData(d);
             }
         }        
@@ -402,7 +402,7 @@ public class SimulationResult implements Comparable {
     private String getDetectorIds(Section section) {
         Vector<String> ids = new Vector<String>();
         for(RNode rn : section.getRNodesWithExitEntrance()) {
-            for(Detector d : rn.getDetectors().values()) {
+            for(Detector d : rn.getSimDetectors().values()) {
                 ids.add(d.getID());
             }
         }                
