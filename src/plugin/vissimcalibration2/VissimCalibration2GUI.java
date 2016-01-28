@@ -259,7 +259,7 @@ public class VissimCalibration2GUI extends javax.swing.JPanel implements ISimEnd
             System.out.println("Simulation Complete.");
             System.out.println("------------------------------------------------------------------------");
             this.restoreOutput();
-            SimulationUtil.SaveSimulation((Section)this.cbxSections.getSelectedItem(),new Period(sTime, eTime, rinterval),simFrame);
+            SimulationUtil.SaveSimulation((Section)this.cbxSections.getSelectedItem(),new Period(sTime, eTime, rinterval),simFrame,simObjects);
         }
     }
     

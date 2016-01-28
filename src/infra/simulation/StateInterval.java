@@ -26,7 +26,7 @@ import java.util.HashMap;
  */
 public class StateInterval {
         private Interval RUNNING_INTERVAL = Interval.getDefaultSimulationInterval();
-        private int DEFAULT_INTERVAL = Interval.getMinTMCInterval();
+        private int DEFAULT_INTERVAL = Interval.getSIMInterval();
         private HashMap<Integer,Integer> intervalList = new HashMap<Integer,Integer>();
         public StateInterval(){;}
         public StateInterval(int value, Interval ritv){

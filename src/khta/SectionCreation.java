@@ -491,18 +491,28 @@ public class SectionCreation extends javax.swing.JPanel {
             str += "End Location : "+s.getEndLocation()+ " km ("+s.getEndLocation()*1000+"m)\n";
             str += "Distance to Upstream : "+s.getDistanceToUpstreamStation(curentSection.getName())+ " km ("+s.getDistanceToUpstreamStation(curentSection.getName())*1000+"m)\n";
             str += "Distance to DownStream : "+s.getDistanceToDownstreamStation(curentSection.getName())+ " km ("+s.getDistanceToDownstreamStation(curentSection.getName())*1000+"m)\n";
-            str += "Order : "+s.getOrder()+ "\n";
-            str += "Lane Size : "+s.getLaneCount()+ "\n";
             str += "SpeedLimit : "+s.getSpeedLimit()+ "\n";
             str += "Section Name : "+s.getSectionName()+ "\n";
             str += "IsBusLane : "+s.isBusLane()+ "\n";
             str += "Station Type : "+s.getStationType()+ "\n";
         }
+        str += "Order : "+rNode.getOrder()+ "\n";
+        str += "Lane Size : "+rNode.getLaneCount()+ "\n";
+        
         
         
         if(!rNode.getDetectors().isEmpty()){
             str += "\nDetector Info\n";
             for(Detector d : rNode.getDetectors().values()){
+                str += "Did : "+d.getID()+ ", ";
+                str += "Dtype : "+d.getLaneType().toString();
+                str += ", DBid : "+d.getIDforDB()+ "\n";
+            }
+        }
+        
+        if(!rNode.getSimDetectors().isEmpty()){
+            str += "\nDetector Info for Simulation\n";
+            for(Detector d : rNode.getSimDetectors().values()){
                 str += "Did : "+d.getID()+ ", ";
                 str += "Dtype : "+d.getLaneType().toString();
                 str += ", DBid : "+d.getIDforDB()+ "\n";
