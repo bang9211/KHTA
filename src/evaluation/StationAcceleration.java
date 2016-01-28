@@ -8,6 +8,7 @@ package evaluation;
 import infra.Period;
 import infra.Section;
 import infra.infraobject.RNode;
+import khta.KHTAOption;
 
 /**
  *
@@ -15,7 +16,7 @@ import infra.infraobject.RNode;
  */
 public class StationAcceleration extends BasicData{
 
-    public StationAcceleration(Period p, Section s, String op, EvaluationOption opts) {
+    public StationAcceleration(Period p, Section s, String op, KHTAOption opts) {
         super(p, s, op, opts);
     }
 

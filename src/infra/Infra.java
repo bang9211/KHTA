@@ -84,6 +84,16 @@ public class Infra {
         }
     }
 
+    public RNode getRNode(String rid){
+        for(Corridor cor : corridors){
+            for(RNode r : cor.getRNodes()){
+                if(rid.equals(r.getID()))
+                    return r;
+            }
+        }
+        return null;    //fail
+    }
+    
     /**
      * set RNodes
      * - Station (Complete)
@@ -309,10 +319,10 @@ public class Infra {
         return null;
     }
     
-    public Detector getDetector(String detector_id) {
+    public Detector getSimulationDetector(String detector_id) {
         for(Corridor c : corridors){
             for(Station s : c.getStations()){
-                for(Detector d : s.getDetectorList()){
+                for(Detector d : s.getSimDetectorList()){
                     if(d.getID().equals(detector_id))
                         return d;
                 }

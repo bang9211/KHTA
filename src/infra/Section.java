@@ -26,6 +26,7 @@ import infra.type.RnodeType;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -51,6 +52,7 @@ public class Section implements Serializable{
     private ArrayList<Station> stations = new ArrayList<Station>();
     private String name;
     private String desc;
+    private List<String> rnode_ids = new ArrayList<String>();
     
     
     public Section(String name, String desc, String corid){
@@ -112,7 +114,7 @@ public class Section implements Serializable{
         RNodeThread.Callback cbmsg = new RNodeThread.Callback() {
             @Override
             public synchronized void IsLoaded(RNode r) {
-                System.out.println("Load RNode - "+r.getID()+" ["+(stidx+1)+"/"+section.size()+"]");
+//                System.out.println("Load RNode - "+r.getID()+" ["+(stidx+1)+"/"+section.size()+"]");
                 loadRNode(period, dopt, sobj, this);
                 stidx ++;
             }
@@ -135,13 +137,13 @@ public class Section implements Serializable{
     private synchronized void loadRNode(Period period, DataLoadOption dopt, SimObjects sobj, RNodeThread.Callback cbmsg){
         if(qs != 0)
             qs--;
-        System.out.println("Load RNode 11"+"Qsize : "+QueueSize+", rnodesize : "+section.size()+", ("+qs+","+tidx+")");
+//        System.out.println("Load RNode 11"+"Qsize : "+QueueSize+", rnodesize : "+section.size()+", ("+qs+","+tidx+")");
         while(qs < QueueSize && tidx < section.size()){
             RNode r = section.get(tidx);
             RNodeThread rn = new RNodeThread(r, period, dopt, sobj);
             rn.setCallback(cbmsg);
             rn.start();
-            System.out.println("RNode["+qs+"] :"+r.getID()+" Start!");
+//            System.out.println("RNode["+qs+"] :"+r.getID()+" Start!");
             qs ++;
             tidx ++;
         }
@@ -224,9 +226,30 @@ public class Section implements Serializable{
     }
     
     public void setRnodeIds(List<String> rid) {
-        for(RNode r : section){
-            //////////
+        this.rnode_ids = rid;
+        this.constructSection(false);
+        //this.organizeStationsandDMSs(); 
+        this.setStation();  //for contour
+    }
+    
+        /**
+     * 
+     * @param isreverse 
+     */
+    public void constructSection(boolean isreverse) {
+        this.section = new ArrayList<RNode>();
+        //this.infra = tmo.getInfra();
+        //temporary
+        if(isreverse){
+                //temporary
+                Collections.reverse(rnode_ids);
         }
+        for(String rnid : this.rnode_ids) {
+            RNode n = infra.getRNode(rnid);
+            if(n != null) {
+                this.section.add(n);
+            }
+        }        
     }
     
     public Station[] getStations(){

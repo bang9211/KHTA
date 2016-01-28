@@ -233,6 +233,21 @@ public class EvaluationOption implements Serializable{
         return this.contourSettings.get(cType);
     }    
     
+    public void removeStationOption(){
+        this.accelerationCheck = false;
+        this.averageLaneFlowCheck = false;
+        this.densityCheck = false;
+        this.speedCheck = false;
+        this.totalFlowCheck = false;
+    }
+    
+    public Interval getSimulationInterval(){
+            if(simInterval == null)
+                    return Interval.get(Interval.getMinTMCInterval());
+            else
+                    return simInterval;
+    }
+         
     /**
      * Check if it has option
      * @param optionType

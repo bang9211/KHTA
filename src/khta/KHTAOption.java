@@ -6,6 +6,7 @@
 package khta;
 
 import evaluation.EvaluationOption;
+import evaluation.OutputDirection;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -32,6 +33,9 @@ public class KHTAOption implements Serializable{
     private boolean contourCheck = false;
         
     private EvaluationOption evaluationOption = new EvaluationOption();
+    
+    /** selected output direction */
+    private OutputDirection outputDirection = OutputDirection.TO_BOTTOM;
     
     public KHTAOption(){
     }
@@ -141,17 +145,44 @@ public class KHTAOption implements Serializable{
         return excelCheck;
     }
     
+    public void setExcelCheck(boolean excelCheck){
+        this.excelCheck = excelCheck;
+    }
+    
     public boolean getCSVCheck(){
         return csvCheck;
+    }
+    
+    public void setCSVCheck(boolean csvCheck){
+        this.csvCheck = csvCheck;
     }
     
     public boolean getContourCheck(){
         return contourCheck;
     }
     
+    public void setContourCheck(boolean contourCheck){
+        this.contourCheck = contourCheck;
+    }
+    
     public EvaluationOption getEvaluationOption()
     {        
         return this.evaluationOption;
+    }
+    
+    public void removeOption(){
+        this.contourCheck = false;
+        this.excelCheck = false;
+        this.csvCheck = false;
+        this.evaluationOption.removeStationOption();
+    }
+    
+     public OutputDirection getOutputDirection() {
+        return outputDirection;
+    }
+
+    public void setOutputDirection(OutputDirection outputDirection) {
+        this.outputDirection = outputDirection;
     }
         
 }

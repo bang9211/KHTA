@@ -18,10 +18,12 @@
 
 package infra.simulation;
 
+import evaluation.DataLoadOption;
 import evaluation.Interval;
 import infra.Period;
 import infra.Section;
 import infra.simobjects.RandomSeed;
+import infra.simobjects.SimObjects;
 import java.awt.Frame;
 import java.io.File;
 import java.util.Date;
@@ -42,12 +44,15 @@ public class SimulationResultSaveDialog extends javax.swing.JDialog {
     
     protected String fname;
     protected String desc;
+    
+    private SimObjects simObjects;
              
-    public SimulationResultSaveDialog(Frame parent, Section section, Period period) {
+    public SimulationResultSaveDialog(Frame parent, Section section, Period period, SimObjects simObjects) {
         super(parent, true);
         initComponents();        
         this.section = section;
-        this.period = period;               
+        this.period = period;     
+        this.simObjects = simObjects;
     }
     
     protected void saveResult()
@@ -55,20 +60,19 @@ public class SimulationResultSaveDialog extends javax.swing.JDialog {
         fname = this.tbxSectionName.getText();
         desc = this.tbxSectionDesc.getText();
         if(!checkName(fname)) return;
-//        int RunningInterval = SimulationConfig.RunningInterval;
-        int RunningInterval = Interval.I5MIN.second;
+        int RunningInterval = SimulationConfig.RunningInterval;
         
         try {
             System.out.println("SAVE : period=" + period);
             //System.out.println("SAVE : section=루트들");
             System.out.println("SAVE : section="+section.getName());
             
-            period = new Period(
-                    new Date(115, 9, 3, 5, 0, 0), 
-                    new Date(115, 9, 3, 6, 0, 0), 
-                    300);
-            section.loadData(period, null);
-            //section.loadData(period, DataLoadOption.setSimulationMode(Interval.get(RunningInterval)));
+//            period = new Period(
+//                    new Date(115, 9, 3, 5, 0, 0), 
+//                    new Date(115, 9, 3, 6, 0, 0), 
+//                    300);
+//            section.loadData(period, null);
+            section.loadData(period, DataLoadOption.setSimulationMode(Interval.get(RunningInterval)),simObjects);
         } catch(Exception ex) {
             ex.printStackTrace();
         }

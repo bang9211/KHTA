@@ -585,7 +585,7 @@ public class VISSIMController {
     
     private void insertDetectorInfra(int Id,int cnt,Infra infra) {
         detectorData[cnt] = new DetectorData();
-        Detector det = infra.getDetector(""+Id);
+        Detector det = infra.getSimulationDetector(""+Id);
         if (det != null && det.getLaneType() == LaneType.QUEUE) {
             queueDetectorList[cnt] = det;
         } else {

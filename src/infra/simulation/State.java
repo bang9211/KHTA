@@ -50,7 +50,7 @@ public class State {
        if (sd == null) {
            return false;
        }
-       return this.rnode.hasDetector(sd.getID());
+       return this.rnode.hasSimDetector(sd.getID());
    }
 
    public boolean hasDetector(SimDetector[] sds) {
@@ -58,7 +58,7 @@ public class State {
            return false;
        }
        for (SimDetector sd : sds) {
-           if (this.rnode.hasDetector(sd.getID())) {
+           if (this.rnode.hasSimDetector(sd.getID())) {
                return true;
            }
        }
@@ -99,5 +99,9 @@ public class State {
    
    public int getCurrentRunTime(){
            return simInterval.getCurrentRunTime();
+   }
+   
+   public RNode getRNode(){
+       return rnode;
    }
 }

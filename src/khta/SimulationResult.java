@@ -136,7 +136,7 @@ public class SimulationResult implements Comparable {
         this.prop = p.clone();
         this.name = prop.get(K_NAME);
         this.desc = prop.get(K_DESC);
-        RIntv = prop.getInteger(K_RUNNING_INTV) == 0 ? Interval.getMinTMCInterval() : prop.getInteger(K_RUNNING_INTV);
+        RIntv = prop.getInteger(K_RUNNING_INTV) == 0 ? Interval.getSIMInterval(): prop.getInteger(K_RUNNING_INTV);
         
         try{
             this.DataKey = prop.get(K_DATAKEY);
@@ -222,7 +222,7 @@ public class SimulationResult implements Comparable {
     // add traffic data into property
     private void readTrafficDataFromDetectors() {
         for(RNode rn : section.getRNodesWithExitEntrance()) {
-            for(Detector d : rn.getDetectors().values()) {
+            for(Detector d : rn.getSimDetectors().values()) {
                 addTrafficData(d);
             }
         }        
@@ -243,10 +243,10 @@ public class SimulationResult implements Comparable {
         data.put(getKey(d.getID(), TrafficType.VOLUME), getCsv(v));        
     }
     
-    public void setTrafficDataToDetectors(){
+//    public void setTrafficDataToDetectors(){
 //        SimObjects simObjects = SimObjects.getInstance();
 //        setTrafficDataToDetectors(simObjects);
-    }
+//    }
     
     public void setTrafficDataToDetectors(SimObjects sim) {
         if(!this.IsListData()){
@@ -259,7 +259,7 @@ public class SimulationResult implements Comparable {
                 SimDetector sd = simObjects.getDetector(detector_id);
                 sd.setTrafficData(TrafficType.DENSITY, data.getDoubleArray(getKey(detector_id, TrafficType.DENSITY)));
                 sd.setTrafficData(TrafficType.FLOW, data.getDoubleArray(getKey(detector_id, TrafficType.FLOW)));
-                sd.setTrafficData(TrafficType.OCCUPANCY, data.getDoubleArray(getKey(detector_id, TrafficType.OCCUPANCY)));
+                //sd.setTrafficData(TrafficType.OCCUPANCY, data.getDoubleArray(getKey(detector_id, TrafficType.OCCUPANCY)));
                 //sd.setTrafficData(TrafficType.SCAN, data.getDoubleArray(getKey(detector_id, TrafficType.SCAN)));
                 sd.setTrafficData(TrafficType.SPEED, data.getDoubleArray(getKey(detector_id, TrafficType.SPEED)));
                 sd.setTrafficData(TrafficType.VOLUME, data.getDoubleArray(getKey(detector_id, TrafficType.VOLUME)));
@@ -402,7 +402,7 @@ public class SimulationResult implements Comparable {
     private String getDetectorIds(Section section) {
         Vector<String> ids = new Vector<String>();
         for(RNode rn : section.getRNodesWithExitEntrance()) {
-            for(Detector d : rn.getDetectors().values()) {
+            for(Detector d : rn.getSimDetectors().values()) {
                 ids.add(d.getID());
             }
         }                

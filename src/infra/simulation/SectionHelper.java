@@ -52,6 +52,11 @@ public class SectionHelper {
         simObjects = sobj;
         init();
     }
+    
+    public SectionHelper(Section section){
+        this.section = section;
+        init();
+    }
 
     /**
      * Returns station state according to station id
@@ -112,7 +117,7 @@ public class SectionHelper {
      * @return true if given station in the case
      */
     private boolean isInMap(Station s) {
-        Detector[] dets = s.getDetectorList();
+        Detector[] dets = s.getSimDetectorList();
         for (Detector d : dets) {
             if(d == null){
                 return false;

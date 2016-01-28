@@ -12,6 +12,7 @@ import infra.infraobject.Station;
 import infra.type.RnodeType;
 import java.util.ArrayList;
 import java.util.Arrays;
+import khta.KHTAOption;
 
 /**
  *
@@ -28,11 +29,12 @@ public abstract class BasicData extends Evaluation{
     
     protected abstract void addStationDataSet(RNode r);
     
-    protected BasicData(Period p, Section s, String op, EvaluationOption opts){
+    protected BasicData(Period p, Section s, String op, KHTAOption ko){
         this.period = p;
         this.section = s;
         this.outputPath = op;
-        this.opts = opts;
+        this.ko = ko;
+        this.opts = ko.getEvaluationOption();
         init();
     }
     
@@ -56,7 +58,7 @@ public abstract class BasicData extends Evaluation{
                 Station s = (Station)r;
                 //매 스테이션마다 데이터의 헤더를 추가해야함
                 data = new ArrayList();
-                data.add(s.getName());
+                data.add(s.getName() + " - " + s.getID());
                 data.add(s.getConfidence());
                 data.add(distance);
                 addStationDataSet(r);
@@ -71,7 +73,7 @@ public abstract class BasicData extends Evaluation{
         
         
         if(opts.getIMSD())
-            fixMissingStation(er);
+             fixMissingStation(er);
         else if(opts.getI0MSD())
             fixZeroMissingStation(er);
 

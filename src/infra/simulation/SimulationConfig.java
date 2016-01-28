@@ -101,7 +101,7 @@ public class SimulationConfig extends KHTAConfig{
             if(prop.getInteger("SINTV") != 0)
                 RunningInterval = prop.getInteger("SINTV");
             else
-                RunningInterval = Interval.getMinTMCInterval();
+                RunningInterval = Interval.getSIMInterval();
         }
     }
 

@@ -29,6 +29,7 @@ import jxl.write.Label;
 import jxl.write.Number;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
+import khta.KHTAOption;
 
 /**
  *
@@ -39,6 +40,7 @@ public abstract class Evaluation {
     
     protected Vector<EvaluationResult> results = new Vector<EvaluationResult>();
     protected String name;
+    protected KHTAOption ko;
     protected EvaluationOption opts;
     
     protected abstract void init();
@@ -64,13 +66,13 @@ public abstract class Evaluation {
 //            rowSize = 0;
 //        }
         
-//        if (this.opts.getOutputDirection().isToRight()) {
-//            colSize = this.results.get(0).getRowSize(0);
-//            rowSize = this.results.get(0).getColumnSize();
-//        } else {
+        if (this.ko.getOutputDirection().isToRight()) {
+            colSize = this.results.get(0).getRowSize(0);
+            rowSize = this.results.get(0).getColumnSize();
+        } else {
             colSize = this.results.get(0).getColumnSize();
             rowSize = this.results.get(0).getRowSize(0);
-//        }
+        }
         
         return (maxColumn > colSize) && (maxRow > rowSize);
     }
@@ -100,9 +102,9 @@ public abstract class Evaluation {
 
             ArrayList<ArrayList> data = res.getData();
 
-//            if (this.opts.getOutputDirection().isToRight()) {
-//                data = res.getTransposedData();
-//            }
+            if (this.ko.getOutputDirection().isToRight()) {
+                data = res.getTransposedData();
+            }
 
             int cols = data.size();
             int rows = data.get(0).size();
@@ -147,9 +149,9 @@ public abstract class Evaluation {
 
             ArrayList<ArrayList> data = res.getData();
             
-//            if (this.opts.getOutputDirection().isToRight()) {
-//                data = res.getTransposedData();
-//            }
+            if (this.ko.getOutputDirection().isToRight()) {
+                data = res.getTransposedData();
+            }
 
             int cols = data.size();
             int rows = data.get(0).size();

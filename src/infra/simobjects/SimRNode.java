@@ -47,7 +47,7 @@ public class SimRNode extends SimObject{
      * @return 
      */
     public ArrayList<SimDetector> getDetectors() {        
-        Detector[] dets = this.rnode.getDetectorList();
+        Detector[] dets = this.rnode.getSimDetectorList();
 //        SimDetector[] simDets = new SimDetector[dets.length];
         ArrayList<SimDetector> simDets = new ArrayList<SimDetector>();
         for(int i=0; i<dets.length; i++) {
@@ -71,12 +71,14 @@ public class SimRNode extends SimObject{
         double sum = 0;
         int idx = 0;
         int validCount = 0;
+//        System.out.println(this.getID()+" : "+detectors.size());
         for(SimDetector d : this.detectors.values())
         {
             double value = d.getData(type, period);
             if(type.isSpeed()){
             }
             if(value <= 0) continue;
+//            System.out.println("did-"+d.getID()+" : "+value);
             sum += value;
             //debug
 //            if("S316".equals(this.rnode.getStationId())) {
