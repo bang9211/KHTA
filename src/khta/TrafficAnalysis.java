@@ -1415,11 +1415,11 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
                         }
                     }
                     if (ko.getContourCheck()) {
-                        if (eo.getSpeedCheck()) {
+                        if (bd.getClass() == StationSpeed.class) {
                             saveContour(bd, ko, eo, ContourType.SPEED);
-                        } else if (eo.getDensityCheck()) {
+                        } else if (bd.getClass() == StationDensity.class) {
                             saveContour(bd, ko, eo, ContourType.DENSITY);
-                        } else if (eo.getTotalFlowCheck()) {
+                        } else if (bd.getClass() == StationTotalFlow.class) {
                             saveContour(bd, ko, eo, ContourType.TOTAL_FLOW);
                         }// else if (eo.getAverageLaneFlowCheck()) {
                         //                        saveContour(ev, selectedOption, opts, ContourType.OCCUPANCY);

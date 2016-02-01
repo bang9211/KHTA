@@ -53,11 +53,6 @@ public class SectionHelper {
         init();
     }
     
-    public SectionHelper(Section section){
-        this.section = section;
-        init();
-    }
-
     /**
      * Returns station state according to station id
      * @param station_id
@@ -123,7 +118,7 @@ public class SectionHelper {
                 return false;
             }
             for (SimDetector sd : detectors) {
-                if (sd != null && sd.getDetectorId() == d.getID()) {
+                if (sd != null && sd.getDetectorId().equals(d.getID())) {
                     return true;
                 }
             }
