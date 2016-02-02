@@ -22,8 +22,8 @@ import infra.Period;
 import infra.Section;
 import infra.simobjects.SimObjects;
 import infra.simobjects.SimulationSeveralResult;
-import infra.simulation.SectionHelper;
-import infra.simulation.StationState;
+import infra.SectionHelper;
+import infra.SectionHelper.StationState;
 import java.awt.Desktop;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -137,11 +137,12 @@ public class EvaluationForCalibration extends TimerTask {
         }
         
         try {
-            
+            //save excel
             if (selectedOption.getExcelCheck()) {
                 CumSimStations = new ArrayList<CStation>();
                 Evaluation();
             }
+            //save csv
             if (selectedOption.getCSVCheck()) {
                 CumSimStations = new ArrayList<CStation>();
                 EvaluationCSV();
@@ -151,6 +152,7 @@ public class EvaluationForCalibration extends TimerTask {
             /*
              * modify soobin Jeon 02/27/12
              */
+            //save contour
             if(selectedOption.getContourCheck()){
                 if(selectedSimulationResult.IsListData()){
                     //Avg Data
@@ -195,7 +197,7 @@ public class EvaluationForCalibration extends TimerTask {
         System.out.println("Loading Simulation Datas..");
 
         //Data Read to SimObject
-        if(selectedSimulationResult.IsListData()){
+        if(selectedSimulationResult.IsListData()){  //들어가지 않음
             //SimObject
             SimulationSeveralResult ssr = new SimulationSeveralResult(SectionD,option.getPeriods().get(0));
             ssr.LoadResult(selectedSimulationResult);
@@ -210,7 +212,7 @@ public class EvaluationForCalibration extends TimerTask {
         }else{
             //SimObjects.getInstance().reset();        
             simObjects = new SimObjects();
-            selectedSimulationResult.setTrafficDataToDetectors(simObjects);
+            selectedSimulationResult.setTrafficDataToDetectors(simObjects); //simObjects에 데이터들을 넣음
         }
         
         System.out.println("Reading Datas(Period : " + option.getPeriods().get(0).getPeriodString() + ")");
@@ -685,51 +687,54 @@ public class EvaluationForCalibration extends TimerTask {
      * modify soobin Jeon 02/27/12
      */
     private void RunContourData() throws IOException {
-//        Evaluation.clearCache();
-////        JOptionPane.showMessageDialog(rd, options.length);
+        //Evaluation.clearCache();
+//        JOptionPane.showMessageDialog(rd, options.length);
 //        for (OptionType ot : options) {
-//            if(!runEvaluate(ot, selectedOption));
+//            if(!runEvaluate(selectedOption));
 //        }
+        runEvaluate(selectedOption);
     }
     
     /*
      * modify soobin Jeon 02/27/12
      */
-//    private boolean runEvaluate(OptionType ot, KHTAOption selectedOption) {
-//        EvaluationOption opts = selectedOption.getEvaluationOption();
-//        Evaluation ev = Evaluation.createEvaluate(ot, selectedOption.getEvaluationOption());
-//        if (ev != null) {
-//            System.out.println("    - Evaluating " + ev.getName() + " ... ");
-//            ev.setPrintDebug(true);
-//            boolean v = ev.doEvaluate();
-//            try {
-//                // save Contour
-//                if (opts.hasOption(OptionType.OUT_CONTOUR)) {
-//                    if (ot.equals(OptionType.STATION_SPEED)) {
-//                        saveContour(ev, selectedOption, opts, ContourType.SPEED);
-//                    } else if (ot.equals(OptionType.STATION_TOTAL_FLOW)) {
-//                        saveContour(ev, selectedOption, opts, ContourType.TOTAL_FLOW);
+    private boolean runEvaluate(KHTAOption selectedOption) {
+        EvaluationOption opts = selectedOption.getEvaluationOption();
+        Evaluation ev = Evaluation.createEvaluate(ot, selectedOption.getEvaluationOption());
+        if (ev != null) {
+            System.out.println("    - Evaluating " + ev.getName() + " ... ");
+            //ev.setPrintDebug(true);
+            boolean v = ev.doEvaluate();
+            try {
+                // save Contour
+                if (selectedOption.getContourCheck()) {
+                    if (opts.getSpeedCheck()) {
+                        saveContour(ev, selectedOption, opts, ContourType.SPEED);
+                    }
+                    if (opts.getTotalFlowCheck()) {
+                        saveContour(ev, selectedOption, opts, ContourType.TOTAL_FLOW);
 //                    } else if (ot.equals(OptionType.STATION_OCCUPANCY)) {
 //                        saveContour(ev, selectedOption, opts, ContourType.OCCUPANCY);
-//                    } else if (ot.equals(OptionType.STATION_DENSITY)) {
-//                        saveContour(ev, selectedOption, opts, ContourType.DENSITY);
-//                    } else if (ot.equals(OptionType.EVAL_TT)){
-//                            System.out.println("EVALTT");
-//                            saveContour(ev, selectedOption, opts, ContourType.TT);
+                    }
+                    if (opts.getDensityCheck()) {
+                        saveContour(ev, selectedOption, opts, ContourType.DENSITY);
+                    }
+                    if (opts.getTT()){
+                            System.out.println("EVALTT");
+                            saveContour(ev, selectedOption, opts, ContourType.TT);
 //                    } else if (ot.equals(OptionType.EVAL_TT_REALTIME)){
 //                            saveContour(ev, selectedOption, opts, ContourType.STT);
-//                    }
-//                }
-//                Desktop.getDesktop().open(new File(selectedOption.getOutputPath()));
-//            } catch(Exception ex) {
-//                JOptionPane.showMessageDialog(null, "Fail to save result : " + ev.getName());
-//                ex.printStackTrace();                
-//            }
-//            return v;
-//        }
-//        return true;
-//    }
-
+                    }
+                }
+                Desktop.getDesktop().open(new File(selectedOption.getOutputPath()));
+            } catch(Exception ex) {
+                JOptionPane.showMessageDialog(null, "Fail to save result : " + ev.getName());
+                ex.printStackTrace();                
+            }
+            return v;
+        }
+        return true;
+    }
     /*
      * modify soobin Jeon 02/27/12
      */
