@@ -127,10 +127,13 @@ public class EvaluationForCalibration extends TimerTask {
                 }
                 
                 Period p = option.getPeriods().get(0);
+                double smin = sims.getDataLength() * p.interval / 60;
                 double shour = sims.getDataLength() * p.interval / 3600;
+                double rmin = StationStateReal.get(0).getDataLength() * p.interval / 60;
                 double rhour = StationStateReal.get(0).getDataLength() * p.interval / 3600;
-                sos.getMessage("Calibration Fail\n - Time Period is not correct.","Selected Simulation Period : "+shour+" hours"
-                        +"\n  - Selected RealData Period : "+rhour + " hours"
+                
+                sos.getMessage("Calibration Fail\n - Time Period is not correct.","Selected Simulation Period : "+shour+" hours " + smin + " mins"
+                        +"\n  - Selected RealData Period : "+rhour + " hours " + rmin + " mins"
                         +"\n  - Please revise the Start and End Time of \'Real Data\' at \"Date and Time\" Tab");
                 return;
             }
@@ -225,7 +228,7 @@ public class EvaluationForCalibration extends TimerTask {
 //                this.ReadSimData(sobj);
 //            }
 //        }else{
-            this.ReadSimData(null);
+            this.ReadSimData(simObjects);
 //        }
         
         //real data load
