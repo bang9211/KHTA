@@ -105,7 +105,7 @@ public class Infra {
         for(Corridor cor : corridors){
             RNode prevRNode = null;
             //Search Rnodes in the DB
-            //Add Station
+            //Add RNodes
             for(HashMap<InfraDatas, Object> ss : sqlserver.getStations(cor.getID())){
                 StationType vdstype = (StationType)ss.get(InfraDatas.STATION_TYPE);
                 if(vdstype == null)

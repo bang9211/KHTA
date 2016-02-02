@@ -27,7 +27,10 @@ public enum StationType {
     PRIVATE_HIGHWAY("Private Highway VDS",3),
     RAMP("Ramp VDS",4),
     VIRTUAL("Virtual VDS",5),
-    NONE("No Information",6);
+    NONE("No Information",6),
+    ENTRANCE("Entrance Ramp",7),
+    EXIT("Exit Ramp",8),
+    DMS("DMS",9);
     
     private StationType(String _desc, int _code){
         desc = _desc;
