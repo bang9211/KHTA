@@ -685,50 +685,50 @@ public class EvaluationForCalibration extends TimerTask {
      * modify soobin Jeon 02/27/12
      */
     private void RunContourData() throws IOException {
-        Evaluation.clearCache();
-//        JOptionPane.showMessageDialog(rd, options.length);
-        for (OptionType ot : options) {
-            if(!runEvaluate(ot, selectedOption));
-        }
+//        Evaluation.clearCache();
+////        JOptionPane.showMessageDialog(rd, options.length);
+//        for (OptionType ot : options) {
+//            if(!runEvaluate(ot, selectedOption));
+//        }
     }
     
     /*
      * modify soobin Jeon 02/27/12
      */
-    private boolean runEvaluate(OptionType ot, KHTAOption selectedOption) {
-        EvaluationOption opts = selectedOption.getEvaluationOption();
-        Evaluation ev = Evaluation.createEvaluate(ot, selectedOption.getEvaluationOption());
-        if (ev != null) {
-            System.out.println("    - Evaluating " + ev.getName() + " ... ");
-            ev.setPrintDebug(true);
-            boolean v = ev.doEvaluate();
-            try {
-                // save Contour
-                if (opts.hasOption(OptionType.OUT_CONTOUR)) {
-                    if (ot.equals(OptionType.STATION_SPEED)) {
-                        saveContour(ev, selectedOption, opts, ContourType.SPEED);
-                    } else if (ot.equals(OptionType.STATION_TOTAL_FLOW)) {
-                        saveContour(ev, selectedOption, opts, ContourType.TOTAL_FLOW);
-                    } else if (ot.equals(OptionType.STATION_OCCUPANCY)) {
-                        saveContour(ev, selectedOption, opts, ContourType.OCCUPANCY);
-                    } else if (ot.equals(OptionType.STATION_DENSITY)) {
-                        saveContour(ev, selectedOption, opts, ContourType.DENSITY);
-                    } else if (ot.equals(OptionType.EVAL_TT)){
-                            System.out.println("EVALTT");
-                            saveContour(ev, selectedOption, opts, ContourType.TT);
-                    } else if (ot.equals(OptionType.EVAL_TT_REALTIME)){
-                            saveContour(ev, selectedOption, opts, ContourType.STT);
-                    }
-                }
-                Desktop.getDesktop().open(new File(selectedOption.getOutputPath()));
-            } catch(Exception ex) {
-                JOptionPane.showMessageDialog(null, "Fail to save result : " + ev.getName());
-                ex.printStackTrace();                
-            }
-            return v;
-        }
-        return true;
-    }
+//    private boolean runEvaluate(OptionType ot, KHTAOption selectedOption) {
+//        EvaluationOption opts = selectedOption.getEvaluationOption();
+//        Evaluation ev = Evaluation.createEvaluate(ot, selectedOption.getEvaluationOption());
+//        if (ev != null) {
+//            System.out.println("    - Evaluating " + ev.getName() + " ... ");
+//            ev.setPrintDebug(true);
+//            boolean v = ev.doEvaluate();
+//            try {
+//                // save Contour
+//                if (opts.hasOption(OptionType.OUT_CONTOUR)) {
+//                    if (ot.equals(OptionType.STATION_SPEED)) {
+//                        saveContour(ev, selectedOption, opts, ContourType.SPEED);
+//                    } else if (ot.equals(OptionType.STATION_TOTAL_FLOW)) {
+//                        saveContour(ev, selectedOption, opts, ContourType.TOTAL_FLOW);
+//                    } else if (ot.equals(OptionType.STATION_OCCUPANCY)) {
+//                        saveContour(ev, selectedOption, opts, ContourType.OCCUPANCY);
+//                    } else if (ot.equals(OptionType.STATION_DENSITY)) {
+//                        saveContour(ev, selectedOption, opts, ContourType.DENSITY);
+//                    } else if (ot.equals(OptionType.EVAL_TT)){
+//                            System.out.println("EVALTT");
+//                            saveContour(ev, selectedOption, opts, ContourType.TT);
+//                    } else if (ot.equals(OptionType.EVAL_TT_REALTIME)){
+//                            saveContour(ev, selectedOption, opts, ContourType.STT);
+//                    }
+//                }
+//                Desktop.getDesktop().open(new File(selectedOption.getOutputPath()));
+//            } catch(Exception ex) {
+//                JOptionPane.showMessageDialog(null, "Fail to save result : " + ev.getName());
+//                ex.printStackTrace();                
+//            }
+//            return v;
+//        }
+//        return true;
+//    }
 
     /*
      * modify soobin Jeon 02/27/12
