@@ -699,40 +699,40 @@ public class EvaluationForCalibration extends TimerTask {
      * modify soobin Jeon 02/27/12
      */
     private boolean runEvaluate(KHTAOption selectedOption) {
-        EvaluationOption opts = selectedOption.getEvaluationOption();
-        Evaluation ev = Evaluation.createEvaluate(ot, selectedOption.getEvaluationOption());
-        if (ev != null) {
-            System.out.println("    - Evaluating " + ev.getName() + " ... ");
-            //ev.setPrintDebug(true);
-            boolean v = ev.doEvaluate();
-            try {
-                // save Contour
-                if (selectedOption.getContourCheck()) {
-                    if (opts.getSpeedCheck()) {
-                        saveContour(ev, selectedOption, opts, ContourType.SPEED);
-                    }
-                    if (opts.getTotalFlowCheck()) {
-                        saveContour(ev, selectedOption, opts, ContourType.TOTAL_FLOW);
-//                    } else if (ot.equals(OptionType.STATION_OCCUPANCY)) {
-//                        saveContour(ev, selectedOption, opts, ContourType.OCCUPANCY);
-                    }
-                    if (opts.getDensityCheck()) {
-                        saveContour(ev, selectedOption, opts, ContourType.DENSITY);
-                    }
-                    if (opts.getTT()){
-                            System.out.println("EVALTT");
-                            saveContour(ev, selectedOption, opts, ContourType.TT);
-//                    } else if (ot.equals(OptionType.EVAL_TT_REALTIME)){
-//                            saveContour(ev, selectedOption, opts, ContourType.STT);
-                    }
-                }
-                Desktop.getDesktop().open(new File(selectedOption.getOutputPath()));
-            } catch(Exception ex) {
-                JOptionPane.showMessageDialog(null, "Fail to save result : " + ev.getName());
-                ex.printStackTrace();                
-            }
-            return v;
-        }
+//        EvaluationOption opts = selectedOption.getEvaluationOption();
+//        Evaluation ev = Evaluation.createEvaluate(ot, selectedOption.getEvaluationOption());
+//        if (ev != null) {
+//            System.out.println("    - Evaluating " + ev.getName() + " ... ");
+//            //ev.setPrintDebug(true);
+//            boolean v = ev.doEvaluate();
+//            try {
+//                // save Contour
+//                if (selectedOption.getContourCheck()) {
+//                    if (opts.getSpeedCheck()) {
+//                        saveContour(ev, selectedOption, opts, ContourType.SPEED);
+//                    }
+//                    if (opts.getTotalFlowCheck()) {
+//                        saveContour(ev, selectedOption, opts, ContourType.TOTAL_FLOW);
+////                    } else if (ot.equals(OptionType.STATION_OCCUPANCY)) {
+////                        saveContour(ev, selectedOption, opts, ContourType.OCCUPANCY);
+//                    }
+//                    if (opts.getDensityCheck()) {
+//                        saveContour(ev, selectedOption, opts, ContourType.DENSITY);
+//                    }
+//                    if (opts.getTT()){
+//                            System.out.println("EVALTT");
+//                            saveContour(ev, selectedOption, opts, ContourType.TT);
+////                    } else if (ot.equals(OptionType.EVAL_TT_REALTIME)){
+////                            saveContour(ev, selectedOption, opts, ContourType.STT);
+//                    }
+//                }
+//                Desktop.getDesktop().open(new File(selectedOption.getOutputPath()));
+//            } catch(Exception ex) {
+//                JOptionPane.showMessageDialog(null, "Fail to save result : " + ev.getName());
+//                ex.printStackTrace();                
+//            }
+//            return v;
+//        }
         return true;
     }
     /*
