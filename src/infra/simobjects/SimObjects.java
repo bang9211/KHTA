@@ -78,7 +78,7 @@ public class SimObjects {
     {
         SimDetector sd = detectors.get(detector_id);
         if(sd == null) {
-            System.out.println("detector id : "+detector_id);
+            //System.out.println("detector id : "+detector_id);
             Detector d = infra.getSimulationDetector(detector_id);
             if(d == null) return null;
             else {

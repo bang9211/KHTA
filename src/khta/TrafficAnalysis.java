@@ -1550,7 +1550,7 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
 
         opt.setOutputOption(jCheckBoxOCAE.isSelected(), jCheckBoxIMSD.isSelected(), jCheckBoxI0MSD.isSelected());
 
-        if (opt.isSelectedAnything() == false) {
+        if ((cbxSimulationForCalibration.isSelected() == false) && (opt.isSelectedAnything() == false)) {
             JOptionPane.showMessageDialog(this, "Check evaluation options");
             return null;
         }
