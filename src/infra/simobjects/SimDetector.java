@@ -42,7 +42,7 @@ public class SimDetector extends SimObject{
     
     public SimDetector(Detector detector) {
         super(detector.getID());
-        System.out.println("did : "+detector.getID());
+        //System.out.println("did : "+detector.getID());
         this.detector = detector;
         this.detectorId = detector.getID();
         this.type = SimDeviceType.DETECTOR;

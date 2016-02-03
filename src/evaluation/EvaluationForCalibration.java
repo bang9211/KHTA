@@ -34,6 +34,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import jxl.Workbook;
 import jxl.write.Label;
@@ -43,6 +45,7 @@ import jxl.write.WritableWorkbook;
 import khta.KHTAOption;
 import khta.RunningDialog;
 import khta.SimulationResult;
+import khta.TrafficAnalysis;
 import util.FileHelper;
 
 
@@ -127,10 +130,13 @@ public class EvaluationForCalibration extends TimerTask {
                 }
                 
                 Period p = option.getPeriods().get(0);
+                double smin = sims.getDataLength() * p.interval / 60;
                 double shour = sims.getDataLength() * p.interval / 3600;
+                double rmin = StationStateReal.get(0).getDataLength() * p.interval / 60;
                 double rhour = StationStateReal.get(0).getDataLength() * p.interval / 3600;
-                sos.getMessage("Calibration Fail\n - Time Period is not correct.","Selected Simulation Period : "+shour+" hours"
-                        +"\n  - Selected RealData Period : "+rhour + " hours"
+                
+                sos.getMessage("Calibration Fail\n - Time Period is not correct.","Selected Simulation Period : "+shour+" hours " + smin + " mins"
+                        +"\n  - Selected RealData Period : "+rhour + " hours " + rmin + " mins"
                         +"\n  - Please revise the Start and End Time of \'Real Data\' at \"Date and Time\" Tab");
                 return;
             }
@@ -225,7 +231,7 @@ public class EvaluationForCalibration extends TimerTask {
 //                this.ReadSimData(sobj);
 //            }
 //        }else{
-            this.ReadSimData(null);
+            this.ReadSimData(simObjects);
 //        }
         
         //real data load
@@ -679,8 +685,9 @@ public class EvaluationForCalibration extends TimerTask {
      */
     private void saveContour(Evaluation ev, KHTAOption selectedOption, EvaluationOption opts, ContourType cType) {
         ContourPlotter cp = new ContourPlotter(opts.getSelectedSection(), opts.getContourSetting(cType), ev, selectedOption.getOutputPath());
-        String Cname = cType.toString();
-        cp.saveImage(opts.getOCAE(), this.getFileName(Cname,"jpg"));        
+        cp.saveImage(opts.getOCAE());
+//        String Cname = cType.toString();
+//        cp.saveImage(opts.getOCAE(), this.getFileName(Cname,"jpg"));        
     }
     
     /*
@@ -698,9 +705,56 @@ public class EvaluationForCalibration extends TimerTask {
     /*
      * modify soobin Jeon 02/27/12
      */
-    private boolean runEvaluate(KHTAOption selectedOption) {
-//        EvaluationOption opts = selectedOption.getEvaluationOption();
+    private boolean runEvaluate(KHTAOption ko) {
+        EvaluationOption eo = ko.getEvaluationOption();
+        ArrayList<BasicData> basicDataSet = new ArrayList();
+        Section selectedSection = SectionD;
+        Period p = eo.getPeriods().get(0);
+        String outputPath = ko.getOutputPath();
 //        Evaluation ev = Evaluation.createEvaluate(ot, selectedOption.getEvaluationOption());
+        
+        //체크박스에 맞춰 evaluation.process 실행
+        if (eo.getSpeedCheck()) {
+            //StationSpeed ss = new StationSpeed(p, selectedSection, outputPath);
+            basicDataSet.add(new StationSpeed(p, selectedSection, outputPath, ko));
+        }
+        if (eo.getDensityCheck()) {
+            //StationDensity sd = new StationDensity(p, selectedSection, outputPath);
+            basicDataSet.add(new StationDensity(p, selectedSection, outputPath, ko));
+        }
+        if (eo.getTotalFlowCheck()) {
+            //StationTotalFlow stf = new StationTotalFlow(p, selectedSection, outputPath);
+            basicDataSet.add(new StationTotalFlow(p, selectedSection, outputPath, ko));
+        }
+        if (eo.getAverageLaneFlowCheck()) {
+            //StationAverageLaneFlow salf = new StationAverageLaneFlow(p, selectedSection, outputPath);
+            basicDataSet.add(new StationAverageLaneFlow(p, selectedSection, outputPath, ko));
+        }
+        if (eo.getAccelerationCheck()) {
+            //StationAcceleration sa = new StationAcceleration(p, selectedSection, outputPath);
+            basicDataSet.add(new StationAcceleration(p, selectedSection, outputPath, ko));
+        }
+        for (BasicData bd : basicDataSet) {
+            bd.process();
+            if (ko.getContourCheck()) {
+                if (bd.getClass() == StationSpeed.class) {
+                    saveContour(bd, ko, eo, ContourType.SPEED);
+                } else if (bd.getClass() == StationDensity.class) {
+                    saveContour(bd, ko, eo, ContourType.DENSITY);
+                } else if (bd.getClass() == StationTotalFlow.class) {
+                    saveContour(bd, ko, eo, ContourType.TOTAL_FLOW);
+                }// else if (eo.getAverageLaneFlowCheck()) {
+                //                        saveContour(ev, selectedOption, opts, ContourType.OCCUPANCY);
+                //                    }else if (ot.equals(OptionType.EVAL_TT)){
+                //                            System.out.println("EVALTT");
+                //                            saveContour(ev, selectedOption, opts, ContourType.TT);
+                //                    } else if (ot.equals(OptionType.EVAL_TT_REALTIME)){
+                //                            saveContour(ev, selectedOption, opts, ContourType.STT);
+                //                    }
+            }
+        }
+        basicDataSet.clear();
+        
 //        if (ev != null) {
 //            System.out.println("    - Evaluating " + ev.getName() + " ... ");
 //            //ev.setPrintDebug(true);

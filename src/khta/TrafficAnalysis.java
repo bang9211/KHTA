@@ -1550,7 +1550,7 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
 
         opt.setOutputOption(jCheckBoxOCAE.isSelected(), jCheckBoxIMSD.isSelected(), jCheckBoxI0MSD.isSelected());
 
-        if (opt.isSelectedAnything() == false) {
+        if ((cbxSimulationForCalibration.isSelected() == false) && (opt.isSelectedAnything() == false)) {
             JOptionPane.showMessageDialog(this, "Check evaluation options");
             return null;
         }
@@ -1766,13 +1766,13 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
 
     private void setSimulationInterval(boolean isSimulationData) {
         SimulationResult sr = (SimulationResult) this.cbxsimulationresult.getSelectedItem();
-        if (sr == null || !isSimulationData) {
+//        if (sr == null || !isSimulationData) {
             setInterval(Interval.getMinTMCInterval());
             System.out.println("set default");
-        } else {
-            System.out.println("set simulation interval");
-            setInterval(sr.getRunningSeconds());
-        }
+//        } else {
+//            System.out.println("set simulation interval");
+//            setInterval(sr.getRunningSeconds());
+//        }
 
     }
     

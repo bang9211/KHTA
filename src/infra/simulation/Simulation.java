@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import jxl.Workbook;
 import jxl.write.Label;
@@ -425,7 +426,9 @@ public class Simulation extends Thread implements IStepListener, ITravelTimeList
             for(Detector d : s.getSimDetectorList()){
                 boolean hasdec = false;
                 for(SimDetector sd : detectors){
-                    if(sd.getID().equals(d.getID()))
+                    if(sd == null)
+                        System.err.println("Check Detector ID!!");
+                    else if(sd.getID().equals(d.getID()))
                         hasdec = true;
                 }
                 if(!hasdec){
