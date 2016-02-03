@@ -31,7 +31,7 @@ public class KHTAFrame extends javax.swing.JFrame {
 
     private Infra infra;
     private final int width = 1000;
-    private final int height = 780;
+    private final int height = 800;
     
     TrafficAnalysis ta;
     SectionCreation sc;
@@ -68,7 +68,7 @@ public class KHTAFrame extends javax.swing.JFrame {
         MainTabbedPanel = new javax.swing.JTabbedPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1024, 768));
+        setPreferredSize(new java.awt.Dimension(1024, 810));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

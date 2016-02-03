@@ -517,7 +517,7 @@ public class VissimCalibration2GUI extends javax.swing.JPanel implements ISimEnd
         jLabel3.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
         jLabel3.setText("Section");
 
-        cbxSections.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
+        cbxSections.setFont(new java.awt.Font("Gulim", 0, 10)); // NOI18N
         cbxSections.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbxSectionsActionPerformed(evt);
@@ -535,7 +535,6 @@ public class VissimCalibration2GUI extends javax.swing.JPanel implements ISimEnd
             }
         });
 
-        tbxCaseFile.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         tbxCaseFile.setPreferredSize(new java.awt.Dimension(6, 25));
 
         jLabel4.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
@@ -574,14 +573,13 @@ public class VissimCalibration2GUI extends javax.swing.JPanel implements ISimEnd
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                            .addComponent(btnBrowse)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(tbxCaseFile, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(cbxSections, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel1)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnBrowse)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(tbxCaseFile, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbxSections, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5)
                     .addComponent(cbxTimeInterval, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4)
@@ -626,7 +624,7 @@ public class VissimCalibration2GUI extends javax.swing.JPanel implements ISimEnd
                         .addComponent(jLabel48)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cbxSimulationInterval, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         btnRun.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N

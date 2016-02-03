@@ -40,9 +40,6 @@ public class TrafficSimulationAnalysis {
         final Infra infra = Infra.getInstance();
         final InfraDataFetcher tq = new InfraDataFetcher();
         
-//        TrafficSimulationAnalysis ta = new TrafficSimulationAnalysis();
-//        ta.infratest();
-
         final KHTAFrame nf = new KHTAFrame(infra);
         
         new Timer().schedule(new TimerTask() {
@@ -73,23 +70,4 @@ public class TrafficSimulationAnalysis {
         
         kl.setVisible(true);
     }
-    
-    public void infratest(){
-        Infra infra = Infra.getInstance();
-        for(Corridor cor : infra.getCorridors()){
-            System.out.println("Corridor Name:"+cor.getName()
-                    +"\tID:"+cor.getID()
-                    +"\tDirection:"+cor.getDirection());
-            for(RNode st : cor.getRNodes()){
-                System.out.println("-- RnodeID:"+st.getID()
-                        +"\tname:"+st.getName()
-                        +"\ttype:"+st.getNodeType().toString()
-                        +"\tLocation:"+st.getLocation()
-                        +"\t\tDirection:"+st.getDirection().toString());
-            }
-            
-        }
-        
-    }
-    
 }
