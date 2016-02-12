@@ -20,7 +20,9 @@ import infra.Section;
 import infra.infraobject.Station;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Vector;
 import javax.swing.JOptionPane;
@@ -144,8 +146,10 @@ public abstract class Evaluation {
         
         for (EvaluationResult res : cResults) {
             
-            FileWriter fw = new FileWriter(getFileName(outputpath, res.getName(), "csv"), false);
-            BufferedWriter bw = new BufferedWriter(fw);
+            //FileWriter fw = new FileWriter(getFileName(outputpath, res.getName(), "csv"), false);
+            FileOutputStream fos = new FileOutputStream(getFileName(outputpath, res.getName(), "csv"));
+            OutputStreamWriter osw = new OutputStreamWriter(fos, "EUC-KR");
+            BufferedWriter bw = new BufferedWriter(osw);
 
             ArrayList<ArrayList> data = res.getData();
             

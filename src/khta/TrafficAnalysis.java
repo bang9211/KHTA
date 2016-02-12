@@ -64,6 +64,7 @@ import plugin.PluginFrame;
 import plugin.PluginInfo;
 import plugin.PluginInfoLoader;
 import plugin.PluginType;
+import plugin.simulation.IRIS.IRISSimulation;
 import plugin.vissimcalibration2.VissimCalibration2;
 import util.KHTAParam;
 
@@ -1615,8 +1616,8 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
 ////        PluginInfo vslPlugin = new PluginInfo("VSL Simulation/Emulation", PluginType.SIMULATION, VSLSimulation.class);
 ////        addSimulationPlugins(vslPlugin);
 //        
-//        PluginInfo irisPlugin = new PluginInfo("KIRIS Simulator", PluginType.SIMULATION, IRISSimulation.class);
-//        addSimulationPlugins(irisPlugin);
+        PluginInfo irisPlugin = new PluginInfo("KIRIS Simulator", PluginType.SIMULATION, IRISSimulation.class);
+        addSimulationPlugins(irisPlugin);
 //        
 //        if(addSFIMPlugin) {
 //            PluginInfo sfimPlugin = new PluginInfo("IRIS_in_Loop Simulation", PluginType.SIMULATION, SfimTicasPlugin.class);
