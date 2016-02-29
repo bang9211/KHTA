@@ -1616,8 +1616,8 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
 ////        PluginInfo vslPlugin = new PluginInfo("VSL Simulation/Emulation", PluginType.SIMULATION, VSLSimulation.class);
 ////        addSimulationPlugins(vslPlugin);
 //        
-        PluginInfo irisPlugin = new PluginInfo("KIRIS Simulator", PluginType.SIMULATION, IRISSimulation.class);
-        addSimulationPlugins(irisPlugin);
+        PluginInfo technicalPlugin = new PluginInfo("Technical Simulation", PluginType.SIMULATION, IRISSimulation.class);
+        addSimulationPlugins(technicalPlugin);
 //        
 //        if(addSFIMPlugin) {
 //            PluginInfo sfimPlugin = new PluginInfo("IRIS_in_Loop Simulation", PluginType.SIMULATION, SfimTicasPlugin.class);

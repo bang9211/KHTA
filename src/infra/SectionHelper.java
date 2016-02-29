@@ -24,10 +24,12 @@ import infra.infraobject.Exit;
 import infra.infraobject.RNode;
 import infra.infraobject.RampMeter;
 import infra.infraobject.Station;
+import infra.simobjects.SimObjects;
+import infra.simobjects.SimStation;
+import infra.simulation.SimInterval;
+import infra.simulation.StateInterval;
 import infra.type.TrafficType;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 
 /**
  *
@@ -237,7 +239,11 @@ public class SectionHelper {
         RNode rnode;
         double distanceToDownState = 0;
         //public IDetectorChecker dc = SectionHelper.dc;
-        
+        public StateInterval stateInterval = null;
+        public SimInterval simInterval = null;
+        public State(){
+            
+        }
         public State(String id, RNode rnode) {
             this.id = id;
             this.rnode = rnode;
@@ -246,6 +252,19 @@ public class SectionHelper {
 //                this.northing = rnode.getNorthing();
             }
             this.idx = states.size();
+        }
+        public State(String id, RNode rnode, SimInterval simIntv) {
+            this();
+            this.id = id;
+            this.rnode = rnode;
+            if(rnode != null) {
+//                this.easting = rnode.getEasting();
+//                this.northing = rnode.getNorthing();
+            }   
+       
+            simInterval = simIntv;
+            if(simInterval != null)
+                     stateInterval = simInterval.getState(rnode.getID());
         }
 
         public boolean hasDetector(Detector sd) {
@@ -705,12 +724,23 @@ public class SectionHelper {
      */
     public class StationState extends State {
         int stationIdx = 0;                
+        SimObjects simobjects;
+        SimStation simstation;
 
         public StationState(Station s) {
             super(s.getID(), s);
             type = StateType.STATION;
             stationStates.add(this);
             this.stationIdx = stationStates.size()-1;
+        }
+        
+         public StationState(Station s, Section _sec, SimObjects simObjects, SimInterval simIntv) {            
+            super(s.getID(), s, simIntv);
+            section = _sec;
+            System.out.println(s.getID()+", "+s.getName()+", "+s.getSectionName());
+            this.simstation = simObjects.getStation(s.getID());
+            type = StateType.STATION;
+            simobjects = simObjects;
         }
     }    
 }

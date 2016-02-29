@@ -16,7 +16,15 @@
  */
 package infra.simulation.vsl.algorithm;
 
+import evaluation.Interval;
+import plugin.simulation.VSL.algorithm.AccCheckThreshold;
+import plugin.simulation.VSL.algorithm.BottleneckSpeed;
+import plugin.simulation.VSL.algorithm.DensityAggregation;
+import plugin.simulation.VSL.algorithm.MaxSpeed;
+import plugin.simulation.VSL.algorithm.SpeedAggregation;
+import plugin.simulation.VSL.algorithm.SpeedforLowK;
 import util.KHTAConfig;
+import util.PropertiesWrapper;
 
 /**
  *
@@ -40,10 +48,10 @@ public class VSLConfig extends KHTAConfig{
     public static double VSL_VSS_CONTINUE_SPEED = 5.0d;
     public static double VSL_ZONE_LENGTH_MILE = 1.5d;
     
-//    public static SpeedAggregation SPEED_SPEED_AGGREGATION = SpeedAggregation.LAB;
-//    public static DensityAggregation SPEED_DENSITY_AGGREGATION = DensityAggregation.MovingKAvg;
-//    public static SpeedforLowK SPEED_SPEED_FOR_LOW_K = SpeedforLowK.FixedSpeed;
-//    public static MaxSpeed SPEED_MAX_SPEED = MaxSpeed.NoLimit;
+    public static SpeedAggregation SPEED_SPEED_AGGREGATION = SpeedAggregation.LAB;
+    public static DensityAggregation SPEED_DENSITY_AGGREGATION = DensityAggregation.MovingKAvg;
+    public static SpeedforLowK SPEED_SPEED_FOR_LOW_K = SpeedforLowK.FixedSpeed;
+    public static MaxSpeed SPEED_MAX_SPEED = MaxSpeed.NoLimit;
     
     /**
      * Fixed Value
@@ -54,8 +62,8 @@ public class VSLConfig extends KHTAConfig{
     public static int FTM = 5280;   // 1 mile = 5280 feets
     
     //VSS Identification
-//    public static BottleneckSpeed bottleneckSpeedType = BottleneckSpeed.BASEDBOTTLENECKSPEED;
-//    public static AccCheckThreshold accCheckThreshold = AccCheckThreshold.BASEDCHECKTHRESHOLD;
+    public static BottleneckSpeed bottleneckSpeedType = BottleneckSpeed.BASEDBOTTLENECKSPEED;
+    public static AccCheckThreshold accCheckThreshold = AccCheckThreshold.BASEDCHECKTHRESHOLD;
     public static boolean isAccidentSpeed = false;
     public static double AccidentSpeed = 25;
     
@@ -67,7 +75,7 @@ public class VSLConfig extends KHTAConfig{
 //    public static VSLSTAType vslSTAtype = VSLSTAType.OPTION2;
     
     //VSL Interval
-//    public static int VSL_INTERVAL = Interval.I30SEC.second;
+    public static int VSL_INTERVAL = Interval.I30SEC.second;
     
     //VSL interval stationlist
     public static String VSL_INTERVAL_STATIONLIST = "";
@@ -75,57 +83,57 @@ public class VSLConfig extends KHTAConfig{
     //adjust 10sec interval as like 30 sec
     public static boolean INTERVAL_ADJUST = true;
     
-//    public static boolean isVSLStep(int runtime){
-//            return runtime != 0 && runtime % VSL_INTERVAL == 0;
-//    }
+    public static boolean isVSLStep(int runtime){
+            return runtime != 0 && runtime % VSL_INTERVAL == 0;
+    }
     
     public static void save(){
-//        prop.put("VSL_VDA", VSL_VSS_DECISION_ACCEL);
-//        prop.put("ZDA", VSL_CONTROL_THRESHOLD);
-//        prop.put("VBT", VSL_BS_THRESHOLD);
-//        prop.put("TOA", VSL_TURNOFF_ACCEL);
-//        prop.put("VMD", VSL_MIN_STATION_MILE);
-//        prop.put("SA", SPEED_SPEED_AGGREGATION.getSRC());
-//        prop.put("DA", SPEED_DENSITY_AGGREGATION.getSRC());
-//        prop.put("SLK", SPEED_SPEED_FOR_LOW_K.getSRC());
-//        prop.put("SMS", SPEED_MAX_SPEED.getSRC());
-//        prop.put("MOVE_DEC", VSL_MOVING_ACCEL);
-//        prop.put("MOVE_SPD", VSL_RANGE_THRESHOLD);
-//        prop.put("ACCIDENTSPEED", AccidentSpeed);
-//        prop.put("ACT", accCheckThreshold.getSID());
-//        prop.put("BST", bottleneckSpeedType.getSID());
-//        prop.put("ISACCSPEED", isAccidentSpeed);
-//        prop.put("VSLZONEMILE", VSL_ZONE_LENGTH_MILE);
-//        prop.put("STA_COVERDISTANCE", coverDistance);
-//        prop.put("STA_COVERSPEED", coverageSpeed);
-//        prop.put("VSL_INTERVAL",VSL_INTERVAL);
-//        prop.put("VSL_INTERVAL_STATIONLIST", VSL_INTERVAL_STATIONLIST);
-//        saveConfig(configFile);
+        prop.put("VSL_VDA", VSL_VSS_DECISION_ACCEL);
+        prop.put("ZDA", VSL_CONTROL_THRESHOLD);
+        prop.put("VBT", VSL_BS_THRESHOLD);
+        prop.put("TOA", VSL_TURNOFF_ACCEL);
+        prop.put("VMD", VSL_MIN_STATION_MILE);
+        prop.put("SA", SPEED_SPEED_AGGREGATION.getSRC());
+        prop.put("DA", SPEED_DENSITY_AGGREGATION.getSRC());
+        prop.put("SLK", SPEED_SPEED_FOR_LOW_K.getSRC());
+        prop.put("SMS", SPEED_MAX_SPEED.getSRC());
+        prop.put("MOVE_DEC", VSL_MOVING_ACCEL);
+        prop.put("MOVE_SPD", VSL_RANGE_THRESHOLD);
+        prop.put("ACCIDENTSPEED", AccidentSpeed);
+        prop.put("ACT", accCheckThreshold.getSID());
+        prop.put("BST", bottleneckSpeedType.getSID());
+        prop.put("ISACCSPEED", isAccidentSpeed);
+        prop.put("VSLZONEMILE", VSL_ZONE_LENGTH_MILE);
+        prop.put("STA_COVERDISTANCE", coverDistance);
+        prop.put("STA_COVERSPEED", coverageSpeed);
+        prop.put("VSL_INTERVAL",VSL_INTERVAL);
+        prop.put("VSL_INTERVAL_STATIONLIST", VSL_INTERVAL_STATIONLIST);
+        saveConfig(configFile);
     }
     public static void load(){
-//        PropertiesWrapper p = loadConfig(configFile);
-//        if(p != null){
-//            //exe
-//            VSL_VSS_DECISION_ACCEL = p.getInteger("VSL_VDA");
-//            VSL_CONTROL_THRESHOLD = p.getInteger("ZDA");
-//            VSL_BS_THRESHOLD = p.getInteger("VBT");
-//            VSL_TURNOFF_ACCEL = p.getInteger("TOA");
-//            VSL_MIN_STATION_MILE = p.getDouble("VMD");
-//            VSL_MOVING_ACCEL = p.getInteger("MOVE_DEC");
-//            VSL_RANGE_THRESHOLD = p.getDouble("MOVE_SPD");
-//            SPEED_SPEED_AGGREGATION = SpeedAggregation.getTypebyID(p.getInteger("SA"));
-//            SPEED_DENSITY_AGGREGATION = DensityAggregation.getTypebyID(p.getInteger("DA"));
-//            SPEED_SPEED_FOR_LOW_K = SpeedforLowK.getTypebyID(p.getInteger("SLK"));
-//            SPEED_MAX_SPEED = MaxSpeed.getTypebyID(p.getInteger("SMS"));
-//            AccidentSpeed = p.getDouble("ACCIDENTSPEED");
-//            accCheckThreshold = AccCheckThreshold.getbyID(p.getInteger("ACT"));
-//            bottleneckSpeedType = BottleneckSpeed.getbyID(p.getInteger("BST"));
-//            isAccidentSpeed = p.getBoolean("ISACCSPEED");
-//            VSL_ZONE_LENGTH_MILE = p.getDouble("VSLZONEMILE");
-//            coverDistance = p.getDouble("STA_COVERDISTANCE");
-//            coverageSpeed = p.getInteger("STA_COVERSPEED");
-//            VSL_INTERVAL = p.getInteger("VSL_INTERVAL");
-//            VSL_INTERVAL_STATIONLIST = p.get("VSL_INTERVAL_STATIONLIST");
-//        }   
+        PropertiesWrapper p = loadConfig(configFile);
+        if(p != null){
+            //exe
+            VSL_VSS_DECISION_ACCEL = p.getInteger("VSL_VDA");
+            VSL_CONTROL_THRESHOLD = p.getInteger("ZDA");
+            VSL_BS_THRESHOLD = p.getInteger("VBT");
+            VSL_TURNOFF_ACCEL = p.getInteger("TOA");
+            VSL_MIN_STATION_MILE = p.getDouble("VMD");
+            VSL_MOVING_ACCEL = p.getInteger("MOVE_DEC");
+            VSL_RANGE_THRESHOLD = p.getDouble("MOVE_SPD");
+            SPEED_SPEED_AGGREGATION = SpeedAggregation.getTypebyID(p.getInteger("SA"));
+            SPEED_DENSITY_AGGREGATION = DensityAggregation.getTypebyID(p.getInteger("DA"));
+            SPEED_SPEED_FOR_LOW_K = SpeedforLowK.getTypebyID(p.getInteger("SLK"));
+            SPEED_MAX_SPEED = MaxSpeed.getTypebyID(p.getInteger("SMS"));
+            AccidentSpeed = p.getDouble("ACCIDENTSPEED");
+            accCheckThreshold = AccCheckThreshold.getbyID(p.getInteger("ACT"));
+            bottleneckSpeedType = BottleneckSpeed.getbyID(p.getInteger("BST"));
+            isAccidentSpeed = p.getBoolean("ISACCSPEED");
+            VSL_ZONE_LENGTH_MILE = p.getDouble("VSLZONEMILE");
+            coverDistance = p.getDouble("STA_COVERDISTANCE");
+            coverageSpeed = p.getInteger("STA_COVERSPEED");
+            VSL_INTERVAL = p.getInteger("VSL_INTERVAL");
+            VSL_INTERVAL_STATIONLIST = p.get("VSL_INTERVAL_STATIONLIST");
+        }   
     }
 }
