@@ -16,6 +16,7 @@
  */
 package infra.infraobject;
 
+import infra.InfraDataMode;
 import infra.InfraDatas;
 import infra.InfraObject;
 import java.util.ArrayList;
@@ -28,14 +29,56 @@ import java.util.List;
  * youngtak Han <gksdudxkr@gmail.com>
  */
 public class RampMeter extends InfraObject{
-    private List<Detector> queue = new ArrayList<Detector>();
-    private List<Detector> passage = new ArrayList<Detector>();
+    private List<String> queue;
+    private List<String> passage;
+    private List<String> simqueue;
+    private List<String> simpassage;
+    private int Length;
+    private int MAX_WAIT = 240;
+    
     public RampMeter(HashMap<InfraDatas,Object> datas) {
         super(datas);
     }
 
-    public double getStorage() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    RampMeter(HashMap<InfraDatas, Object> datas, ArrayList<Detector> queue, ArrayList<Detector> passage, ArrayList<Detector> simqueue, ArrayList<Detector> simpassage) {
+        super(datas);
+        this.queue = insertIDs(queue);
+        this.passage = insertIDs(passage);
+        this.simqueue = insertIDs(simqueue);
+        this.simpassage = insertIDs(simpassage);
+        
+        Integer it;
+        it = (Integer)super.getProperty(InfraDatas.LENGTH);
+        Length = it == null ? -1 : it;
     }
     
+    private ArrayList<String> insertIDs(ArrayList<Detector> det){
+        ArrayList<String> dids = new ArrayList<String>();
+        for(Detector d : det){
+            dids.add(d.getID());
+        }
+        return dids;
+    }
+    
+    public List<String> getQueues(InfraDataMode idm){
+        if(idm.isRealMode())
+            return queue;
+        else
+            return simqueue;
+    }
+    
+    public List<String> getPassages(InfraDataMode idm){
+        if(idm.isRealMode())
+            return passage;
+        else
+            return simpassage;
+    }
+
+    public double getStorage() {
+        return Length;
+    }
+    
+    public int getMaxWait(){
+        return MAX_WAIT;
+    }
 }

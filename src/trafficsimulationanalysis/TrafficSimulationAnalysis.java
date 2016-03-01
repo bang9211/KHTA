@@ -31,7 +31,7 @@ import util.InfraDataFetcher;
  * youngtak Han <gksdudxkr@gmail.com>
  */
 public class TrafficSimulationAnalysis {
-    static KHTALoading kl = new KHTALoading(null, true);
+//    static KHTALoading kl = new KHTALoading(null, true);
     /**
      * @param args the command line arguments
      */
@@ -61,13 +61,12 @@ public class TrafficSimulationAnalysis {
                 nf.init();
                 
                 System.out.println("Openning KHTA..");
-//                nf.setAlwaysOnTop(true);
-                kl.dispose();
+//                kl.dispose();
                 nf.setVisible(true);
             }
         }, 10);
-        kl.setAlwaysOnTop(true);
+//        kl.setAlwaysOnTop(true);
         
-        kl.setVisible(true);
+//        kl.setVisible(true);
     }
 }

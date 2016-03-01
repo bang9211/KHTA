@@ -18,6 +18,7 @@ package infra.infraobject;
 
 import infra.InfraDatas;
 import infra.type.RnodeType;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -26,13 +27,61 @@ import java.util.HashMap;
  * youngtak Han <gksdudxkr@gmail.com>
  */
 public class Entrance extends RNode{
+    ArrayList<Detector> queue = new ArrayList<Detector>();
+    ArrayList<Detector> passage = new ArrayList<Detector>();
+    
+    ArrayList<Detector> simqueue = new ArrayList<Detector>();
+    ArrayList<Detector> simpassage = new ArrayList<Detector>();
     RampMeter meter;
+    
     public Entrance(HashMap<InfraDatas,Object> datas) {
         super(datas,RnodeType.ENTRANCE);
+        setEntranceDetector();
+        setRampMeter(datas);
+    }
+    
+    private void setEntranceDetector() {
+        //real ramp detector
+        for(Detector d : this.detectors.values()){
+            if(d.getLaneType().isQueue())
+                queue.add(d);
+            else if(d.getLaneType().isPassage())
+                passage.add(d);
+        }
+        
+        //sim ramp detector
+        for(Detector d : this.simdetectors.values()){
+            if(d.getLaneType().isQueue())
+                simqueue.add(d);
+            else if(d.getLaneType().isPassage())
+                simpassage.add(d);
+        }
+    }
+    
+    private void setRampMeter(HashMap<InfraDatas,Object> datas) {
+        meter = new RampMeter(datas, queue, passage, simqueue, simpassage);
+    }
+    
+    public ArrayList<Detector> getPassages() {
+        if(!isSimMode)
+            return passage;
+        else
+            return simpassage;
+    }
+
+    public ArrayList<Detector> getQueues() {
+        if(!isSimMode)
+            return queue;
+        else
+            return simqueue;
+    }
+    
+    public RampMeter getRampMeter(){
+        return meter;
     }
     
     @Override
     public String toString(){
-        return getName();
+        return getOrder() + " - "+ getName() + " (ENTRANCE)";
     }
 }

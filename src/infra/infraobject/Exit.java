@@ -31,4 +31,8 @@ public class Exit extends RNode{
         super(datas,RnodeType.EXIT);
     }
     
+    @Override
+    public String toString(){
+        return  getOrder() + " - "+getName() + " (EXIT)";
+    }
 }

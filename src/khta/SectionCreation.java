@@ -498,6 +498,7 @@ public class SectionCreation extends javax.swing.JPanel {
         }
         str += "Order : "+rNode.getOrder()+ "\n";
         str += "Lane Size : "+rNode.getLaneCount()+ "\n";
+        str += "Lane length : "+rNode.getLength()+ "\n";
         
         
         

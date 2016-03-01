@@ -114,13 +114,21 @@ public class Infra {
                 if(vdstype.isRoadVDS())
                      nn = new Station(ss);
                 else if(vdstype.isRamp()){
-                    if (prevRNode != null) {
-                        if (prevRNode.getNodeType().isExit()) {
-                            nn = new Entrance(ss);
-                        } else{
-                            nn = new Exit(ss);
-                        }
+                    if(vdstype.isEntrance()){
+                        nn = new Entrance(ss);
+                    }else if(vdstype.isExit()){
+                        nn = new Exit(ss);
                     }
+                    /**
+                     * Old Structure for Ramp
+                     */
+//                    if (prevRNode != null) {
+//                        if (prevRNode.getNodeType().isExit()) {
+//                            nn = new Entrance(ss);
+//                        } else{
+//                            nn = new Exit(ss);
+//                        }
+//                    }
                 }
                 //Add all Rnodes into the corridor
                 if(nn != null){

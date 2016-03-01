@@ -78,7 +78,6 @@ public class DetectorDataReader extends DataFetcher{
         }
         
         try {
-            
             loadDatafromDB(TableMap.get(TrafficType.VOLUME),dataMap.get(TrafficType.VOLUME));
             loadDatafromDB(TableMap.get(TrafficType.SPEED),dataMap.get(TrafficType.SPEED));
         } catch (Exception ex) {

@@ -40,6 +40,7 @@ public class RNode extends InfraObject implements Comparable{
     //Node Order
     private int order = -1;
     protected double loc = -1;
+    protected int length = -1;
     private Corridor corridor = null;
     private Direction direction = Direction.ALL;
     protected RnodeType nodetype = RnodeType.NONE;
@@ -62,7 +63,7 @@ public class RNode extends InfraObject implements Comparable{
      * if Simulation mode -> rnode's data is simulation data
      * else -> rnode's data is real data
      */
-    private boolean isSimMode = false;
+    protected boolean isSimMode = false;
     
     protected boolean isFirstNode = false;
     protected boolean isLastNode = true;
@@ -81,6 +82,10 @@ public class RNode extends InfraObject implements Comparable{
         
         it = (Integer)super.getProperty(InfraDatas.ORDER);
         order = it == null ? -1 : it;
+        
+        //lane length
+        Integer _length = (Integer)getProperty(InfraDatas.LENGTH);
+        length = _length == null ? -1 : _length;
         
 //        direction = (Direction)getProperty(InfraDatas.DIRECTION);
         initRealDetectors();
@@ -303,19 +308,22 @@ public class RNode extends InfraObject implements Comparable{
                 dd.put(InfraDatas.NAME, dname);
                 simdetectors.put(did, new Detector(dd, LaneType.MAINLINE, this));
             }
-        }else{ //
-            HashMap<InfraDatas, Object> dd = new HashMap();
-            //Queue Detector
-            String did = getDetectorID(LaneType.QUEUE);
-            dd.put(InfraDatas.ID, did);
-            dd.put(InfraDatas.NAME, getDetectorName(LaneType.QUEUE));
-            simdetectors.put(did, new Detector(dd, LaneType.QUEUE, this));
-            //Passage Detector
-            dd.clear();
-            did = getDetectorID(LaneType.PASSAGE);
-            dd.put(InfraDatas.ID, did);
-            dd.put(InfraDatas.NAME, getDetectorName(LaneType.PASSAGE));
-            simdetectors.put(did, new Detector(dd, LaneType.PASSAGE, this));
+        }else{ //수정요망
+            for(int i=0;i<getLaneCount();i++){
+                String dnum = String.valueOf(i+1);
+                HashMap<InfraDatas, Object> dd = new HashMap();
+                //Queue Detector
+                String did = getDetectorID(LaneType.QUEUE) + dnum;
+                dd.put(InfraDatas.ID, did);
+                dd.put(InfraDatas.NAME, getDetectorName(LaneType.QUEUE) + dnum);
+                simdetectors.put(did, new Detector(dd, LaneType.QUEUE, this));
+                //Passage Detector
+                dd.clear();
+                did = getDetectorID(LaneType.PASSAGE) + dnum;
+                dd.put(InfraDatas.ID, did);
+                dd.put(InfraDatas.NAME, getDetectorName(LaneType.PASSAGE) + dnum);
+                simdetectors.put(did, new Detector(dd, LaneType.PASSAGE, this));
+            }
         }
     }
     
@@ -475,5 +483,10 @@ public class RNode extends InfraObject implements Comparable{
     
     public int getOrder(){
         return order;
+    }
+    
+    //lane length - meter
+    public int getLength(){
+        return length;
     }
 }

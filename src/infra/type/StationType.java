@@ -52,6 +52,18 @@ public enum StationType {
     }
     
     public boolean isRamp(){
-        return this != NONE && this == RAMP;
+        return this != NONE && (this == RAMP || this == ENTRANCE || this == EXIT);
+    }
+    
+    public boolean isEntrance(){
+        return this == ENTRANCE;
+    }
+    
+    public boolean isExit(){
+        return this == EXIT;
+    }
+    
+    public boolean isDMS(){
+        return this == DMS;
     }
 }
