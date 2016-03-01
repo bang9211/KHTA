@@ -25,4 +25,5 @@ public class InfraConstants {
     public static final int SAMPLES_PER_HOUR = 12;
     public static final int MISSING_DATA = -1;
     
+    public static final String CACHE_DIR = "caches";
 }

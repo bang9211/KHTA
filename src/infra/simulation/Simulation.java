@@ -96,7 +96,7 @@ public class Simulation extends Thread implements IStepListener, ITravelTimeList
             this.section = section;
             version = v;
             this.simObjects = simObjects;
-//            loadSignalGroupFromCasefile(this.caseFile);
+            loadSignalGroupFromCasefile(this.caseFile);
             detectors = loadDetectorFromCasefile(this.caseFile);
             checkDetector(detectors);
             this.simDuration = VISSIMHelper.loadSimulationDuration(this.caseFile);
@@ -216,9 +216,7 @@ public class Simulation extends Thread implements IStepListener, ITravelTimeList
     }
     
     private void loadSignalGroupFromCasefile(String casefile) throws IOException{
-        System.out.println("asdf");
         ArrayList<String> sgs = VISSIMHelper.loadSignalGroupsFromCasefile(caseFile);
-        System.out.println("zxcv");
         if(sgs == null){
             System.out.println("Cannot find signal head(meter) in case file");
             System.exit(-1);

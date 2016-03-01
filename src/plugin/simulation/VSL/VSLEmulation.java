@@ -17,18 +17,18 @@
 // */
 //package plugin.simulation.VSL;
 //
-//import edu.umn.natsrl.ticas.plugin.simulation.VSL.algorithm.VSLStationState;
 //import edu.umn.natsrl.infra.infraobjects.DMSImpl;
-//import edu.umn.natsrl.ticas.Simulation.Emulation;
-//import edu.umn.natsrl.ticas.Simulation.EmulationImpl;
-//import edu.umn.natsrl.ticas.plugin.simulation.VSL.algorithm.VSLAlgorithm;
-//import edu.umn.natsrl.ticas.plugin.simulation.VSL.algorithm.VSLVersion;
 //import infra.Period;
 //import infra.Section;
+//import infra.simulation.Emulation;
+//import infra.simulation.EmulationImpl;
 //import infra.simulation.SimulationGroup;
 //import infra.simulation.StationState;
 //import java.util.ArrayList;
 //import java.util.TreeMap;
+//import plugin.simulation.VSL.algorithm.VSLAlgorithm;
+//import plugin.simulation.VSL.algorithm.VSLStationState;
+//import plugin.simulation.VSL.algorithm.VSLVersion;
 //
 ///**
 // *

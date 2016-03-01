@@ -20,23 +20,21 @@ package evaluation;
 import error.StringErrorStream;
 import infra.Period;
 import infra.Section;
-import infra.simobjects.SimObjects;
-import infra.simobjects.SimulationSeveralResult;
 import infra.SectionHelper;
 import infra.SectionHelper.StationState;
+import infra.simobjects.SimObjects;
+import infra.simobjects.SimulationSeveralResult;
 import java.awt.Desktop;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.TimerTask;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import jxl.Workbook;
 import jxl.write.Label;
 import jxl.write.Number;
@@ -45,7 +43,6 @@ import jxl.write.WritableWorkbook;
 import khta.KHTAOption;
 import khta.RunningDialog;
 import khta.SimulationResult;
-import khta.TrafficAnalysis;
 import util.FileHelper;
 
 
@@ -562,8 +559,10 @@ public class EvaluationForCalibration extends TimerTask {
         String FileName = this.getFileName("csv");
         System.out.println("Making File.."+FileName);
         
-        FileWriter fw = new FileWriter(FileName, false);
-        BufferedWriter bw = new BufferedWriter(fw);
+        //FileWriter fw = new FileWriter(FileName, false);
+        FileOutputStream fos = new FileOutputStream(FileName);
+        OutputStreamWriter osw = new OutputStreamWriter(fos, "EUC-KR");
+        BufferedWriter bw = new BufferedWriter(osw);
 
         ArrayList<ArrayList> data = res;
 
