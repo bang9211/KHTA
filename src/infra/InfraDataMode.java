@@ -14,17 +14,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package version;
+package infra;
 
 /**
  *
  * @author soobin Jeon <j.soobin@gmail.com>, chungsan Lee <dj.zlee@gmail.com>,
  * youngtak Han <gksdudxkr@gmail.com>
  */
-public class Version {
-    public static final String version = "1.51b";
+public enum InfraDataMode {
+    SIMULATION,
+    REAL;
     
-    public static String getVersionInfo(){
-        return "v"+version;
+    public boolean isSimulationMode(){
+        return this == SIMULATION;
+    }
+    
+    public boolean isRealMode(){
+        return this == REAL;
     }
 }

@@ -1267,6 +1267,7 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
                 StringErrorStream sos = new StringErrorStream(rd);
                 ex.printStackTrace(new PrintStream(sos));
                 sos.getMessage("Calibration Fail","Data Load Failed, Check Data File");
+                ex.printStackTrace();
             }
         }
         

@@ -327,10 +327,15 @@ public class Infra {
         return null;
     }
     
+    /**
+     * getSimulation Detectors
+     * @param detector_id
+     * @return 
+     */
     public Detector getSimulationDetector(String detector_id) {
         for(Corridor c : corridors){
-            for(Station s : c.getStations()){
-                for(Detector d : s.getSimDetectorList()){
+            for(RNode rn : c.getRNodes()){
+                for(Detector d : rn.getSimDetectorList()){
                     if(d.getID().equals(detector_id))
                         return d;
                 }
