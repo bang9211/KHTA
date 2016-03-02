@@ -395,10 +395,7 @@ public class MeteringSectionHelper {
                 continue;
             }
             EntranceState s = (EntranceState) state;
-            if (s.hasDetector(meter.getMerge())
-                    || s.hasDetector(meter.getGreen())
-                    || s.hasDetector(meter.getPassage())
-                    || s.hasDetector(meter.getByPass())
+            if (s.hasDetector(meter.getPassage())
                     || s.hasDetector(meter.getQueue())) {
                 return s;
             }
@@ -483,9 +480,6 @@ public class MeteringSectionHelper {
         private final BoundedSampleHistory passageHist = 
                 new BoundedSampleHistory(MAX_STEPS);
         
-        /** Cumulative green count (vehicles) */
-        private int green_accum = 0;
-
         /** Time queue has been empty (steps) */
         private int queueEmptyCount = 0;
 
@@ -914,32 +908,29 @@ public class MeteringSectionHelper {
             double passage_rate = flowRate(passage_vol);
             passageHist.push(passage_rate);
             passage_accum += passage_vol;
-            double green_vol = meter.getGreen().getData(TrafficType.VOLUME);
-            if(green_vol > 0)
-                green_accum += green_vol;
         }
         
         /** Calculate passage count (vehicles).
 		 * @return Passage vehicle count */
-        private int calculatePassageCount(){
-            Double vol = meter.getPassage().getData(TrafficType.VOLUME);
-            if(vol >= 0)
-                return vol.intValue();
-            vol = meter.getMerge().getData(TrafficType.VOLUME);
-            if(vol >= 0){
-                Double b = meter.getByPass().getData(TrafficType.VOLUME);
-                if(b > 0){
-                    vol -= b;
-                    if(vol < 0)
-                        return 0;
+        private int calculatePassageCount() {
+            if (meter == null) {
+                return MISSING_DATA;
+            }
+            SimDetector[] pDets = meter.getPassage();
+            Double vol = (double) 0;
+            if (pDets != null) {
+                for (int i = 0; i < pDets.length; i++) {
+                    double d = pDets[i].getData(TrafficType.VOLUME);
+                    if (d > 0) {
+                        vol += d;
+                    }
                 }
-                return b.intValue();
             }
-            if(isMetering){
-                vol = meter.getGreen().getData(TrafficType.VOLUME);
-                if(vol >= 0)
-                    return vol.intValue();
+
+            if (vol >= 0) {
+                return vol.intValue();
             }
+
             return MISSING_DATA;
         }
         
@@ -954,17 +945,13 @@ public class MeteringSectionHelper {
         
         private boolean isQueueEmpty(){
             return !isQueueOccupancyHigh() &&
-                    (isDemandBelowpassage() || isPassageBelowGreen());
+                    isDemandBelowpassage();
         }
         
         private boolean isDemandBelowpassage(){
             return queueLength() < 0;
         }
         
-        private boolean isPassageBelowGreen(){
-            return passage_accum < green_accum;
-        }
-                
 //        private void updateDemandState_old() {
 //            double p_volume = calculateRampVolume();
 //            double demand = calculateRampDemand();
@@ -1022,29 +1009,26 @@ public class MeteringSectionHelper {
          * @return ramp flow
          */
         private double calculateRampVolume(int prevStep) {
-            if(this.meter == null) return 0;
-            SimDetector pDet = this.meter.getPassage();
-            SimDetector mDet = this.meter.getMerge();
-            SimDetector bpDet = this.meter.getByPass();            
-            
-            double p_volume = 0;           
+            if (this.meter == null) {
+                return 0;
+            }
 
-            // passage detector is ok
-            if(pDet != null) {
-                p_volume = simObjects.getDetector(pDet.getID()).getData(TrafficType.VOLUME, prevStep);
-            } else {
-                // merge detector is ok
-                if(mDet != null) {
-                    p_volume = simObjects.getDetector(mDet.getID()).getData(TrafficType.VOLUME, prevStep);                      
-                    // bypass detector is ok
-                    if(bpDet != null) {
-                        p_volume -= simObjects.getDetector(bpDet.getID()).getData(TrafficType.VOLUME, prevStep);
-                        if(p_volume < 0) p_volume = 0;
-                    }                                      
-                }   
-            }    
+            SimDetector[] pDets = this.meter.getPassage();
 
-            return p_volume;
+            double p_volume = 0;
+
+            if (pDets != null) {
+                for (int i = 0; i < pDets.length; i++) {
+                    double d = simObjects.getDetector(pDets[i].getID()).getData(TrafficType.VOLUME, prevStep);
+                    if (d > 0) {
+                        p_volume += d;
+                    }
+                }
+
+                return p_volume;
+            }
+
+            return 0;
         }
         
         public double getMaxOccupancy(){
@@ -1113,7 +1097,6 @@ public class MeteringSectionHelper {
             passage_failure = false;
             demandAccumHist.clear();
             passage_accum = 0;
-            green_accum = 0;
             queueEmptyCount = 0;
             queueFullCount = 0;
         }
@@ -1234,6 +1217,7 @@ public class MeteringSectionHelper {
         }
         
         /**
+         * 수정필요!! mile -> km
          * Associated Meter to Station
          *   - Iterate from upstream to downstream
          *   - Upstream meter will be associated to the station 

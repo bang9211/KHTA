@@ -21,6 +21,7 @@ import infra.infraobject.Detector;
 import infra.infraobject.Entrance;
 import infra.infraobject.Exit;
 import infra.infraobject.RNode;
+import infra.infraobject.RampMeter;
 import infra.infraobject.Station;
 import infra.type.NodeOrder;
 import infra.type.StationType;
@@ -339,6 +340,21 @@ public class Infra {
                     if(d.getID().equals(detector_id))
                         return d;
                 }
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * get Meter
+     * @param meter_id
+     * @return 
+     */
+    public RampMeter getMeter(String meter_id) {
+        for(Corridor c : corridors){
+            for(Entrance en : c.getEntrances()){
+                if(meter_id.equals(en.getRampMeter().getID()))
+                    return en.getRampMeter();
             }
         }
         return null;

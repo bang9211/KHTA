@@ -36,10 +36,6 @@ public class RampMeter extends InfraObject{
     private int Length;
     private int MAX_WAIT = 240;
     
-    public RampMeter(HashMap<InfraDatas,Object> datas) {
-        super(datas);
-    }
-
     RampMeter(HashMap<InfraDatas, Object> datas, ArrayList<Detector> queue, ArrayList<Detector> passage, ArrayList<Detector> simqueue, ArrayList<Detector> simpassage) {
         super(datas);
         this.queue = insertIDs(queue);
@@ -60,18 +56,18 @@ public class RampMeter extends InfraObject{
         return dids;
     }
     
-    public List<String> getQueues(InfraDataMode idm){
+    public String[] getQueues(InfraDataMode idm){
         if(idm.isRealMode())
-            return queue;
+            return queue.toArray(new String[0]);
         else
-            return simqueue;
+            return simqueue.toArray(new String[0]);
     }
     
-    public List<String> getPassages(InfraDataMode idm){
+    public String[] getPassages(InfraDataMode idm){
         if(idm.isRealMode())
-            return passage;
+            return passage.toArray(new String[0]);
         else
-            return simpassage;
+            return simpassage.toArray(new String[0]);
     }
 
     public double getStorage() {

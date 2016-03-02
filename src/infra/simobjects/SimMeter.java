@@ -16,6 +16,7 @@
  */
 package infra.simobjects;
 
+import infra.InfraDataMode;
 import infra.infraobject.RampMeter;
 import java.util.ArrayList;
 import vissimcom.*;
@@ -291,52 +292,34 @@ public class SimMeter extends SimObject {
     }
 
     /**
-     * @see 
      * @return 
      */
-    public SimDetector getGreen() {
-        throw new UnsupportedOperationException("Not supported yet.");
-        //return simObjects.getDetector(meter.getGreen());
+    public SimDetector[] getPassage() {
+        String[] passage = meter.getPassages(InfraDataMode.SIMULATION);
+        if (passage == null || passage.length == 0) {
+            return null;
+        }
+        SimDetector[] dets = new SimDetector[passage.length];
+        for (int i = 0; i < passage.length; i++) {
+            dets[i] = simObjects.getDetector(passage[i]);
+        }
+        return dets;
     }
 
     /**
-     * @see 
+     * get Queue
      * @return 
      */
-    public SimDetector getPassage() {
-        throw new UnsupportedOperationException("Not supported yet.");
-        //return simObjects.getDetector(meter.getPassage());
-    }
-
-    /**
-     * @see 
-     * @return 
-     */
-    public SimDetector getMerge() {
-        throw new UnsupportedOperationException("Not supported yet.");        
-        //return simObjects.getDetector(meter.getMerge());
-    }
-
-    /**
-     * @see 
-     * @return 
-     */
-    public SimDetector getByPass() {
-        throw new UnsupportedOperationException("Not supported yet.");
-        //return simObjects.getDetector(meter.getByPass());
-    }
-
     public SimDetector[] getQueue() {
-        throw new UnsupportedOperationException("Not supported yet.");
-//        String[] queues = meter.getQueue();
-//        if (queues == null || queues.length == 0) {
-//            return null;
-//        }
-//        SimDetector[] dets = new SimDetector[queues.length];
-//        for (int i = 0; i < queues.length; i++) {
-//            dets[i] = simObjects.getDetector(queues[i]);
-//        }
-//        return dets;
+        String[] queues = meter.getQueues(InfraDataMode.SIMULATION);
+        if (queues == null || queues.length == 0) {
+            return null;
+        }
+        SimDetector[] dets = new SimDetector[queues.length];
+        for (int i = 0; i < queues.length; i++) {
+            dets[i] = simObjects.getDetector(queues[i]);
+        }
+        return dets;
     }
 
     public float getRedTime() {

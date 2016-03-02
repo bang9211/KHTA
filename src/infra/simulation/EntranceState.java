@@ -81,27 +81,6 @@ public class EntranceState extends State {
        return this.cumulativeMergingVolume.get(cumulativeMergingVolume.size()-1);
    }
 
-   public double getRampDensity()
-   {
-       throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//       if(this.cumulativeDemand.isEmpty()) return 0;
-//
-//       int currentIdx = this.cumulativeDemand.size()-1;            
-//       double It = this.cumulativeDemand.get(currentIdx);
-//       double Ot = this.cumulativeMergingVolume.get(currentIdx);
-//
-//       // ramp length in mile
-//       double L = this.meter.getMeter().getStorage() / 5280D;
-//       System.out.println("Storage :" + L);
-//       // if dual type, length should be double
-//       if(this.meter.getMeterType() == SimMeter.MeterType.DUAL) {
-//           L *= 2;
-//       }                    
-//
-//       double k = (It - Ot) / L;               
-//       return k;
-   }
-
    /**
     * Calculate demand and output
     */
@@ -166,28 +145,21 @@ public class EntranceState extends State {
     */
    private double calculateRampVolume(int prevStep) {
        if(this.meter == null) return 0;
-       SimDetector pDet = this.meter.getPassage();
-       SimDetector mDet = this.meter.getMerge();
-       SimDetector bpDet = this.meter.getByPass();            
-
+       
+       SimDetector[] pDets = this.meter.getPassage();
+       
        double p_volume = 0;           
-
-       // passage detector is ok
-       if(pDet != null) {
-           p_volume = simObjects.getDetector(pDet.getID()).getData(TrafficType.VOLUME, prevStep);
-       } else {
-           // merge detector is ok
-           if(mDet != null) {
-               p_volume = simObjects.getDetector(mDet.getID()).getData(TrafficType.VOLUME, prevStep);                      
-               // bypass detector is ok
-               if(bpDet != null) {
-                   p_volume -= simObjects.getDetector(bpDet.getID()).getData(TrafficType.VOLUME, prevStep);
-                   if(p_volume < 0) p_volume = 0;
-               }                                      
-           }   
-       }    
-
-       return p_volume;
+       
+       if(pDets != null){
+           for(int i=0;i<pDets.length;i++){
+               double d = simObjects.getDetector(pDets[i].getID()).getData(TrafficType.VOLUME, prevStep);
+               if(d > 0) p_volume += d;
+           }
+           
+           return p_volume;
+       }
+       
+       return 0;
    }
 
    public void saveSegmentDensityHistory(int dataCount, double Kt) {

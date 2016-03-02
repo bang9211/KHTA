@@ -17,10 +17,13 @@
 package khta;
 
 import infra.Infra;
+import infra.InfraDataMode;
 import infra.Section;
 import infra.infraobject.Corridor;
 import infra.infraobject.Detector;
+import infra.infraobject.Entrance;
 import infra.infraobject.RNode;
+import infra.infraobject.RampMeter;
 import infra.infraobject.Station;
 import infra.type.RnodeType;
 import java.io.File;
@@ -500,6 +503,17 @@ public class SectionCreation extends javax.swing.JPanel {
         str += "Lane Size : "+rNode.getLaneCount()+ "\n";
         str += "Lane length : "+rNode.getLength()+ "\n";
         
+//        if(rNode.getNodeType() == RnodeType.ENTRANCE){
+//            Entrance et = (Entrance)rNode;
+//            RampMeter rm = et.getRampMeter();
+//            str += "\nEntrance RampMeter : "+rm.getID()+ "\n";
+//            for(String s : rm.getQueues(InfraDataMode.SIMULATION)){
+//                str += "- Queue Detector = "+s+ "\n";
+//            }
+//            for(String s : rm.getPassages(InfraDataMode.SIMULATION)){
+//                str += "- Passage Detector = "+s+ "\n";
+//            }
+//        }
         
         
         if(!rNode.getDetectors().isEmpty()){

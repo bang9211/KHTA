@@ -231,10 +231,7 @@ public class SectionHelper {
                 continue;
             }
             EntranceState s = (EntranceState) state;
-            if (s.hasDetector(meter.getMerge())
-                    || s.hasDetector(meter.getGreen())
-                    || s.hasDetector(meter.getPassage())
-                    || s.hasDetector(meter.getByPass())
+            if (s.hasDetector(meter.getPassage())
                     || s.hasDetector(meter.getQueue())) {
                 return s;
             }

@@ -18,6 +18,7 @@ package infra.simobjects;
 
 import infra.Infra;
 import infra.infraobject.Detector;
+import infra.infraobject.RampMeter;
 import infra.infraobject.Station;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -96,25 +97,26 @@ public class SimObjects {
 
     public SimMeter getMeter(String meter_id)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
-//        SimMeter sd = meters.get(meter_id);
-//        if(sd == null) {
-//            RampMeter d = tmo.getInfra().getMeter(meter_id);
-//            if(d == null) {
-//                RampMeter rd = new RampMeter();
-//                sd = new SimMeter(rd);
-//                this.meters.put(meter_id, sd);
-//                tmo.getInfra().addInfraObject(rd);
-//                return sd;
-//            }
-//            else {
-//                sd = new SimMeter(d);
-//                this.meters.put(meter_id, sd);
-//                return sd;
-//            }
-//        } else return sd;
+        SimMeter sd = meters.get(meter_id);
+        if(sd == null) {
+            RampMeter d = infra.getMeter(meter_id);
+            if(d == null) {
+                System.err.println("There no RampMeter in KHTA");
+                return null;
+            }
+            else {
+                sd = new SimMeter(d,this);
+                this.meters.put(meter_id, sd);
+                return sd;
+            }
+        } else return sd;
     }       
 
+    /**
+     * @see 
+     * @param dms_id
+     * @return 
+     */
     // FIXME : infra doesn't have DMS objects 
     // because tms_xml.config doesn't include DMS information
     public SimDMS getDms(String dms_id)
