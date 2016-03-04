@@ -16,6 +16,8 @@
  */
 package util;
 
+import infra.infraobject.RNode;
+
 /**
  *
  * @author soobin Jeon <j.soobin@gmail.com>, chungsan Lee <dj.zlee@gmail.com>,
@@ -23,4 +25,12 @@ package util;
  */
 public class DistanceUtil {
     
+    public static double getDistanceInKM(RNode o1, RNode o2){
+        
+        return Math.abs(o1.getLocation() - o2.getLocation());
+    }
+    
+    public static double getDistanceInM(RNode o1, RNode o2){
+        return Math.abs(o1.getLocation() - o2.getLocation()) * 1000;
+    }
 }

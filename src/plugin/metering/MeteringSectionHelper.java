@@ -44,6 +44,7 @@ import infra.simulation.StateInterval;
 import infra.simulation.StateType;
 import infra.type.RnodeType;
 import infra.type.TrafficType;
+import util.DistanceUtil;
 
 
 /**
@@ -63,6 +64,7 @@ public class MeteringSectionHelper {
     private ArrayList<SimMeter> meters;
     private ArrayList<SimDetector> detectors;
     Infra infra = Infra.getInstance();
+    final static float UPSTREAM_THRESHOLD_DISTANCE = (float) 152.4; //m
     
     /** Enum for minimum limit control */
     enum MinimumRateLimit {
@@ -218,7 +220,8 @@ public class MeteringSectionHelper {
             double upDensity = cursor.getIntervalAggregatedDensity(sg,prevStep);
             double downDensity = dStation.getIntervalAggregatedDensity(sg,prevStep);
             double middleDensity = (upDensity + downDensity) / 2;
-            double distance = TMO.getDistanceInMile(cursor.rnode, dStation.rnode);
+            //double distance = TMO.getDistanceInMile(cursor.rnode, dStation.rnode);
+            double distance = DistanceUtil.getDistanceInKM(cursor.rnode, dStation.rnode);
             double distanceFactor = distance / 3;
             totalDistance += distance;           
             avgDensity += (upDensity + middleDensity + downDensity) * distanceFactor;
@@ -281,7 +284,6 @@ public class MeteringSectionHelper {
                 State cur = states.get(states.size() - 1);
                 prev.downstream = cur;
                 cur.upstream = prev;
-                prev.distanceToDownState = TMO.getDistanceInFeet(prev.rnode, rn);
             }
         }
 
@@ -1213,7 +1215,8 @@ public class MeteringSectionHelper {
                 return 0;
             }
             double u1 = downStationState.getIntervalAggregatedSpeed(sg);
-            return (u1 * u1 - u2 * u2) / (2 * TMO.getDistanceInMile(this.rnode, downStationState.rnode));
+            //return (u1 * u1 - u2 * u2) / (2 * TMO.getDistanceInMile(this.rnode, downStationState.rnode));
+            return (u1 * u1 - u2 * u2) / (2 * DistanceUtil.getDistanceInKM(this.rnode, downStationState.rnode));
         }
         
         /**
@@ -1237,12 +1240,13 @@ public class MeteringSectionHelper {
                         
             if(us != null) {
                 for(EntranceState es : upstreamEntrances) {                    
-                    int d = this.getDistanceToUpstreamEntrance(es);                    
-                    int ud = us.getDistanceToDownstreamEntrance(es) ;
+                    int d = this.getDistanceToUpstreamEntrance(es);         //m
+                    int ud = us.getDistanceToDownstreamEntrance(es) ;       //m
                     
                     // very close(?) or not allocated with upstream station                    
                     //if( ( d < 800 && ud > 500) || es.associatedStation == null) {
-                    if( ( d < 500 && d < ud) || es.associatedStation == null) {
+                    //if( ( d < 500 && d < ud) || es.associatedStation == null) {
+                    if( ( d < UPSTREAM_THRESHOLD_DISTANCE && d < ud) || es.associatedStation == null) {
                         if(es.associatedStation != null) {
                             es.associatedStation.associatedEntrances.remove(es);
                         }                        
@@ -1279,7 +1283,8 @@ public class MeteringSectionHelper {
             for(int i=this.idx-1; i>=0; i--) {
                 s = states.get(i);
             
-                distance += TMO.getDistanceInFeet(cursor.rnode, s.rnode);
+                //미터로
+                distance += DistanceUtil.getDistanceInM(cursor.rnode, s.rnode);
                 if(s.equals(es)) {
                     found = true;
                     break;
@@ -1299,7 +1304,7 @@ public class MeteringSectionHelper {
             boolean found = false;
             for(int i=this.idx+1; i<states.size(); i++) {
                 s = states.get(i);
-                distance += TMO.getDistanceInFeet(cursor.rnode, s.rnode);
+                distance += DistanceUtil.getDistanceInM(cursor.rnode, s.rnode);
                 if(s.equals(es)) {
                     found = true;
                     break;
