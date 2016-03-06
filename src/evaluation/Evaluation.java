@@ -44,6 +44,15 @@ public abstract class Evaluation {
     protected String name;
     protected KHTAOption ko;
     protected EvaluationOption opts;
+    protected boolean printDebug = true;
+    protected boolean simulationMode = false;
+    
+    protected final int SECONDS_PER_HOUR = 3600;
+    protected final String NO_STATION = "-";
+    protected final String TITLE_AVERAGE = "Average";
+    protected final String TITLE_TOTAL = "Total";
+    protected final String TITLE_DISTANCE = "Accumulated Distance";
+    protected final String TITLE_CONFIDENCE = "Confidence Level (%)";
     
     protected abstract void init();
     

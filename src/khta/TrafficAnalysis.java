@@ -1533,13 +1533,16 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
 
             System.out.println("Start Date : " + sdate.toString());
             System.out.println("End Date : " + edate.toString());
-
+            
             periods.add(new Period(sdate, edate, selectedInterval.getSecond()));
         }
 
         EvaluationOption opt = khtaOption.getEvaluationOption();
-
+        
+        Period firstDay = periods.get(0);
+        
         opt.setSelectedSection(selectedSection);
+        opt.setStartEndTime(firstDay.start_hour, firstDay.start_min, firstDay.end_hour, firstDay.end_min);
         opt.setPeriods(periods);
 
         opt.setStationData(cbxSpeed.isSelected(), cbxDensity.isSelected(), cbxTotalFlow.isSelected(),

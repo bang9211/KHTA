@@ -21,6 +21,13 @@ public class EvaluationOption implements Serializable{
     /** selected period, it may be multiple period because user can select multiple dates */
     private ArrayList<Period> periods = new ArrayList<Period>();
     
+    private int start_hour = 7;
+    private int end_hour = 8;
+    private int start_min = 0;
+    private int end_min = 0;
+    
+    private Interval interval;
+    
     private boolean speedCheck;
     private boolean densityCheck;
     private boolean totalFlowCheck;
@@ -246,6 +253,37 @@ public class EvaluationOption implements Serializable{
                     return Interval.get(Interval.getMinTMCInterval());
             else
                     return simInterval;
+    }
+    
+    public void setStartEndTime(int start_hour, int start_min, int end_hour, int end_min) {
+        this.start_hour = start_hour;
+        this.end_hour = end_hour;
+        this.start_min = start_min;
+        this.end_min = end_min;
+    }
+    
+    public int getEndHour() {
+        return end_hour;
+    }
+
+    public int getEndMin() {
+        return end_min;
+    }
+
+    public int getStartHour() {
+        return start_hour;
+    }
+
+    public int getStartMin() {
+        return start_min;
+    }
+    
+    public void setInterval(Interval interval){
+        this.interval = interval;
+    }
+    
+    public Interval getInterval(){
+        return interval;
     }
          
     /**

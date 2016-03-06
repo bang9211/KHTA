@@ -93,7 +93,7 @@ public class Simulation extends Thread implements IStepListener, ITravelTimeList
     @Override
     public void run() {        
         isStop = false;
-        vc = new VISSIMController();
+        vc = new VISSIMController(simObjects);
         
         ComError ce = ComError.getErrorbyID(vc.initialize(caseFile,seed,version,SimInterval));
         if(!ce.isCorrect()){
@@ -242,7 +242,7 @@ public class Simulation extends Thread implements IStepListener, ITravelTimeList
             if(name.contains("_R")) continue;            
             
             SimMeter sd = simObjects.getMeter(name);
-            if(sd.getId() != null){
+            if(sd.getID() != null){
                 if(isDual) sd.setMeterType(SimMeter.MeterType.DUAL);
                 else sd.setMeterType(SimMeter.MeterType.SINGLE);
 
