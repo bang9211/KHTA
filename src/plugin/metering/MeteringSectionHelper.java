@@ -64,7 +64,9 @@ public class MeteringSectionHelper {
     private ArrayList<SimMeter> meters;
     private ArrayList<SimDetector> detectors;
     Infra infra = Infra.getInstance();
+    
     final static float UPSTREAM_THRESHOLD_DISTANCE = (float) 152.4; //m
+    final static float FEET_PER_METER = (float) 3.28084; //m
     
     /** Enum for minimum limit control */
     enum MinimumRateLimit {
@@ -1261,7 +1263,8 @@ public class MeteringSectionHelper {
             if(ds != null) {
                 for(EntranceState es : downstreamEntrances) {
                     int d = this.getDistanceToDownstreamEntrance(es);
-                    if(d < 5280) {
+                    //if(d < 5280) {
+                    if(d < FEET_PER_METER) {
                         associatedEntrances.add(es);
                         es.associatedStation = this;
                     }
