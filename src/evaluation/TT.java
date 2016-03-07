@@ -195,6 +195,7 @@ public class TT extends Evaluation {
 
                 // time (in second) to travel between two station (0.1mile)
                 double ttSec = VIRTUAL_DISTANCE_IN_KM / u * SECONDS_PER_HOUR + TT;          
+
                 
                 // next time interval
                 int nextTimeStep = interval * timeStepIndex;
@@ -227,6 +228,7 @@ public class TT extends Evaluation {
                         
                         // distance th next station = 0.1 mile - distance with previous speed
                         double distanceToNextStation = VIRTUAL_DISTANCE_IN_KM - distanceWithPrevU; // mile
+
                         
                         // speed next step
                         double nextStepSpeed = Double.parseDouble(res.get(c-1, row).toString());  // mph
@@ -237,7 +239,6 @@ public class TT extends Evaluation {
                         // it cannot be reached at next station even if using next speed
                         // it means this section is congested (too slow speed)
                         if(distanceWithPrevU + distanceWithNextU < VIRTUAL_DISTANCE_IN_KM) {
-
                             if(doPrint) {
                                 System.out.println();
                                 System.out.println("    - TooSlow : intervals-prevTT="+EvalHelper.roundUp(tt,2)+", distanceWithPrev(a)="+EvalHelper.roundUp(distanceWithPrevU,2)+", distanceWithNextU(b)="+EvalHelper.roundUp(distanceWithNextU,2)+", a+b=" + EvalHelper.roundUp(distanceWithPrevU + distanceWithNextU, 2));                            
@@ -248,6 +249,7 @@ public class TT extends Evaluation {
                             
                             // calculate travel time until reaching the next station
                             while(d < VIRTUAL_DISTANCE_IN_KM) {                                
+
                                 // missing data area
                                 if(d < 0) {
                                     tt = -1 * (TT+1);
@@ -290,6 +292,7 @@ public class TT extends Evaluation {
                     
                         // not too slow
                         if(distanceWithPrevU + distanceWithNextU >= VIRTUAL_DISTANCE_IN_KM) {
+
                             TT = nextTimeStep + (distanceToNextStation / nextStepSpeed * SECONDS_PER_HOUR);
                         }    // second
                         else {
