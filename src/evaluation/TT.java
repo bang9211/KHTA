@@ -47,8 +47,11 @@ public class TT extends Evaluation {
                 this.opts.setStartEndTime(p.start_hour, p.start_min, p.end_hour, p.end_min);
             }
         }
+<<<<<<< HEAD
         
         BasicData
+=======
+>>>>>>> edd602c1f05acf779308c7968440f7735a2a4665
                 
         // get station speeds
         Vector<EvaluationResult> stationSpeed = Evaluation.getResult(StationSpeed.class, this.opts);
@@ -196,7 +199,11 @@ public class TT extends Evaluation {
                 double u = Double.parseDouble(res.get(c-1, row).toString());
 
                 // time (in second) to travel between two station (0.1mile)
+<<<<<<< HEAD
                 double ttSec = VIRTUAL_DISTANCE_IN_KM / u * SECONDS_PER_HOUR + TT;                
+=======
+                double ttSec = VIRTUAL_DISTANCE_IN_MILE / u * SECONDS_PER_HOUR + TT;                
+>>>>>>> edd602c1f05acf779308c7968440f7735a2a4665
                 
                 // next time interval
                 int nextTimeStep = interval * timeStepIndex;
@@ -228,7 +235,11 @@ public class TT extends Evaluation {
                         double distanceWithPrevU = u * tt / SECONDS_PER_HOUR; // mile
                         
                         // distance th next station = 0.1 mile - distance with previous speed
+<<<<<<< HEAD
                         double distanceToNextStation = VIRTUAL_DISTANCE_IN_KM - distanceWithPrevU; // mile
+=======
+                        double distanceToNextStation = VIRTUAL_DISTANCE_IN_MILE - distanceWithPrevU; // mile
+>>>>>>> edd602c1f05acf779308c7968440f7735a2a4665
                         
                         // speed next step
                         double nextStepSpeed = Double.parseDouble(res.get(c-1, row).toString());  // mph
@@ -238,7 +249,11 @@ public class TT extends Evaluation {
 
                         // it cannot be reached at next station even if using next speed
                         // it means this section is congested (too slow speed)
+<<<<<<< HEAD
                         if(distanceWithPrevU + distanceWithNextU < VIRTUAL_DISTANCE_IN_KM) {
+=======
+                        if(distanceWithPrevU + distanceWithNextU < VIRTUAL_DISTANCE_IN_MILE) {
+>>>>>>> edd602c1f05acf779308c7968440f7735a2a4665
 
                             if(doPrint) {
                                 System.out.println();
@@ -249,7 +264,11 @@ public class TT extends Evaluation {
                             double d = distanceWithPrevU;
                             
                             // calculate travel time until reaching the next station
+<<<<<<< HEAD
                             while(d < VIRTUAL_DISTANCE_IN_KM) {
+=======
+                            while(d < VIRTUAL_DISTANCE_IN_MILE) {
+>>>>>>> edd602c1f05acf779308c7968440f7735a2a4665
                                 
                                 // missing data area
                                 if(d < 0) {
@@ -266,17 +285,29 @@ public class TT extends Evaluation {
                                 double dWithNext = nextStepSpeed * interval / SECONDS_PER_HOUR;
                                 double tDistance = d + dWithNext;
 
+<<<<<<< HEAD
                                 if(tDistance == VIRTUAL_DISTANCE_IN_KM) {
+=======
+                                if(tDistance == VIRTUAL_DISTANCE_IN_MILE) {
+>>>>>>> edd602c1f05acf779308c7968440f7735a2a4665
                                     // arraived at the next station exactly
                                     tt += interval;
                                     if(doPrint) System.out.println("    - d : " + EvalHelper.roundUp(dWithNext,4) + ", with u("+(c-1)+", "+row+")=" + nextStepSpeed + ", t=" + EvalHelper.roundUp(dWithNext/nextStepSpeed*3600, 2));
                                     break;
                                 }
+<<<<<<< HEAD
                                 else if (tDistance > VIRTUAL_DISTANCE_IN_KM) {
                                     // passed the next station
                                     // travel time between just two stations is calculated
                                     tt = tt + (VIRTUAL_DISTANCE_IN_KM - d)/nextStepSpeed*3600;
                                     if(doPrint) System.out.println("    - d : " + EvalHelper.roundUp(VIRTUAL_DISTANCE_IN_KM-d,4) + ", with u("+(c-1)+", "+row+")=" + nextStepSpeed + ", t=" + EvalHelper.roundUp((VIRTUAL_DISTANCE_IN_MILE-d)/nextStepSpeed*3600, 2));                                
+=======
+                                else if (tDistance > VIRTUAL_DISTANCE_IN_MILE) {
+                                    // passed the next station
+                                    // travel time between just two stations is calculated
+                                    tt = tt + (VIRTUAL_DISTANCE_IN_MILE - d)/nextStepSpeed*3600;
+                                    if(doPrint) System.out.println("    - d : " + EvalHelper.roundUp(VIRTUAL_DISTANCE_IN_MILE-d,4) + ", with u("+(c-1)+", "+row+")=" + nextStepSpeed + ", t=" + EvalHelper.roundUp((VIRTUAL_DISTANCE_IN_MILE-d)/nextStepSpeed*3600, 2));                                
+>>>>>>> edd602c1f05acf779308c7968440f7735a2a4665
                                     break;
                                 } else {
                                     // not reached to the next station
@@ -292,7 +323,11 @@ public class TT extends Evaluation {
                         }
                     
                         // not too slow
+<<<<<<< HEAD
                         if(distanceWithPrevU + distanceWithNextU >= VIRTUAL_DISTANCE_IN_KM) {
+=======
+                        if(distanceWithPrevU + distanceWithNextU >= VIRTUAL_DISTANCE_IN_MILE) {
+>>>>>>> edd602c1f05acf779308c7968440f7735a2a4665
                             TT = nextTimeStep + (distanceToNextStation / nextStepSpeed * SECONDS_PER_HOUR);
                         }    // second
                         else {
@@ -350,6 +385,7 @@ public class TT extends Evaluation {
         double d = u * psec/SECONDS_PER_HOUR;
         double tt = psec;
         
+<<<<<<< HEAD
         if(d > VIRTUAL_DISTANCE_IN_KM)
         {
             return new TTResult(row, tt + (VIRTUAL_DISTANCE_IN_KM - d)/u);
@@ -364,6 +400,22 @@ public class TT extends Evaluation {
             }
             else if (tDistance > VIRTUAL_DISTANCE_IN_KM) {
                 return new TTResult(row, tt + (VIRTUAL_DISTANCE_IN_KM - d)/u);
+=======
+        if(d > VIRTUAL_DISTANCE_IN_MILE)
+        {
+            return new TTResult(row, tt + (VIRTUAL_DISTANCE_IN_MILE - d)/u);
+        }
+        
+        while(d < VIRTUAL_DISTANCE_IN_MILE)
+        {
+            u = Double.parseDouble(res.get(col, ++row).toString());
+            double tDistance = d + u * interval / SECONDS_PER_HOUR;
+            if(tDistance == VIRTUAL_DISTANCE_IN_MILE) {
+                return new TTResult(row+1, tt+interval);
+            }
+            else if (tDistance > VIRTUAL_DISTANCE_IN_MILE) {
+                return new TTResult(row, tt + (VIRTUAL_DISTANCE_IN_MILE - d)/u);
+>>>>>>> edd602c1f05acf779308c7968440f7735a2a4665
             } else {
                 tt += interval;
                 row++;
