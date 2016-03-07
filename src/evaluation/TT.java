@@ -47,8 +47,6 @@ public class TT extends Evaluation {
                 this.opts.setStartEndTime(p.start_hour, p.start_min, p.end_hour, p.end_min);
             }
         }
-        
-        BasicData
                 
         // get station speeds
         Vector<EvaluationResult> stationSpeed = Evaluation.getResult(StationSpeed.class, this.opts);
@@ -196,7 +194,7 @@ public class TT extends Evaluation {
                 double u = Double.parseDouble(res.get(c-1, row).toString());
 
                 // time (in second) to travel between two station (0.1mile)
-                double ttSec = VIRTUAL_DISTANCE_IN_KM / u * SECONDS_PER_HOUR + TT;                
+                double ttSec = VIRTUAL_DISTANCE_IN_KM / u * SECONDS_PER_HOUR + TT;          
                 
                 // next time interval
                 int nextTimeStep = interval * timeStepIndex;
@@ -249,8 +247,7 @@ public class TT extends Evaluation {
                             double d = distanceWithPrevU;
                             
                             // calculate travel time until reaching the next station
-                            while(d < VIRTUAL_DISTANCE_IN_KM) {
-                                
+                            while(d < VIRTUAL_DISTANCE_IN_KM) {                                
                                 // missing data area
                                 if(d < 0) {
                                     tt = -1 * (TT+1);
@@ -276,7 +273,7 @@ public class TT extends Evaluation {
                                     // passed the next station
                                     // travel time between just two stations is calculated
                                     tt = tt + (VIRTUAL_DISTANCE_IN_KM - d)/nextStepSpeed*3600;
-                                    if(doPrint) System.out.println("    - d : " + EvalHelper.roundUp(VIRTUAL_DISTANCE_IN_KM-d,4) + ", with u("+(c-1)+", "+row+")=" + nextStepSpeed + ", t=" + EvalHelper.roundUp((VIRTUAL_DISTANCE_IN_MILE-d)/nextStepSpeed*3600, 2));                                
+                                    if(doPrint) System.out.println("    - d : " + EvalHelper.roundUp(VIRTUAL_DISTANCE_IN_KM-d,4) + ", with u("+(c-1)+", "+row+")=" + nextStepSpeed + ", t=" + EvalHelper.roundUp((VIRTUAL_DISTANCE_IN_KM-d)/nextStepSpeed*3600, 2));                                
                                     break;
                                 } else {
                                     // not reached to the next station
