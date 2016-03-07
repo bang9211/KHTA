@@ -53,16 +53,8 @@ public abstract class Evaluation {
     protected final String TITLE_TOTAL = "Total";
     protected final String TITLE_DISTANCE = "Accumulated Distance";
     protected final String TITLE_CONFIDENCE = "Confidence Level (%)";
-<<<<<<< HEAD
     
     protected final double VIRTUAL_DISTANCE_IN_KM = 0.1;  // 0.1 mile
-=======
-<<<<<<< HEAD
-    
-    protected final double VIRTUAL_DISTANCE_IN_KM = 0.1;  // 0.1 mile
-=======
->>>>>>> edd602c1f05acf779308c7968440f7735a2a4665
->>>>>>> b0f84468e3f4471a9979a331c595d725394eea6a
     
     protected abstract void init();
     
