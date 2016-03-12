@@ -61,7 +61,8 @@ public class Simulation extends Thread implements IStepListener, ITravelTimeList
     private String caseFile;
     private int seed;
     private VISSIMController vc;
-    private SimObjects simObjects = SimObjects.getInstance();
+    //private SimObjects simObjects = SimObjects.getInstance();
+    private SimObjects simObjects;
     private ArrayList<SimMeter> meters = new ArrayList<SimMeter>();
     private ArrayList<SimDetector> detectors = new ArrayList<SimDetector>();
     private HashMap<String, ArrayList<Double>> travelTimes = new HashMap<String, ArrayList<Double>>();
@@ -72,7 +73,7 @@ public class Simulation extends Thread implements IStepListener, ITravelTimeList
     private int SimInterval;
     
     private boolean isStop = false;
-    public Simulation(String caseFile, int seed, Section section, boolean noMetering, VISSIMVersion v, int SimIntv) {
+    public Simulation(String caseFile, int seed, Section section, boolean noMetering, VISSIMVersion v, int SimIntv, SimObjects simObjects) {
         try {
             SimInterval = SimIntv;
             this.caseFile = caseFile;
@@ -80,6 +81,7 @@ public class Simulation extends Thread implements IStepListener, ITravelTimeList
             this.section = section;
             this.noMetering = noMetering;
             version = v;
+            this.simObjects = simObjects;
             loadSignalGroupFromCasefile(this.caseFile);
             detectors = loadDetectorFromCasefile(this.caseFile);
         } catch (IOException ex) {

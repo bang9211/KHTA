@@ -17,8 +17,8 @@
  */
 package plugin.simulation.IRIS;
 
-import edu.umn.natsrl.ticas.plugin.simulation.VSL.VSLSim;
 import infra.Section;
+import infra.simobjects.SimObjects;
 import infra.simulation.SimInterval;
 import java.io.File;
 import java.util.ArrayList;
@@ -31,6 +31,7 @@ import jxl.write.WritableWorkbook;
 import plugin.metering.Metering;
 import plugin.metering.MeteringConfig;
 import plugin.metering.MeteringSectionHelper.EntranceState;
+import plugin.simulation.VSL.VSLSim;
 import plugin.simulation.VSL.algorithm.VSLVersion;
 import util.FileHelper;
 import vissimcom.VISSIMVersion;
@@ -43,9 +44,9 @@ public class irisSim extends VSLSim{
     Metering metering;
     private HashMap<String, ArrayList<Double>> ReleaseRate = new HashMap<String, ArrayList<Double>>();
     
-    public irisSim(String caseFile, int seed, Section section, VISSIMVersion v, VSLVersion _vv, SimInterval sinterval){
-        super(caseFile,seed,section,v,_vv,sinterval);
-        metering = new Metering(section,meters,detectors,sinterval);
+    public irisSim(String caseFile, int seed, Section section, VISSIMVersion v, VSLVersion _vv, SimInterval sinterval, SimObjects simObjects){
+        super(caseFile,seed,section,v,_vv,sinterval, simObjects);
+        metering = new Metering(section,meters,detectors,sinterval, simObjects);
     }
     
     @Override
@@ -71,7 +72,7 @@ public class irisSim extends VSLSim{
                                 if (e.meter == null) {
                                     continue;
                                 }
-                                caculateRate(e.meter.getId(),e.meter.getReleaseRate());
+                                caculateRate(e.meter.getID(),e.meter.getReleaseRate());
                         }
                 }
         }
