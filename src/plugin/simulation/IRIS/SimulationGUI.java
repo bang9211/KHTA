@@ -1885,8 +1885,8 @@ public class SimulationGUI extends javax.swing.JPanel implements Simulation.ISim
     }
     
     private void saveMeteringParameter() {
-        MeteringConfig.Kjam = Integer.parseInt(this.tbxKjam.getText());
-        MeteringConfig.Kc = Integer.parseInt(this.tbxKc.getText());
+        MeteringConfig.Kjam = Double.parseDouble(this.tbxKjam.getText());
+        MeteringConfig.Kc = Double.parseDouble(this.tbxKc.getText());
         MeteringConfig.Kd_Rate = Double.parseDouble(this.tbxKd_Rate.getText());
         MeteringConfig.Kb = Double.parseDouble(this.tbxKb.getText());            
         MeteringConfig.Kstop = Double.parseDouble(this.tbxKstop.getText());            

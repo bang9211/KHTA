@@ -241,7 +241,7 @@ public class MeteringSectionHelper {
      */
     private boolean isInMap(Station s) {
 //        Detector[] dets = s.getDetectors(dc);
-        Detector[] dets = s.getDetectorList();
+        Detector[] dets = s.getSimDetectorList();
         for (Detector d : dets) {
             for (SimDetector sd : detectors) {
 //                if (sd.getDetectorId() == d.getDetectorId()) {
