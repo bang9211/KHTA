@@ -2,6 +2,7 @@ build.xml
 manifest.mf
 *.properties
 private.xml
+metering.config
 build/
 nbproject/
 dist/
