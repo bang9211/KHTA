@@ -23,11 +23,10 @@
 
 package plugin.metering;
 
-import edu.umn.natsrl.infra.section.SectionManager;
-import edu.umn.natsrl.sfim.SectionInfoDialog;
 import infra.Infra;
 import infra.Period;
 import infra.Section;
+import infra.simobjects.SimObjects;
 import infra.simulation.SimulationConfig;
 import infra.simulation.SimulationUtil;
 import java.io.File;
@@ -67,6 +66,8 @@ public class MeteringSimulationGUI extends javax.swing.JPanel implements ISimEnd
     private Date startTime;
     private PrintStream backupOut;
     private PrintStream backupErr;
+    
+    private SimObjects simObjects;
     
     /** Creates new form SimulationExampleGUI */
     public MeteringSimulationGUI(PluginFrame parent) {
@@ -113,6 +114,7 @@ public class MeteringSimulationGUI extends javax.swing.JPanel implements ISimEnd
     
     private void runSimulation() {
         try {
+            simObjects = new SimObjects();
             
             this.redirectOutput();            
             
@@ -139,7 +141,8 @@ public class MeteringSimulationGUI extends javax.swing.JPanel implements ISimEnd
             
             Section section = (Section)this.cbxSections.getSelectedItem();
             boolean noMetering = this.chkNoMetering.isSelected();
-            sim = new Simulation(MeteringConfig.CASE_FILE, MeteringConfig.RANDOM_SEED, section, noMetering, (VISSIMVersion)this.cbxVissimVersion.getSelectedItem(),SimulationConfig.RunningInterval);
+            sim = new Simulation(MeteringConfig.CASE_FILE, MeteringConfig.RANDOM_SEED, section, noMetering, 
+                    (VISSIMVersion)this.cbxVissimVersion.getSelectedItem(),SimulationConfig.RunningInterval, simObjects);
             sim.setSignalListener(this);
             sim.start();
             
@@ -220,7 +223,7 @@ public class MeteringSimulationGUI extends javax.swing.JPanel implements ISimEnd
         c.add(Calendar.SECOND, duration);
         Date eTime = c.getTime();
         simFrame.afterSimulation((Section)this.cbxSections.getSelectedItem(), new Period(sTime, eTime, 30));
-        SimulationUtil.SaveSimulation((Section)this.cbxSections.getSelectedItem(),new Period(sTime, eTime, 30),simFrame);
+        SimulationUtil.SaveSimulation((Section)this.cbxSections.getSelectedItem(),new Period(sTime, eTime, 30),simFrame, simObjects);
         System.out.println("Restore output redirection ... ");
         this.restoreOutput();
     }
@@ -264,15 +267,15 @@ public class MeteringSimulationGUI extends javax.swing.JPanel implements ISimEnd
     /**
      * Open section information dialog
      */
-    private void openSectionInfoDialog() {
-        Section section = (Section) this.cbxSections.getSelectedItem();
-        if (section == null) {
-            return;
-        }
-        SectionInfoDialog si = new SectionInfoDialog(section, null, true);
-        si.setLocationRelativeTo(this);
-        si.setVisible(true);
-    }       
+//    private void openSectionInfoDialog() {
+//        Section section = (Section) this.cbxSections.getSelectedItem();
+//        if (section == null) {
+//            return;
+//        }
+//        SectionInfoDialog si = new SectionInfoDialog(section, null, true);
+//        si.setLocationRelativeTo(this);
+//        si.setVisible(true);
+//    }       
 
     /**
      * Redirect output into log box
@@ -347,7 +350,6 @@ public class MeteringSimulationGUI extends javax.swing.JPanel implements ISimEnd
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         cbxSections = new javax.swing.JComboBox();
-        btnSectionInfo = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         btnBrowse = new javax.swing.JButton();
         tbxCaseFile = new javax.swing.JTextField();
@@ -423,13 +425,6 @@ public class MeteringSimulationGUI extends javax.swing.JPanel implements ISimEnd
             }
         });
 
-        btnSectionInfo.setText("Info");
-        btnSectionInfo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSectionInfoActionPerformed(evt);
-            }
-        });
-
         jLabel1.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
         jLabel1.setText("Case File");
 
@@ -486,10 +481,7 @@ public class MeteringSimulationGUI extends javax.swing.JPanel implements ISimEnd
                         .addComponent(btnBrowse)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(tbxCaseFile, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(cbxSections, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSectionInfo))
+                    .addComponent(cbxSections, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -510,9 +502,7 @@ public class MeteringSimulationGUI extends javax.swing.JPanel implements ISimEnd
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cbxSections, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSectionInfo))
+                .addComponent(cbxSections, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -770,7 +760,7 @@ public class MeteringSimulationGUI extends javax.swing.JPanel implements ISimEnd
                     .addComponent(jLabel15)
                     .addComponent(tbxMaxRedTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel16))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
         btnRun.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
@@ -892,10 +882,6 @@ public class MeteringSimulationGUI extends javax.swing.JPanel implements ISimEnd
         
 }//GEN-LAST:event_cbxSectionsActionPerformed
 
-    private void btnSectionInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSectionInfoActionPerformed
-        this.openSectionInfoDialog();
-}//GEN-LAST:event_btnSectionInfoActionPerformed
-
     private void chkShowVehiclesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkShowVehiclesActionPerformed
         setVissimVisible(this.chkShowVehicles.isSelected());
 }//GEN-LAST:event_chkShowVehiclesActionPerformed
@@ -926,7 +912,6 @@ public class MeteringSimulationGUI extends javax.swing.JPanel implements ISimEnd
     private javax.swing.JButton btnClearLog;
     private javax.swing.JButton btnRun;
     private javax.swing.JButton btnSaveLog;
-    private javax.swing.JButton btnSectionInfo;
     private javax.swing.JComboBox cbxSections;
     private javax.swing.JComboBox cbxVissimVersion;
     private javax.swing.JCheckBox chkNoMetering;

@@ -1715,7 +1715,7 @@ public class SimulationGUI extends javax.swing.JPanel implements Simulation.ISim
     public void signalEnd(int code) {
         SimulationMode smode = (SimulationMode)this.cbxSimulationMode.getSelectedItem();
         SimulationOption soption = (SimulationOption)this.cbxSimulationCate.getSelectedItem();
-        simObjects = new SimObjects();
+        
         int samples = 0;
         int rinterval = 0;
         VSLResults vslresult = null;
