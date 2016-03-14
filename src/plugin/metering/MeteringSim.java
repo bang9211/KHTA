@@ -64,6 +64,7 @@ public class MeteringSim extends infra.simulation.Simulation implements Simulati
     @Override
     public void SimInit() {
         metering = new Metering(section,meters,detectors,simulationInterval, simObjects);
+        printhead();
     }
     
         private void RunMetering() {
@@ -71,4 +72,19 @@ public class MeteringSim extends infra.simulation.Simulation implements Simulati
                 if(MeteringConfig.isMeteringStep(simcount))
                         metering.run(samples, vc.getCurrentTime());
         }
+        
+    public void printhead(){
+        System.out.println("Kjam = " + MeteringConfig.Kjam);
+        System.out.println("Kc = " + MeteringConfig.Kc);
+        System.out.println("Kd = " + MeteringConfig.Kd);
+        System.out.println("Kb = " + MeteringConfig.Kb);
+        System.out.println("Kstop = " + MeteringConfig.Kstop);
+        System.out.println("StopDuration = " + MeteringConfig.stopDuration);
+        System.out.println("StopBSTrend= " + MeteringConfig.stopBSTrend);
+        System.out.println("StopUpstreamCount= " + MeteringConfig.stopUpstreamCount);
+        System.out.println("Ab = " + MeteringConfig.Ab);
+        System.out.println("Max Wait Time1 = " + MeteringConfig.MAX_WAIT_TIME_MINUTE);
+        System.out.println("Max Wait Time for Freeway-to-Freeway Ramp = " + MeteringConfig.MAX_WAIT_TIME_MINUTE_F2F);
+        System.out.println("Max Red Time = " + MeteringConfig.MAX_RED_TIME);
+    }
 }

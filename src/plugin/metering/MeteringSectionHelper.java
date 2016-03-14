@@ -875,6 +875,10 @@ public class MeteringSectionHelper {
             //int stor_ft = meter.getMeter().getStorage() * entrance.getLanes();
             int stor_ft = (int)meter.getMeter().getStorage() * entrance.getLaneCount();
             double JAM_VPF = (double)MeteringConfig.MAX_RAMP_DENSITY / MeteringConfig.METER_PER_KM;
+//            System.out.println("meter("+meter.getID()+") : stor="+meter.getMeter().getStorage()+
+//                    "("+entrance.getLaneCount()+"), storft="+stor_ft+
+//                    ", md="+MeteringConfig.MAX_RAMP_DENSITY+", mpk="+MeteringConfig.METER_PER_KM+
+//                    ", JAMVPF="+JAM_VPF+", s*j="+stor_ft*JAM_VPF);
             return stor_ft * JAM_VPF;
         }
         

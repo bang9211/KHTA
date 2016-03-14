@@ -55,7 +55,7 @@ public class MeteringConfig {
     public static int RANDOM_SEED = 10;
     public static boolean UseMetering = true;
     //public static double Kb = 30;
-    public static double Kb = 18.75;
+    public static double Kb = 15.625;
     //public static int Ab = 1000;
     public static int Ab = 1609;
     public static boolean UseCoordination = false;
@@ -75,10 +75,12 @@ public class MeteringConfig {
     static public final float TARGET_MIN_RATIO = 0.7f;
 
     /** Ratio for target waiting time to max wait time */
-    static public final float WAIT_TARGET_RATIO = 0.75f;
+//    static public final float WAIT_TARGET_RATIO = 0.75f;
+    static public final float WAIT_TARGET_RATIO = 0.95f;
 
     /** Ratio for target storage to max storage */
-    static public final float STORAGE_TARGET_RATIO = 0.75f;
+//    static public final float STORAGE_TARGET_RATIO = 0.75f;
+    static public final float STORAGE_TARGET_RATIO = 1.0f;
     
     /** For Associate Metering **/
     final static int UPSTREAM_THRESHOLD_DISTANCE = 152; //m

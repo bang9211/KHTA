@@ -793,6 +793,7 @@ public class Metering {
         rateLog.println("");
         rampDensityLog.println("");
 //        waitTimeLog.println("");
+        System.out.println(info.toString());
     }
 
     /**
