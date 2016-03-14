@@ -65,9 +65,6 @@ public class MeteringSectionHelper {
     private ArrayList<SimDetector> detectors;
     Infra infra = Infra.getInstance();
     
-    final static float UPSTREAM_THRESHOLD_DISTANCE = (float) 152.4; //m
-    final static float FEET_PER_METER = (float) 3.28084; //m
-    
     /** Enum for minimum limit control */
     enum MinimumRateLimit {
             pf,	/* passage failure */
@@ -241,7 +238,7 @@ public class MeteringSectionHelper {
      */
     private boolean isInMap(Station s) {
 //        Detector[] dets = s.getDetectors(dc);
-        Detector[] dets = s.getDetectorList();
+        Detector[] dets = s.getSimDetectorList();
         for (Detector d : dets) {
             for (SimDetector sd : detectors) {
 //                if (sd.getDetectorId() == d.getDetectorId()) {
@@ -873,10 +870,11 @@ public class MeteringSectionHelper {
             return Math.max(r * under, 1);
         }
         
+        //Fix me
         private double maxStorage(){
             //int stor_ft = meter.getMeter().getStorage() * entrance.getLanes();
             int stor_ft = (int)meter.getMeter().getStorage() * entrance.getLaneCount();
-            double JAM_VPF = (double)MeteringConfig.MAX_RAMP_DENSITY / FEET_PER_METER;
+            double JAM_VPF = (double)MeteringConfig.MAX_RAMP_DENSITY / MeteringConfig.METER_PER_KM;
             return stor_ft * JAM_VPF;
         }
         
@@ -1202,6 +1200,7 @@ public class MeteringSectionHelper {
             super(s, _sec,simObjects,_sitv);
             idx = states.size();
             stationStates.add(this);
+            
             this.stationIdx = stationStates.size()-1;
         }
 
@@ -1248,7 +1247,7 @@ public class MeteringSectionHelper {
                     // very close(?) or not allocated with upstream station                    
                     //if( ( d < 800 && ud > 500) || es.associatedStation == null) {
                     //if( ( d < 500 && d < ud) || es.associatedStation == null) {
-                    if( ( d < UPSTREAM_THRESHOLD_DISTANCE && d < ud) || es.associatedStation == null) {
+                    if( ( d < MeteringConfig.UPSTREAM_THRESHOLD_DISTANCE && d < ud) || es.associatedStation == null) {
                         if(es.associatedStation != null) {
                             es.associatedStation.associatedEntrances.remove(es);
                         }                        
@@ -1264,7 +1263,7 @@ public class MeteringSectionHelper {
                 for(EntranceState es : downstreamEntrances) {
                     int d = this.getDistanceToDownstreamEntrance(es);
                     //if(d < 5280) {
-                    if(d < FEET_PER_METER) {
+                    if(d < MeteringConfig.METER_PER_MILE) {
                         associatedEntrances.add(es);
                         es.associatedStation = this;
                     }

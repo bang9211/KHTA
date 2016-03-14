@@ -30,18 +30,19 @@ public class MeteringConfig {
     private static PropertiesWrapper prop = new PropertiesWrapper();
     private static String configFile = "metering.config";
     public static int MeteringInterval = Interval.I30SEC.second;
-    public static double Kc = 40;
+    public static double Kc = 25;
     public static double Kd_Rate = 0.8;
     public static double Kd = Kc*Kd_Rate;
     //public static double Kjam = 180;
-    public static double Kjam = 112.5;
+    public static double Kjam = 112;
     //public static double Kstop = 20;
     public static double Kstop = 12.5;
     public static double KstartRate = 0.8;
     
     public static int MAX_RATE = 1714;    // 3600/2.1 (red = 0.1s, green + yellow = 2s)
-    public static int MAX_RAMP_DENSITY = 140;
-    public static int FEET_PER_MILE = 5280;
+    public static int MAX_RAMP_DENSITY = 112;
+    final static int METER_PER_KM = 1000; //m
+//    public static int FEET_PER_MILE = 5280;
     public static double PASSAGE_DEMAND_FACTOR = 1.15;
     
     public static int MAX_RED_TIME = 13;  // max red time = 13 second    
@@ -54,7 +55,7 @@ public class MeteringConfig {
     public static int RANDOM_SEED = 10;
     public static boolean UseMetering = true;
     //public static double Kb = 30;
-    public static double Kb = 15.625;
+    public static double Kb = 18.75;
     //public static int Ab = 1000;
     public static int Ab = 1609;
     public static boolean UseCoordination = false;
@@ -78,6 +79,10 @@ public class MeteringConfig {
 
     /** Ratio for target storage to max storage */
     static public final float STORAGE_TARGET_RATIO = 0.75f;
+    
+    /** For Associate Metering **/
+    final static int UPSTREAM_THRESHOLD_DISTANCE = 152; //m
+    final static int METER_PER_MILE = 1600;
     
     public static void setMaxWaitTime(int minute) {
         MAX_WAIT_TIME_MINUTE = minute;

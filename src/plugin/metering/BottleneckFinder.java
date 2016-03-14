@@ -45,7 +45,7 @@ public class BottleneckFinder {
         runTime = _runTime;
         ArrayList<StationState> stationStates = sectionHelper.getStationStates();
         for (int i = 0; i < stationStates.size(); i++) {
-            System.out.println(stationStates.get(i).id + " : k=" + stationStates.get(i).getIntervalAggregatedDensity(SimulationGroup.Meter));
+            System.out.println(stationStates.get(i).id + " : fk=" + stationStates.get(i).getIntervalAggregatedDensity(SimulationGroup.Meter));
         }
 
         // find bottleneck candidates
@@ -71,21 +71,6 @@ public class BottleneckFinder {
             } 
         }
         
-//        // most downstream bottleneck must satisfy 'acceleration' condition
-//        for(int i=stationStates.size()-1; i>=0; i--) {
-//            StationState s = stationStates.get(i);
-//            if(!s.isBottleneck) continue;
-//            if(i > 0 ) {
-//                StationState us = stationStates.get(i-1);
-//                if(us.getAcceleration() < MeteringConfig.Ab) {
-//                    s.isBottleneck = false;
-//                } else {
-//                    // it satisfy acceleration condition
-//                    break;
-//                }
-//            }
-//        }
-               
         // merge zone by distnace and acceleration
         // iterate from downstream to upstream
         for(int i=stationStates.size()-1; i>=0; i--) {
