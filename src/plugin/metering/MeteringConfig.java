@@ -33,8 +33,10 @@ public class MeteringConfig {
     public static double Kc = 40;
     public static double Kd_Rate = 0.8;
     public static double Kd = Kc*Kd_Rate;
-    public static double Kjam = 180;
-    public static double Kstop = 20;
+    //public static double Kjam = 180;
+    public static double Kjam = 112.5;
+    //public static double Kstop = 20;
+    public static double Kstop = 12.5;
     public static double KstartRate = 0.8;
     
     public static int MAX_RATE = 1714;    // 3600/2.1 (red = 0.1s, green + yellow = 2s)
@@ -51,8 +53,10 @@ public class MeteringConfig {
     public static String CASE_FILE = "";
     public static int RANDOM_SEED = 10;
     public static boolean UseMetering = true;
-    public static double Kb = 30;
-    public static int Ab = 1000;
+    //public static double Kb = 30;
+    public static double Kb = 15.625;
+    //public static int Ab = 1000;
+    public static int Ab = 1609;
     public static boolean UseCoordination = false;
     public static int stopDuration = 10;    // 5min
     public static int stopBSTrend = 3;
