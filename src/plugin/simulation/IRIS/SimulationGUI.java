@@ -260,7 +260,6 @@ public class SimulationGUI extends javax.swing.JPanel implements Simulation.ISim
         jLabel1.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         jLabel1.setText("Select Freeway Section");
 
-        cbxSections.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         cbxSections.setPreferredSize(new java.awt.Dimension(200, 22));
         cbxSections.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -271,7 +270,6 @@ public class SimulationGUI extends javax.swing.JPanel implements Simulation.ISim
         jLabel2.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         jLabel2.setText("Select Simulation Case File (Needs to Match with Real Section)");
 
-        tbxCaseFile.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         tbxCaseFile.setPreferredSize(new java.awt.Dimension(250, 22));
 
         btnSelectCasefile.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
@@ -296,7 +294,6 @@ public class SimulationGUI extends javax.swing.JPanel implements Simulation.ISim
         jLabel15.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         jLabel15.setText("Simulation/Emulation Mode");
 
-        cbxSimulationMode.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         cbxSimulationMode.setPreferredSize(new java.awt.Dimension(150, 22));
         cbxSimulationMode.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -307,7 +304,6 @@ public class SimulationGUI extends javax.swing.JPanel implements Simulation.ISim
         jLabel18.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         jLabel18.setText("Simulation/Emulation Option");
 
-        cbxSimulationCate.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         cbxSimulationCate.setPreferredSize(new java.awt.Dimension(150, 22));
         cbxSimulationCate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -338,17 +334,16 @@ public class SimulationGUI extends javax.swing.JPanel implements Simulation.ISim
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cbxSimulationCate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel18)))
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addComponent(btnSelectCasefile)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(tbxCaseFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jLabel6)
-                        .addComponent(jLabel3)
-                        .addComponent(tbxRandom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(cbxvissimVersion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel48)
-                        .addComponent(cbxSimulationInterval, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(btnSelectCasefile)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tbxCaseFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel3)
+                    .addComponent(tbxRandom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbxvissimVersion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel48)
+                    .addComponent(cbxSimulationInterval, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(494, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -825,19 +820,25 @@ public class SimulationGUI extends javax.swing.JPanel implements Simulation.ISim
         tbxMaxWaittingTime.setText("4");
 
         tbxKjam.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
-        tbxKjam.setText("180");
+        tbxKjam.setText("112.5");
+        tbxKjam.setToolTipText("");
+        tbxKjam.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbxKjamActionPerformed(evt);
+            }
+        });
 
         tbxKc.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
-        tbxKc.setText("40");
+        tbxKc.setText("25");
 
         jLabel25.setFont(new java.awt.Font("Verdana", 0, 11)); // NOI18N
         jLabel25.setText("min");
 
         jLabel26.setFont(new java.awt.Font("Verdana", 0, 11)); // NOI18N
-        jLabel26.setText("veh/hr");
+        jLabel26.setText("veh/km");
 
         jLabel27.setFont(new java.awt.Font("Verdana", 0, 11)); // NOI18N
-        jLabel27.setText("veh/hr");
+        jLabel27.setText("veh/km");
 
         jLabel29.setFont(new java.awt.Font("Verdana", 0, 11)); // NOI18N
         jLabel29.setText("x Kcrit");
@@ -873,28 +874,29 @@ public class SimulationGUI extends javax.swing.JPanel implements Simulation.ISim
         jLabel36.setText("Kb");
 
         tbxKb.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
-        tbxKb.setText("25");
+        tbxKb.setText("15.625");
 
         jLabel37.setFont(new java.awt.Font("Verdana", 0, 11)); // NOI18N
-        jLabel37.setText("veh/hr");
+        jLabel37.setText("veh/km");
 
         jLabel38.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         jLabel38.setText("Ab");
 
         tbxAb.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
-        tbxAb.setText("1000");
+        tbxAb.setText("1609");
+        tbxAb.setToolTipText("");
 
         jLabel39.setFont(new java.awt.Font("Verdana", 0, 11)); // NOI18N
-        jLabel39.setText("mile/hr^2");
+        jLabel39.setText("km/hr^2");
 
         jLabel40.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         jLabel40.setText("Kstop");
 
         tbxKstop.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
-        tbxKstop.setText("20");
+        tbxKstop.setText("12.5");
 
         jLabel41.setFont(new java.awt.Font("Verdana", 0, 11)); // NOI18N
-        jLabel41.setText("veh/hr");
+        jLabel41.setText("veh/km");
 
         jLabel42.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         jLabel42.setText("Stop Duration");
@@ -1579,6 +1581,10 @@ public class SimulationGUI extends javax.swing.JPanel implements Simulation.ISim
             //                        LoadSimulationInterval();
             //                }
     }//GEN-LAST:event_cbxSectionsActionPerformed
+
+    private void tbxKjamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbxKjamActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tbxKjamActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel PanelChart;
