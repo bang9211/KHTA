@@ -46,6 +46,7 @@ public abstract class Evaluation {
     protected EvaluationOption opts;
     protected boolean printDebug = true;
     protected boolean simulationMode = false;
+    protected boolean hasResult = false;
     
     protected final int SECONDS_PER_HOUR = 3600;
     protected final String NO_STATION = "-";
@@ -58,7 +59,7 @@ public abstract class Evaluation {
     
     protected abstract void init();
     
-    protected abstract void process();
+    protected abstract EvaluationResult process();
             
     protected boolean checkExcelDataLength() {
 
@@ -418,5 +419,367 @@ public abstract class Evaluation {
                 }
             }
         }
+    }
+    
+    /**
+     * Adds confidence to result
+     * @param res Evaluation Result
+     */
+    protected EvaluationResult addConfidenceToResult(EvaluationResult res) {
+        if (res.useConfidence()) {
+            return res;
+        }
+
+        // retrieve stations
+        Station[] stations = this.opts.getSelectedSection().getStations();
+
+        // add label to time line
+        ArrayList times = res.getColumn(res.COL_TIMELINE());
+        times.add(1, TITLE_CONFIDENCE);
+
+        // for all stations 
+        int stationIdx = 0;
+        for (int col = res.COL_DATA_START(); col < res.getColumnSize(); col++) {
+            ArrayList stationData = res.getColumn(col);
+            String stationName = (String) stationData.get(res.ROW_TITLE());
+            // if this station is virtual
+            if (NO_STATION.equals(stationName)) {
+                stationData.add(1, 0);
+            } else {
+                stationData.add(1, stations[stationIdx++].getConfidence());
+            }
+        }
+        res.setUseConfidence(true);
+        return res;
+    }
+    
+    protected EvaluationResult removeConfidenceFromResult(EvaluationResult res) {
+        if (!res.useConfidence()) {
+            return res;
+        }
+
+        int confidenceRow = res.ROW_CONFIDENCE();
+
+        for (int c = 0; c < res.getColumnSize(); c++) {
+            res.remove(c, confidenceRow);
+        }
+        res.setUseConfidence(false);
+        return res;
+    }
+
+    /**
+     * Adds accumulated distance to result
+     * @param res Evaluation Result
+     */
+    protected EvaluationResult addDistanceToResult(EvaluationResult res) {
+        if (res.useAccumulatedDistance()) {
+            return res;
+        }
+
+        // where should we insert distance information into data?
+        int distanceRow = res.ROW_DISTANCE();
+
+        Station[] stations = this.opts.getSelectedSection().getStations();
+
+        // add label to time line
+        ArrayList times = res.getColumn(res.COL_TIMELINE());
+        times.add(distanceRow, TITLE_DISTANCE);
+
+        // for all stations 
+        double distance = 0.1;
+        if (!res.useVirtualStation()) {
+            distance = 0;
+        }
+        for (int col = res.COL_DATA_START(); col < res.getColumnSize(); col++) {
+            if (res.useVirtualStation()) {
+                res.insert(col, distanceRow, distance);
+                distance += 0.1;
+            } else {
+                res.insert(col, distanceRow, distance);
+                if (col < res.getColumnSize() - 1) {
+                    distance += EvalHelper.getDistance(this.opts.getSelectedSection().getName(), stations[col - 1]); //roundUp((double)stations[col-1].getDistanceToDownstreamStation()/FEET_PER_MILE, 1);
+                }
+            }
+        }
+        res.setUseAccumulatedDistance(true);
+        return res;
+    }
+    
+    /**
+     * Adds virtual station data to result, 
+     * virtual stations are not-existing stations 
+     * virtually located every 0.1 mile between real-station
+     * @param res Evaluation Result
+     */
+    protected EvaluationResult addVirtualStationToResult(EvaluationResult res) {
+        if (res.useVirtualStation()) {
+            return res;
+        }
+
+        int rows = res.getRowSize(0);
+        int cols = res.getColumnSize();
+        int dataStartRow = res.ROW_DATA_START();
+
+//        this.printEvaluation(res);
+        
+        // interplate missing data with down and up station data according to distance
+        if (opts.getIMSD()) {
+            fixMissingStation(res);
+        }
+
+        // retrieve all stations in section
+        Station[] stations = this.opts.getSelectedSection().getStations();
+
+        // create variable to save result
+        ArrayList<ArrayList> newData = new ArrayList<ArrayList>();
+
+        // add time line : 1st column
+        newData.add(res.getColumn(res.COL_TIMELINE()));
+
+        // add first station : 2nd column
+        newData.add(res.getColumn(res.COL_DATA_START()));
+
+        // add station data from 3rd column
+        for (int c = res.COL_DATA_START(); c < cols - 1; c++) {
+            // retreive two station and data that are needed
+            ArrayList upstreamStationData = res.getColumn(c);
+            ArrayList downstreamStationData = res.getColumn(c + 1);
+            Station upstreamStation = stations[c - 1];
+
+            // calculate distance in mile
+            double distance = EvalHelper.getDistance(this.opts.getSelectedSection().getName(), upstreamStation);//roundUp((double)upstreamStation.getDistanceToDownstreamStation()/FEET_PER_MILE, 1);
+
+            // get 1/3 distance between two station
+            double oneThirdDistance = distance / 3.0;
+
+            // add virtual station information
+            for (double i = 0.1; i < distance; i += 0.1) {
+                // new virtual data
+                ArrayList vd = new ArrayList();
+                // add name
+                vd.add(NO_STATION);
+                // add confidence
+                if (res.useConfidence()) {
+                    vd.add(0);
+                }
+                // add accumulated distance
+                if (res.useAccumulatedDistance()) {
+                    double accumulatedDistance = (Double) newData.get(newData.size() - 1).get(res.ROW_DISTANCE()) + 0.1;
+                    vd.add(res.ROW_DISTANCE(), accumulatedDistance);
+                }
+
+                // make new data according to distance between up and down station
+                for (int r = dataStartRow; r < rows; r++) {
+                    if (i <= oneThirdDistance) {
+                        vd.add(upstreamStationData.get(r));
+                    } else if (i >= oneThirdDistance * 2) {
+                        vd.add(downstreamStationData.get(r));
+                    } else {
+                        double downStationData = (Double) upstreamStationData.get(r);
+                        double upStationData = (Double) downstreamStationData.get(r);
+                        vd.add((downStationData + upStationData) / 2);
+                    }
+                }
+                // add new data to result
+                newData.add(vd);
+            }
+
+            // add downstream station information
+            newData.add(downstreamStationData);
+        }
+
+        res.setData(newData);
+        res.setUseVirtualStation(true);
+        return res;
+    }
+    
+    /**
+     * Makes average data
+     */
+    protected void makeAverage() {
+        if (this.results.size() < 2) {
+            return;
+        }
+        ArrayList times = this.results.get(0).getColumn(0);
+
+        // variable to save average
+        EvaluationResult average = new EvaluationResult();
+
+        // set statistic sheet
+        average.setIsStatistic(true);
+        
+        // set result name
+        average.setName(TITLE_AVERAGE);
+
+        // add time line at first column
+        average.addAll(average.COL_TIMELINE(), times);
+
+        int cols = this.results.get(0).getColumnSize();
+
+        // for all stations including virtual data, except time line
+        for (int col = 1; col < cols; col++) {
+            ArrayList<ArrayList> manyDayData = new ArrayList<ArrayList>();
+            for (EvaluationResult res : this.results) {
+                manyDayData.add(res.getColumn(col));
+            }
+
+            // add average data to result
+            average.addColumn(makeAverage(manyDayData));
+        }
+
+        // add average data at first element of results
+        this.results.add(0, average);
+
+    }
+    
+     /**
+     * Makes average with data at same time on multiple date
+     * @param multipleDayData data at same time on multiple date
+     * @param useConfidence is it including confidence?
+     * @param useDistance is it including accumulated distance?
+     * @return average data data
+     */
+    protected ArrayList makeAverage(ArrayList<ArrayList> multipleDayData) {
+
+        // data length
+        int dataLength = multipleDayData.get(0).size();
+
+        int skipRows = this.results.get(0).ROW_DATA_START();
+
+        // result data
+        ArrayList result = new ArrayList();
+
+        // add station title
+        for (int row = 0; row < skipRows; row++) {
+            result.add(multipleDayData.get(0).get(row));
+        }
+
+        // for all data
+        for (int row = skipRows; row < dataLength; row++) {
+            double sum = 0;
+            int validCount = 0;
+            boolean isNoData = false;
+            // for all days
+            for (int day = 0; day < multipleDayData.size(); day++) {
+                try {
+                    double data = Double.parseDouble(multipleDayData.get(day).get(row).toString());
+                    if (data <= 0.1) {
+                        continue;
+                    }
+                    sum += data;
+                    validCount++;
+                } catch (Exception ex) {
+                    isNoData = true;
+                }
+            }
+
+            // save average
+            if (validCount > 0) {
+                result.add(sum / validCount);
+            } else if (isNoData) {
+                result.add("");
+            } else {
+                result.add(-1);
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * Removes average data
+     * @param result Evaluation result list
+     * @return result that average is removed
+     */
+    protected Vector<EvaluationResult> removeAverage(Vector<EvaluationResult> result) {
+        EvaluationResult av = result.get(0);
+        if (TITLE_AVERAGE.equals(av.getName())) {
+            result.remove(av);
+        }
+        return result;
+    }
+
+    /**
+     * Makes total data 
+     * It is used in VMT
+     */
+    protected void makeTotal() {
+        ArrayList times = this.results.get(0).getColumn(0);
+
+        // variable to save total
+        EvaluationResult total = new EvaluationResult();
+        
+        // set result name
+        total.setName(TITLE_TOTAL);
+
+        // set statistic sheet
+        total.setIsStatistic(true);
+        
+        // add time line at first column
+        total.addAll(0, (ArrayList) times.clone());
+
+        // label
+        total.getColumn(0).set(0, "Sum");
+
+        // this is for total of sum
+        total.getColumn(0).add(TITLE_TOTAL);
+
+        // station and data count
+        int cols = this.results.get(0).getColumnSize();
+        int dataSize = times.size();
+
+        // which row does data start from ?
+        int dataStartRow = this.results.get(0).ROW_DATA_START();
+        int distanceRow = this.results.get(0).ROW_DISTANCE();
+
+        boolean useDistance = this.results.get(0).useAccumulatedDistance();
+        boolean useTotalRow = this.results.get(0).useTotalColumn();
+
+        // for all results
+        for (EvaluationResult res : this.results) {
+            // total data about 1 day
+            ArrayList totalData = new ArrayList();
+            totalData.add(res.getName());
+
+            double totalOfTotal = 0.0;
+            double accumulatedDistance = 0.0;
+
+            // for all data
+            for (int r = dataStartRow; r < dataSize; r++) {
+                double sum = 0.0;
+
+                // for all stations including virtual data, except time line
+                for (int c = 1; c < cols; c++) {
+                    sum += Double.parseDouble(res.get(c, r).toString());
+                    double distance = Double.parseDouble(res.get(c, distanceRow).toString());
+                    if (distance > accumulatedDistance) {
+                        accumulatedDistance = distance;
+                    }
+                }
+
+                if (useTotalRow) {
+                    sum /= 2;
+                }
+
+                // add sum to total data column
+                totalData.add(sum);
+
+                totalOfTotal += sum;
+            }
+
+            if (useDistance) {
+                totalData.add(1, accumulatedDistance);
+            }
+
+            // add total of sum
+            totalData.add(totalOfTotal);
+
+            // add to total data set
+            total.addColumn(totalData);
+        }
+
+        // add average data at last element of results
+        this.results.add(total);
+
     }
 }

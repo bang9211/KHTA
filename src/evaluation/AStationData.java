@@ -33,7 +33,7 @@ public abstract class AStationData extends Evaluation {
     abstract protected double[] getTrafficData(Station s);
     
     @Override
-    protected final void process() throws OutOfMemoryError {        
+    protected final EvaluationResult process() throws OutOfMemoryError {        
       
 //        // caching, (if cached alread, just return)
 //        if(!caching()) return;
@@ -115,6 +115,7 @@ public abstract class AStationData extends Evaluation {
 //        makeAverage();
 //        
 //        hasResult = true;
+        return null;
     }    
    
 }

@@ -18,25 +18,38 @@
 package evaluation;
 
 import infra.Period;
+import infra.Section;
 import java.util.ArrayList;
-import java.util.Vector;
+import khta.KHTAOption;
 
 /**
  *
  * @author Chongmyung Park
  */
 public class TT extends Evaluation {
-    
+    protected Period period;
+    protected Section section;
+    protected String outputPath;
     // read as more data as original period + extend_hour
     private int EXTENDED_HOUR = 2;
 
+    public TT(Period p, Section s, String op, KHTAOption ko){
+        this.period = p;
+        this.section = s;
+        this.outputPath = op;
+        this.ko = ko;
+        this.opts = ko.getEvaluationOption();
+        init();
+    }
+    
     @Override
     protected void init() {
+       
         this.name = "TT";
     }
 
     @Override
-    protected void process() {
+    public EvaluationResult process(){
         
 //        // caching, (if cached alread, just return)
 //        if(!caching()) return;
@@ -45,18 +58,26 @@ public class TT extends Evaluation {
             for(Period p : opts.getPeriods()) {
                 p.addEndHour(this.EXTENDED_HOUR);
                 this.opts.setStartEndTime(p.start_hour, p.start_min, p.end_hour, p.end_min);
+            
+                opts.getSelectedSection().loadData(p, null);////////////////////
             }
+            
         }
-                
+        
+        ArrayList<EvaluationResult> ssResultList = new ArrayList();
+        for(Period p : opts.getPeriods()){
         // get station speeds
-        Vector<EvaluationResult> stationSpeed = Evaluation.getResult(StationSpeed.class, this.opts);
-
+            //Vector<EvaluationResult> stationSpeed = Evaluation.getResult(StationSpeed.class, this.opts);
+            StationSpeed stationSpeed = new StationSpeed(p, opts.getSelectedSection(), ko.getOutputPath(), ko);
+            ssResultList.add(stationSpeed.process());
+        }
+        
         Period[] periods = new Period[this.opts.getPeriods().size()];
         this.opts.getPeriods().toArray(periods);
         int idx = 0;
         
         // for all results, calculate TT
-        for (EvaluationResult result : stationSpeed) {
+        for (EvaluationResult result : ssResultList) {
             
             EvaluationResult res = EvaluationResult.copy(result);
             
@@ -81,7 +102,9 @@ public class TT extends Evaluation {
         if(!this.simulationMode) {
             for(Period p : opts.getPeriods()) {
                 p.addEndHour(-1 * this.EXTENDED_HOUR);
-                this.opts.setStartEndTime(p.start_hour, p.start_min, p.end_hour, p.end_min);                
+                this.opts.setStartEndTime(p.start_hour, p.start_min, p.end_hour, p.end_min);
+                
+                opts.getSelectedSection().loadData(p, null);////////////////////                
             }        
             
             periods = new Period[this.opts.getPeriods().size()];
@@ -95,6 +118,7 @@ public class TT extends Evaluation {
        
         makeTravelTimeAverage();
 
+        return null;
     }
 
     /**

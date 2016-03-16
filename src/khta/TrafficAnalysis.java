@@ -18,6 +18,7 @@ package khta;
 
 import error.StringErrorStream;
 import evaluation.BasicData;
+import evaluation.CM;
 import evaluation.ContourPlotter;
 import evaluation.ContourType;
 import evaluation.DataLoadOption;
@@ -31,6 +32,8 @@ import evaluation.StationAverageLaneFlow;
 import evaluation.StationDensity;
 import evaluation.StationSpeed;
 import evaluation.StationTotalFlow;
+import evaluation.TT;
+import evaluation.VMT;
 import infra.Infra;
 import infra.Period;
 import infra.Section;
@@ -1241,6 +1244,7 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
         Section selectedSection;
         String outputPath;
         ArrayList<BasicData> basicDataSet;
+        ArrayList<Evaluation> trafficFlowMeasurementsSet;
         ArrayList<SimulationResult> simResultList;
         
         SimObjects simObjects;
@@ -1253,6 +1257,7 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
             selectedSection = eo.getSelectedSection();
             outputPath = ko.getOutputPath();
             basicDataSet = new ArrayList<>();
+            trafficFlowMeasurementsSet = new ArrayList<>();
             rd.showLog();
         }
         
@@ -1398,9 +1403,40 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
                     //StationAcceleration sa = new StationAcceleration(p, selectedSection, outputPath);
                     basicDataSet.add(new StationAcceleration(p, selectedSection, outputPath, ko));
                 }
-                if (eo.getTT()) {
+                if (eo.getVMT()) {
+                    VMT vmt = new VMT(p, selectedSection, outputPath, ko);
+                    vmt.process();
+                    trafficFlowMeasurementsSet.add(vmt);
+                }
+                if (eo.getLVMT()) {
                     //StationAcceleration sa = new StationAcceleration(p, selectedSection, outputPath);
-                    basicDataSet.add(new StationAcceleration(p, selectedSection, outputPath, ko));
+                    //basicDataSet.add(new StationAcceleration(p, selectedSection, outputPath, ko));
+                }
+                if (eo.getVHT()) {
+                    //StationAcceleration sa = new StationAcceleration(p, selectedSection, outputPath);
+                    //basicDataSet.add(new StationAcceleration(p, selectedSection, outputPath, ko));
+                }
+                if (eo.getDVH()) {
+                    //StationAcceleration sa = new StationAcceleration(p, selectedSection, outputPath);
+                    //basicDataSet.add(new StationAcceleration(p, selectedSection, outputPath, ko));
+                }
+                if (eo.getFlowRates()) {
+                    //StationAcceleration sa = new StationAcceleration(p, selectedSection, outputPath);
+                    //basicDataSet.add(new StationAcceleration(p, selectedSection, outputPath, ko));
+                }
+                if (eo.getTT()) {
+                    TT tt = new TT(p, selectedSection, outputPath, ko);
+                    tt.process();
+                    trafficFlowMeasurementsSet.add(tt);
+                }
+                if (eo.getSV()) {
+                    //StationAcceleration sa = new StationAcceleration(p, selectedSection, outputPath);
+                    //basicDataSet.add(new StationAcceleration(p, selectedSection, outputPath, ko));
+                }
+                if (eo.getCM()) {
+                    CM cm = new CM(p, selectedSection, outputPath, ko);
+                    cm.process();
+                    trafficFlowMeasurementsSet.add(cm);
                 }
                 for (BasicData bd : basicDataSet) {
                     bd.process();
@@ -1438,6 +1474,41 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
                     }
                 }
                 basicDataSet.clear();
+                
+                for (Evaluation tfms : trafficFlowMeasurementsSet) {
+                    if (ko.getExcelCheck()) {
+                        //엑셀 저장
+                        try {
+                            //this.saveExcel(outputPath + "speed_" + section.getName() + period.getPeriodString());
+                            tfms.saveExcel(outputPath);
+                        } catch (Exception ex) {
+                            Logger.getLogger(StationSpeed.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    if (ko.getCSVCheck()) {
+                        try {
+                            tfms.saveCsv(outputPath);
+                        } catch (Exception ex) {
+                            Logger.getLogger(TrafficAnalysis.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    if (ko.getContourCheck()) {
+                        if (tfms.getClass() == StationSpeed.class) {
+                            saveContour(tfms, ko, eo, ContourType.SPEED);
+                        } else if (tfms.getClass() == StationDensity.class) {
+                            saveContour(tfms, ko, eo, ContourType.DENSITY);
+                        } else if (tfms.getClass() == StationTotalFlow.class) {
+                            saveContour(tfms, ko, eo, ContourType.TOTAL_FLOW);
+                        }// else if (eo.getAverageLaneFlowCheck()) {
+                        //                        saveContour(ev, selectedOption, opts, ContourType.OCCUPANCY);
+                        //                    }else if (ot.equals(OptionType.EVAL_TT)){
+                        //                            System.out.println("EVALTT");
+                        //                            saveContour(ev, selectedOption, opts, ContourType.TT);
+                        //                    } else if (ot.equals(OptionType.EVAL_TT_REALTIME)){
+                        //                            saveContour(ev, selectedOption, opts, ContourType.STT);
+                        //                    }
+                    }
+                }
             }
         }
     }
@@ -1495,7 +1566,7 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
         } else if (cbxInterval.getSelectedIndex() == 5) {
             selectedInterval = Interval.I1HOUR;
         }
-
+        
         //시작 시간, 끝 시간 읽기
         int shour = cbxStartHour.getSelectedIndex();
         int smin = cbxStartMin.getSelectedIndex();
@@ -1543,6 +1614,7 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
 
         EvaluationOption opt = khtaOption.getEvaluationOption();
         
+        opt.setInterval(selectedInterval);
         Period firstDay = periods.get(0);
         
         opt.setSelectedSection(selectedSection);
