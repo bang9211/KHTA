@@ -902,6 +902,17 @@ public class Metering {
                 return this.SimulationInterval;
         }
 
+    void printEndMessage() {
+        System.out.println("=====Metering Result======================");
+            for(int i=0;i<sectionHelper.getEntranceStates().size();i++){
+                EntranceState es = sectionHelper.getEntranceStates().get(i);
+                if(es.hasMeter())
+                    System.out.println(es.meter.getID() + " : " + "Max Rate="+es.getResultMaxRate() +
+                            ", Min Rate="+es.getResultMinRate()+
+                            ", Avg Rate="+es.getResultAvgRate());
+            }
+    }
+
 
 
     class KPoint {

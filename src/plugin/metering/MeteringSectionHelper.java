@@ -513,6 +513,10 @@ public class MeteringSectionHelper {
 	/** Ratio for target storage to max storage */
 	private final float STORAGE_TARGET_RATIO = MeteringConfig.STORAGE_TARGET_RATIO;
         
+        private ArrayList<Double> ratelist = new ArrayList<Double>();
+        private double maxrate = 0;
+        private double minrate = 0;
+        private double totalrate = 0;
 //        ArrayList<Double> cumulativeDemand = new ArrayList<Double>();
 //        ArrayList<Double> cumulativeMergingVolume = new ArrayList<Double>();
 //        ArrayList<Double> rateHistory = new ArrayList<Double>();        
@@ -656,25 +660,20 @@ public class MeteringSectionHelper {
          * Calculate minimum rate
          */
         private int calculateMinimumRate() {
-            if(passage_failure){
-                limit_control = MinimumRateLimit.pf;
-                return target_demand;
-            }else{
-                int r = queueStorageLimit();
-                limit_control = MinimumRateLimit.sl;
-                int rr = queueWaitLimit();
-                if(rr > r){
-                    r = rr;
-                    limit_control = MinimumRateLimit.wl;
-                }
-                rr = targetMinRate();
-                if(rr > r){
-                    r = rr;
-                    limit_control = MinimumRateLimit.tm;
-                }
-                
-                return filterRate(r);
+            int r = queueStorageLimit();
+            limit_control = MinimumRateLimit.sl;
+            int rr = queueWaitLimit();
+            if(rr > r){
+                r = rr;
+                limit_control = MinimumRateLimit.wl;
             }
+            rr = targetMinRate();
+            if(rr > r){
+                r = rr;
+                limit_control = MinimumRateLimit.tm;
+            }
+
+            return filterRate(r);
         }
         
         /** Caculate queue storage limit.  Project into the future the
@@ -870,7 +869,6 @@ public class MeteringSectionHelper {
             return Math.max(r * under, 1);
         }
         
-        //Fix me
         private double maxStorage(){
             //int stor_ft = meter.getMeter().getStorage() * entrance.getLanes();
             int stor_ft = (int)meter.getMeter().getStorage() * entrance.getLaneCount();
@@ -1079,6 +1077,9 @@ public class MeteringSectionHelper {
             this.isRateUpdated = true;
             this.meter.setRate((byte)1);
             this.meter.setRedTime(redTime);
+            
+            //rate history
+            lograte(Rnext);
         }
         
         public void startMetering() {
@@ -1155,6 +1156,29 @@ public class MeteringSectionHelper {
                 return true;
             else
                 return false;
+        }
+
+        private void lograte(double Rnext) {
+            ratelist.add(Rnext);
+            
+            if(maxrate < Rnext)
+                maxrate = Rnext;
+            if(minrate > Rnext)
+                minrate = Rnext;
+            
+            totalrate += Rnext;
+        }
+
+        public double getResultMaxRate() {
+            return maxrate;
+        }
+        
+        public double getResultMinRate(){
+            return minrate;
+        }
+        
+        public double getResultAvgRate(){
+            return totalrate / ratelist.size();
         }
     }
     
