@@ -158,56 +158,57 @@ public class EvalHelper {
      * @param checker
      * @return 
      */    
-//    public static String getStationLabel(RNode rnode) {        
-//        String label;
-//        int AuxiliaryLanes = getAuxiliaryLanes(rnode,checker);
-//        label = rnode.getName()+ " (" + rnode.getID() + ") " + getLanes(rnode, checker);
-//        if(AuxiliaryLanes > 0)
-//            label += "(Aux="+AuxiliaryLanes+")";
-//        label += " lanes";
-//        return label;
-//    }    
-//    
-//    
-//    public static int getLanes(String stationName, Station[] stations, IDetectorChecker dc) {
-//        for(Station s : stations) {
-//            if(stationName.equals(s.getStationId())) {
-//                return getLanes(s, dc);
-//            }
-//        }
-//        return -1;
-//    }
-//    
-//    /**
-//     * Return number of lane except missing detector, which confidence is less than 50
-//     * @param rnode roadway node
-//     * @param dc detector checker
-//     * @return number of lane
-//     */
-//    /*
-//     * modify soobin Jeon 02/15/2012
-//     */
-//    public static int getLanes(RNode rnode, IDetectorChecker dc) {
-//        int lanes = 0;
-//        for(Detector d : rnode.getDetectors(dc)) {
-//            if(!d.isMissing()){
-//                lanes++;
-//            }
-////            lanes++;
-//        }
-//        if(lanes == 0) return rnode.getLanes(dc);
-//        return lanes;
-//    }
-//    public static int getAuxiliaryLanes(RNode rnode, IDetectorChecker dc){
-//        int lanes = 0;
-//        for(Detector d : rnode.getDetectors(dc)) {
+    public static String getStationLabel(RNode rnode) {        
+        String label;
+        int AuxiliaryLanes = getAuxiliaryLanes(rnode);
+        label = rnode.getName()+ " (" + rnode.getID() + ") " + getLanes(rnode);
+        if(AuxiliaryLanes > 0)
+            label += "(Aux="+AuxiliaryLanes+")";
+        label += " lanes";
+        return label;
+    }    
+    
+    
+    public static int getLanes(String stationName, Station[] stations) {
+        for(Station s : stations) {
+            if(stationName.equals(s.getID())) {
+                return getLanes(s);
+            }
+        }
+        return -1;
+    }
+    
+    /**
+     * Return number of lane except missing detector, which confidence is less than 50
+     * @param rnode roadway node
+     * @param dc detector checker
+     * @return number of lane
+     */
+    /*
+     * modify soobin Jeon 02/15/2012
+     */
+    public static int getLanes(RNode rnode) {
+        int lanes = 0;
+        for(Detector d : rnode.getDetectorList()) {
+            if(!d.isMissing()){
+                lanes++;
+            }
+//            lanes++;
+        }
+        if(lanes == 0) return rnode.getLaneCount();
+        return lanes;
+    }
+    public static int getAuxiliaryLanes(RNode rnode){
+        int lanes = 0;
+        for(Detector d : rnode.getDetectorList()) {
 //            if(!d.isMissing() && d.isAuxiliary()){
-//                lanes++;
-//            }
-////            lanes++;
-//        }
-//        return lanes;
-//    }
+            if(!d.isMissing()){
+                lanes++;
+            }
+//            lanes++;
+        }
+        return lanes;
+    }
 //    
 //    /**
 //     * Return detector list except missing detector, which confidence is less than 50
@@ -246,16 +247,16 @@ public class EvalHelper {
     public static double getDistance(String sectionName, Station station) {
         return station.getDistanceToDownstreamStation(sectionName);
     }
-//
-//    /**
-//     * Return station name such as 'S43'
-//     * @param title
-//     * @return 
-//     */
-//    public static String getStationNameFromTitle(String title) {
-//        String index = StationType.getStationNameFromTitle(title,"(");
-//        return title.substring(title.indexOf(index)+1, title.indexOf(")"));        
-//    }
+
+    /**
+     * Return station name such as 'S43'
+     * @param title
+     * @return 
+     */
+    public static String getStationNameFromTitle(String title) {
+        String index = StationType.getStationNameFromTitle(title,"(");
+        return title.substring(title.indexOf(index)+1, title.indexOf(")"));        
+    }
 
     /**
      * Returns speed limit of station

@@ -66,4 +66,14 @@ public enum StationType {
     public boolean isDMS(){
         return this == DMS;
     }
+    
+    public static String getStationNameFromTitle(String title, String contain) {
+        if(contain == null)
+            contain = "";
+        for(StationType t : StationType.values()){
+            if(title.contains(contain+t.desc))
+                return contain+t.desc;
+        }
+        return null;
+    }
 }

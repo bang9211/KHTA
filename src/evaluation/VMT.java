@@ -20,7 +20,6 @@ package evaluation;
 import infra.Period;
 import infra.Section;
 import java.util.ArrayList;
-import java.util.Vector;
 import khta.KHTAOption;
 
 /**
@@ -52,12 +51,12 @@ public class VMT extends Evaluation {
         // caching, (if cached alread, just return)
         //if(!caching()) return;
         
-        ArrayList<EvaluationResult> ssResultList = new ArrayList();
+        ArrayList<EvaluationResult> stfResultList = new ArrayList();
         for(Period p : opts.getPeriods()){
             // get station flows
             //Vector<EvaluationResult> stationFlows = Evaluation.getResult(StationTotalFlow.class, this.opts);
             StationTotalFlow stationTotalFlow = new StationTotalFlow(p, opts.getSelectedSection(), ko.getOutputPath(), ko);
-            ssResultList.add(stationTotalFlow.process());
+            stfResultList.add(stationTotalFlow.process());
         }
         
         //Period[] periods = this.opts.getPeriods();
@@ -65,7 +64,7 @@ public class VMT extends Evaluation {
         this.opts.getPeriods().toArray(periods);
         int idx = 0;        
         // for all results, calculate VMT
-        for(EvaluationResult result : ssResultList)
+        for(EvaluationResult result : stfResultList)
         {
             EvaluationResult res = EvaluationResult.copy(result);
             

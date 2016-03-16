@@ -48,6 +48,7 @@ public class EvaluationOption implements Serializable{
     private double dlc = 0;         //Default Lane Capacity(veh/hr)
     
     private boolean ocaeCheck;
+    private boolean wvsCheck;
     private boolean imsdCheck;
     private boolean i0msdCheck;
         
@@ -148,8 +149,9 @@ public class EvaluationOption implements Serializable{
             return false;
     }
     
-    public void setOutputOption(boolean ocaeCheck, boolean imsdCheck, boolean i0msdCheck){
+    public void setOutputOption(boolean ocaeCheck, boolean wvxCheck, boolean imsdCheck, boolean i0msdCheck){
         this.ocaeCheck = ocaeCheck;
+        this.wvsCheck = wvxCheck;
         this.imsdCheck = imsdCheck;
         this.i0msdCheck = i0msdCheck;
     }
@@ -220,6 +222,10 @@ public class EvaluationOption implements Serializable{
     
     public boolean getOCAE(){
         return ocaeCheck;
+    }
+    
+    public boolean getWVX(){
+        return wvsCheck;
     }
     
     public boolean getIMSD(){

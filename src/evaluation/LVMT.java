@@ -55,31 +55,39 @@ public class LVMT extends Evaluation {
     }
 
     @Override
-    protected EvaluationResult process() {
+    public EvaluationResult process() {
         
         // caching, (if cached alread, just return)
         //if(!caching()) return;
         
-        // get station total flow
-        Vector<EvaluationResult> stationFlows = Evaluation.getResult(StationTotalFlow.class, this.opts);
-        
-        // get station density
-        Vector<EvaluationResult> stationDensities = Evaluation.getResult(StationDensity.class, this.opts);
+        ArrayList<EvaluationResult> stfResultList = new ArrayList();
+        ArrayList<EvaluationResult> sdResultList = new ArrayList();
+        for(Period p : opts.getPeriods()){
+            // get station total flow
+            //Vector<EvaluationResult> stationFlows = Evaluation.getResult(StationTotalFlow.class, this.opts);
+            StationTotalFlow stationTotalFlow = new StationTotalFlow(p, opts.getSelectedSection(), ko.getOutputPath(), ko);
+            stfResultList.add(stationTotalFlow.process());
+
+            // get station density
+            //Vector<EvaluationResult> stationDensities = Evaluation.getResult(StationDensity.class, this.opts);
+            StationDensity stationDensity = new StationDensity(p, opts.getSelectedSection(), ko.getOutputPath(), ko);
+            sdResultList.add(stationDensity.process());
+        }
         
         //Period[] periods = this.opts.getPeriods();
         Period[] periods = new Period[this.opts.getPeriods().size()];
         this.opts.getPeriods().toArray(periods);
         int idx = 0;
         int densityidx = 0;
-        if(stationDensities.size() > 1)
+        if(sdResultList.size() > 1)
             densityidx = 1;
         // for all results, calculate VMT
-        for(int i=0; i<stationFlows.size(); i++)
+        for(int i=0; i<stfResultList.size(); i++)
         {
             if(printDebug && idx < periods.length) System.out.println("      - " + periods[idx++].getPeriodString());
             
-            EvaluationResult res = EvaluationResult.copy(stationDensities.get(i+densityidx)) ;
-            EvaluationResult flowResult = EvaluationResult.copy(stationFlows.get(i));            
+            EvaluationResult res = EvaluationResult.copy(sdResultList.get(i+densityidx)) ;
+            EvaluationResult flowResult = EvaluationResult.copy(stfResultList.get(i));            
             
             // skip average
             if(TITLE_AVERAGE.equals(res.getName())) continue;
@@ -122,11 +130,11 @@ public class LVMT extends Evaluation {
         
         // make lane counter according to detector checker
         Station[] stations = this.opts.getSelectedSection().getStations();
-        int[] lanes = new int[stations.length];
-        for(int i=0; i<stations.length; i++)
-        {
-            lanes[i] = stations[i].getLanes(detectorChecker);
-        }
+//        int[] lanes = new int[stations.length];
+//        for(int i=0; i<stations.length; i++)
+//        {
+//            lanes[i] = stations[i].getLanes(detectorChecker);
+//        }
                 
         // variable to store LVMT
         ArrayList<ArrayList> data = new ArrayList<ArrayList>();
@@ -174,7 +182,7 @@ public class LVMT extends Evaluation {
                 if(!NO_STATION.equals(res.get(c, 0)))
                 {             
                     String sname = EvalHelper.getStationNameFromTitle(res.get(c, 0).toString());
-                    lane = EvalHelper.getLanes(sname, stations, detectorChecker);
+                    lane = EvalHelper.getLanes(sname, stations);
                 }
                 
                 // LVMT equation
@@ -208,7 +216,7 @@ public class LVMT extends Evaluation {
         Station[] stations = this.opts.getSelectedSection().getStations();
         for(int i=0; i<stations.length; i++)
         {
-            if(EvalHelper.getStationLabel(stations[i], detectorChecker).equals(columnTitle)) {
+            if(EvalHelper.getStationLabel(stations[i]).equals(columnTitle)) {
                 return lanes[i];
             }
         }

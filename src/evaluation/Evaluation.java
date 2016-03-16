@@ -112,6 +112,9 @@ public abstract class Evaluation {
         Vector<EvaluationResult> cResults = (Vector<EvaluationResult>)this.results.clone();
         
         for (EvaluationResult res : cResults) {
+            if(this.opts.getWVX()) {
+                res = this.removeVirtualStationFromResult(res);
+            }
             WritableSheet sheet = workbook.createSheet(res.getName(), sheet_count++);
 
             ArrayList<ArrayList> data = res.getData();
@@ -157,6 +160,9 @@ public abstract class Evaluation {
         Vector<EvaluationResult> cResults = (Vector<EvaluationResult>)this.results.clone();
         
         for (EvaluationResult res : cResults) {
+            if(this.opts.getWVX()) {
+                res = this.removeVirtualStationFromResult(res);
+            }
             
             //FileWriter fw = new FileWriter(getFileName(outputpath, res.getName(), "csv"), false);
             FileOutputStream fos = new FileOutputStream(getFileName(outputpath, res.getName(), "csv"));
@@ -781,5 +787,24 @@ public abstract class Evaluation {
         // add average data at last element of results
         this.results.add(total);
 
+    }
+    
+    /**
+     * Removes virtual station information from result
+     * @param res result that virtual stations are removed
+     */
+    public EvaluationResult removeVirtualStationFromResult(EvaluationResult res) {
+        if (!res.useVirtualStation()) {
+            return res;
+        }
+        ArrayList<ArrayList> ret = new ArrayList<ArrayList>();
+        for (int c = 0; c < res.getColumnSize(); c++) {
+            if (!NO_STATION.equals(res.getColumn(c).get(0))) {
+                ret.add(res.getColumn(c));
+            }
+        }
+        res.setData(ret);
+        res.setUseVirtualStation(false);
+        return res;
     }
 }

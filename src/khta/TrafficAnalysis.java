@@ -26,6 +26,7 @@ import evaluation.Evaluation;
 import evaluation.EvaluationForCalibration;
 import evaluation.EvaluationOption;
 import evaluation.Interval;
+import evaluation.LVMT;
 import evaluation.OutputDirection;
 import evaluation.StationAcceleration;
 import evaluation.StationAverageLaneFlow;
@@ -183,6 +184,7 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
         jCheckBoxI0MSD = new javax.swing.JCheckBox();
         jLabel11 = new javax.swing.JLabel();
         cbxOutputDirection = new javax.swing.JComboBox();
+        jCheckBoxWVS = new javax.swing.JCheckBox();
 
         setName("Traffic Analysis"); // NOI18N
         addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -716,6 +718,11 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
 
             jCheckBoxOCAE.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
             jCheckBoxOCAE.setText("Open contour after extraction");
+            jCheckBoxOCAE.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    jCheckBoxOCAEActionPerformed(evt);
+                }
+            });
 
             jCheckBoxIMSD.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
             jCheckBoxIMSD.setText("Interpolate missing station data");
@@ -743,6 +750,9 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
                 }
             });
 
+            jCheckBoxWVS.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+            jCheckBoxWVS.setText("Without virtual stations");
+
             javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
             jPanel7.setLayout(jPanel7Layout);
             jPanel7Layout.setHorizontalGroup(
@@ -769,9 +779,10 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel10)
+                        .addComponent(jCheckBoxOCAE)
+                        .addComponent(jCheckBoxWVS)
                         .addComponent(jCheckBoxI0MSD)
-                        .addComponent(jCheckBoxIMSD)
-                        .addComponent(jCheckBoxOCAE))
+                        .addComponent(jCheckBoxIMSD))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
                     .addComponent(btnExtraction)
                     .addContainerGap())
@@ -780,16 +791,9 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
                 jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel7Layout.createSequentialGroup()
                     .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(btnExtraction, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel7Layout.createSequentialGroup()
                             .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel7Layout.createSequentialGroup()
-                                    .addComponent(jLabel10)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(jCheckBoxOCAE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jCheckBoxIMSD)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jCheckBoxI0MSD))
                                 .addGroup(jPanel7Layout.createSequentialGroup()
                                     .addComponent(jLabel9)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -804,9 +808,16 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(txOutputFolder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(browser))))
-                            .addGap(0, 0, Short.MAX_VALUE))
-                        .addComponent(btnExtraction, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addComponent(browser)
+                                        .addComponent(jCheckBoxIMSD)))
+                                .addGroup(jPanel7Layout.createSequentialGroup()
+                                    .addComponent(jLabel10)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(jCheckBoxOCAE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jCheckBoxWVS)))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jCheckBoxI0MSD)))
                     .addContainerGap())
             );
 
@@ -990,6 +1001,10 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
         // TODO add your handling code here:
     }//GEN-LAST:event_cbxOutputDirectionActionPerformed
 
+    private void jCheckBoxOCAEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxOCAEActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jCheckBoxOCAEActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton browser;
@@ -1026,6 +1041,7 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
     private javax.swing.JCheckBox jCheckBoxI0MSD;
     private javax.swing.JCheckBox jCheckBoxIMSD;
     private javax.swing.JCheckBox jCheckBoxOCAE;
+    private javax.swing.JCheckBox jCheckBoxWVS;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1409,8 +1425,9 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
                     trafficFlowMeasurementsSet.add(vmt);
                 }
                 if (eo.getLVMT()) {
-                    //StationAcceleration sa = new StationAcceleration(p, selectedSection, outputPath);
-                    //basicDataSet.add(new StationAcceleration(p, selectedSection, outputPath, ko));
+                    LVMT lvmt = new LVMT(p, selectedSection, outputPath, ko);
+                    lvmt.process();
+                    trafficFlowMeasurementsSet.add(lvmt);
                 }
                 if (eo.getVHT()) {
                     //StationAcceleration sa = new StationAcceleration(p, selectedSection, outputPath);
@@ -1629,7 +1646,7 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
                 cbxCM.isSelected(), Double.parseDouble(jTextField_CTS.getText()),
                 Double.parseDouble(jTextField_CD.getText()), Double.parseDouble(jTextField_DLC.getText()));
 
-        opt.setOutputOption(jCheckBoxOCAE.isSelected(), jCheckBoxIMSD.isSelected(), jCheckBoxI0MSD.isSelected());
+        opt.setOutputOption(jCheckBoxOCAE.isSelected(), jCheckBoxWVS.isSelected(), jCheckBoxIMSD.isSelected(), jCheckBoxI0MSD.isSelected());
 
         if ((cbxSimulationForCalibration.isSelected() == false) && (opt.isSelectedAnything() == false)) {
             JOptionPane.showMessageDialog(this, "Check evaluation options");
