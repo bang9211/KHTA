@@ -48,7 +48,7 @@ public abstract class BasicData extends Evaluation{
     }
     
     @Override
-    public void process() {
+    public EvaluationResult process() {
         //EvaluationResult 형식에 맞추어 헤더 작성
         setTimeLine();
         double distance = 0;
@@ -78,5 +78,17 @@ public abstract class BasicData extends Evaluation{
             fixZeroMissingStation(er);
 
         results.add(er);
+ 
+            this.addConfidenceToResult(er);
+            this.addDistanceToResult(er);
+//            this.printEvaluation(res);
+            this.addVirtualStationToResult(er);
+        
+        // add average to results
+        makeAverage();
+        
+        hasResult = true;
+        
+        return er;
     }
 }

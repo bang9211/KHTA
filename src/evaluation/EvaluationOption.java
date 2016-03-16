@@ -60,6 +60,17 @@ public class EvaluationOption implements Serializable{
     private boolean simulationMode = false;
     private Interval simInterval;
     
+    /** congestion threshold speed */
+    //private int congestionThresholdSpeed = 45;
+    private int congestionThresholdSpeed = 70;
+    
+    /** lane capacity */
+    private int laneCapacity = 2200;
+    
+    /** critical density */
+    //private int criticalDensity = 40;
+    private int criticalDensity = 25;
+    
     public EvaluationOption(){
         
     }
@@ -284,6 +295,30 @@ public class EvaluationOption implements Serializable{
     
     public Interval getInterval(){
         return interval;
+    }
+    
+    public int getCongestionThresholdSpeed() {
+        return congestionThresholdSpeed;
+    }
+
+    public void setCongestionThresholdSpeed(int congestionThresholdSpeed) {
+        this.congestionThresholdSpeed = congestionThresholdSpeed;
+    }
+    
+    public int getCriticalDensity() {
+        return criticalDensity;
+    }
+
+    public void setCriticalDensity(int criticalDensity) {
+        this.criticalDensity = criticalDensity;
+    }
+
+    public int getLaneCapacity() {
+        return laneCapacity;
+    }
+
+    public void setLaneCapacity(int laneCapacity) {
+        this.laneCapacity = laneCapacity;
     }
          
     /**
