@@ -58,7 +58,12 @@ public class MeteringSim extends infra.simulation.Simulation implements Simulati
     public void DebugMassage() {
         DisplayStationState();
         if(MeteringConfig.isMeteringStep(simcount))
-                metering.printEntrance();
+            metering.printEntrance();
+    }
+    
+    @Override
+    public void ExecuteEnd(){
+        metering.printEndMessage();
     }
 
     @Override
@@ -67,11 +72,11 @@ public class MeteringSim extends infra.simulation.Simulation implements Simulati
         printhead();
     }
     
-        private void RunMetering() {
-                metering.updateEntranceStates();
-                if(MeteringConfig.isMeteringStep(simcount))
-                        metering.run(samples, vc.getCurrentTime());
-        }
+    private void RunMetering() {
+            metering.updateEntranceStates();
+            if(MeteringConfig.isMeteringStep(simcount))
+                    metering.run(samples, vc.getCurrentTime());
+    }
         
     public void printhead(){
         System.out.println("Kjam = " + MeteringConfig.Kjam);

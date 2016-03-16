@@ -76,7 +76,7 @@ public class MeteringConfig {
 
     /** Ratio for target waiting time to max wait time */
 //    static public final float WAIT_TARGET_RATIO = 0.75f;
-    static public final float WAIT_TARGET_RATIO = 0.95f;
+    static public final float WAIT_TARGET_RATIO = 1.0f;
 
     /** Ratio for target storage to max storage */
 //    static public final float STORAGE_TARGET_RATIO = 0.75f;
