@@ -187,6 +187,7 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
         jCheckBoxWVS = new javax.swing.JCheckBox();
 
         setName("Traffic Analysis"); // NOI18N
+        setPreferredSize(new java.awt.Dimension(958, 700));
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
                 formComponentShown(evt);
@@ -686,7 +687,6 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
             }
         });
 
-        txOutputFolder.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         txOutputFolder.setText("D:\\");
 
             jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -783,7 +783,7 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
                         .addComponent(jCheckBoxWVS)
                         .addComponent(jCheckBoxI0MSD)
                         .addComponent(jCheckBoxIMSD))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                     .addComponent(btnExtraction)
                     .addContainerGap())
             );
@@ -791,7 +791,6 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
                 jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel7Layout.createSequentialGroup()
                     .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(btnExtraction, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel7Layout.createSequentialGroup()
                             .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(jPanel7Layout.createSequentialGroup()
@@ -816,8 +815,10 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
                                     .addComponent(jCheckBoxOCAE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(jCheckBoxWVS)))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jCheckBoxI0MSD)))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jCheckBoxI0MSD)
+                            .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(btnExtraction, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addContainerGap())
             );
 
@@ -846,8 +847,8 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addContainerGap())
+                    .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             );
         }// </editor-fold>//GEN-END:initComponents
 
@@ -935,40 +936,6 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
         // TODO add your handling code here:
     }//GEN-LAST:event_cbxCMActionPerformed
 
-    private void browserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browserActionPerformed
-        // TODO add your handling code here:
-        selectOutputPath();
-    }//GEN-LAST:event_browserActionPerformed
-
-    private void btnExtractionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExtractionActionPerformed
-        // TODO add your handling code here:
-        new Timer().schedule(new TimerTask() {
-
-            @Override
-            public void run() {
-                if(cbxUseSimulationData.isSelected()){
-                    evaluateWithSimulationResult((SimulationResult)cbxsimulationresult.getSelectedItem());
-                }else{
-                    evaluation();
-                }
-                
-            }
-        }, 10);
-
-    }//GEN-LAST:event_btnExtractionActionPerformed
-
-    private void jCheckBoxIMSDItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBoxIMSDItemStateChanged
-        if (evt.getStateChange() == ItemEvent.SELECTED) {
-            jCheckBoxI0MSD.setSelected(false);
-        }
-    }//GEN-LAST:event_jCheckBoxIMSDItemStateChanged
-
-    private void jCheckBoxI0MSDItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBoxI0MSDItemStateChanged
-        if (evt.getStateChange() == ItemEvent.SELECTED) {
-            jCheckBoxIMSD.setSelected(false);
-        }
-    }//GEN-LAST:event_jCheckBoxI0MSDItemStateChanged
-
     private void cbxPluginsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxPluginsActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cbxPluginsActionPerformed
@@ -1001,9 +968,42 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
         // TODO add your handling code here:
     }//GEN-LAST:event_cbxOutputDirectionActionPerformed
 
+    private void jCheckBoxI0MSDItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBoxI0MSDItemStateChanged
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            jCheckBoxIMSD.setSelected(false);
+        }
+    }//GEN-LAST:event_jCheckBoxI0MSDItemStateChanged
+
+    private void jCheckBoxIMSDItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBoxIMSDItemStateChanged
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            jCheckBoxI0MSD.setSelected(false);
+        }
+    }//GEN-LAST:event_jCheckBoxIMSDItemStateChanged
+
     private void jCheckBoxOCAEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxOCAEActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jCheckBoxOCAEActionPerformed
+
+    private void browserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browserActionPerformed
+        // TODO add your handling code here:
+        selectOutputPath();
+    }//GEN-LAST:event_browserActionPerformed
+
+    private void btnExtractionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExtractionActionPerformed
+        // TODO add your handling code here:
+        new Timer().schedule(new TimerTask() {
+
+            @Override
+            public void run() {
+                if(cbxUseSimulationData.isSelected()){
+                    evaluateWithSimulationResult((SimulationResult)cbxsimulationresult.getSelectedItem());
+                }else{
+                    evaluation();
+                }
+
+            }
+        }, 10);
+    }//GEN-LAST:event_btnExtractionActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1300,6 +1300,7 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
             selectedSection = eo.getSelectedSection();
             outputPath = ko.getOutputPath();
             basicDataSet = new ArrayList<>();
+            trafficFlowMeasurementsSet = new ArrayList<>();
             rd.showLog();
         }
 
