@@ -950,6 +950,7 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
     private void cbxUseSimulationDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxUseSimulationDataActionPerformed
         // TODO add your handling code here:
         SimulationModeAction(this.cbxUseSimulationData.isSelected());
+        khtaOption.getEvaluationOption().setSimulationMode(this.cbxUseSimulationData.isSelected());
     }//GEN-LAST:event_cbxUseSimulationDataActionPerformed
 
     private void cbxSimulationForCalibrationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxSimulationForCalibrationActionPerformed
@@ -1328,7 +1329,7 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
                         RunData();
                     }
                 }else{
-                    runEvaluate(false);
+                        runEvaluate(eo.isSimulationMode());
                 }
                 long et = new Date().getTime();
                 System.out.println("Evaluation has been done ("+(et-st)/1000+" seconds)");
@@ -1393,7 +1394,7 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
         private void runEvaluate(boolean isSimulation) {
             for (Period p : periods) {
                 //해당하는 시간내 섹션의 데이터를 로드
-                if(isSimulation){
+                if(!isSimulation){
                     selectedSection.loadData(p, null);
                 }
                 else{
@@ -1422,11 +1423,15 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
                 }
                 if (eo.getVMT()) {
                     VMT vmt = new VMT(p, selectedSection, outputPath, ko);
+                    if(isSimulation)
+                        vmt.setSimulationMode();
                     vmt.process();
                     trafficFlowMeasurementsSet.add(vmt);
                 }
                 if (eo.getLVMT()) {
                     LVMT lvmt = new LVMT(p, selectedSection, outputPath, ko);
+                    if(isSimulation)
+                        lvmt.setSimulationMode();
                     lvmt.process();
                     trafficFlowMeasurementsSet.add(lvmt);
                 }
@@ -1444,6 +1449,8 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
                 }
                 if (eo.getTT()) {
                     TT tt = new TT(p, selectedSection, outputPath, ko);
+                    if(isSimulation)
+                        tt.setSimulationMode();
                     tt.process();
                     trafficFlowMeasurementsSet.add(tt);
                 }
@@ -1453,10 +1460,14 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
                 }
                 if (eo.getCM()) {
                     CM cm = new CM(p, selectedSection, outputPath, ko);
+                    if(isSimulation)
+                        cm.setSimulationMode();
                     cm.process();
                     trafficFlowMeasurementsSet.add(cm);
                 }
                 for (BasicData bd : basicDataSet) {
+                    bd.setSimulationMode();
+                    
                     bd.process();
                     if (ko.getExcelCheck()) {
                         //엑셀 저장
@@ -1527,6 +1538,7 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
                         //                    }
                     }
                 }
+                trafficFlowMeasurementsSet.clear();
             }
         }
     }
@@ -1632,6 +1644,7 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
 
         EvaluationOption opt = khtaOption.getEvaluationOption();
         
+        opt.setSimulationMode(this.cbxSimulationForCalibration.isSelected());
         opt.setInterval(selectedInterval);
         Period firstDay = periods.get(0);
         

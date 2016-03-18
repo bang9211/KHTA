@@ -807,4 +807,8 @@ public abstract class Evaluation {
         res.setUseVirtualStation(false);
         return res;
     }
+    
+    public void setSimulationMode(){
+        simulationMode = opts.isSimulationMode();
+    }
 }
