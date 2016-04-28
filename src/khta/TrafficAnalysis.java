@@ -440,7 +440,7 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Traffic Flow Measurements", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
 
         cbxVMT.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        cbxVMT.setText("Vehicle Miles Traveled (VMT)");
+        cbxVMT.setText("Vehicle Kilometers Traveled (VKT)");
         cbxVMT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbxVMTActionPerformed(evt);
@@ -448,7 +448,7 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
         });
 
         cbxLVMT.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        cbxLVMT.setText("Lost VMT for congestion (LVMT)");
+        cbxLVMT.setText("Lost VKT for congestion (LVKT)");
         cbxLVMT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbxLVMTActionPerformed(evt);
@@ -496,7 +496,7 @@ public class TrafficAnalysis extends javax.swing.JPanel implements IKHTAAfterSim
         });
 
         cbxCM.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        cbxCM.setText("Congested Miles (CM)");
+        cbxCM.setText("Congested KiloMeters (CK)");
         cbxCM.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbxCMActionPerformed(evt);

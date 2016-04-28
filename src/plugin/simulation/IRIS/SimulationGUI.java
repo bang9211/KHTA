@@ -50,8 +50,8 @@ import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 import plugin.PluginFrame;
 import plugin.metering.MeteringConfig;
-import plugin.simulation.VSL.VSLResults;
-import plugin.simulation.VSL.VSLSim;
+//import plugin.simulation.VSL.VSLResults;
+//import plugin.simulation.VSL.VSLSim;
 import plugin.simulation.VSL.algorithm.VSLVersion;
 import util.FileHelper;
 import vissimcom.ComError;
@@ -1724,7 +1724,7 @@ public class SimulationGUI extends javax.swing.JPanel implements Simulation.ISim
         
         int samples = 0;
         int rinterval = 0;
-        VSLResults vslresult = null;
+//        VSLResults vslresult = null;
         if(smode.isSimulationMode()){
             if(code == -1) {
                 this.chkShowVehicles.setEnabled(true);
@@ -1749,8 +1749,8 @@ public class SimulationGUI extends javax.swing.JPanel implements Simulation.ISim
             }
             
             if(!soption.isMETERING()){
-                VSLSim vs = (VSLSim)simulation;
-                vslresult = vs.getVSLResults();
+//                VSLSim vs = (VSLSim)simulation;
+//                vslresult = vs.getVSLResults();
             }
         }
 //        else if(smode.isEmulationMode()){
@@ -1776,7 +1776,7 @@ public class SimulationGUI extends javax.swing.JPanel implements Simulation.ISim
         SimulationUtil.SaveSimulation((Section)this.cbxSections.getSelectedItem(),new Period(sTime, eTime, rinterval),simFrame, simObjects);
         
         System.out.println("Restore output redirection ... ");
-        loadVSLResults();
+//        loadVSLResults();
         this.restoreOutput();
         isStartSimulation(false);
         this.cbxAccident.setSelected(true);
@@ -1874,7 +1874,7 @@ public class SimulationGUI extends javax.swing.JPanel implements Simulation.ISim
         loadMeteringParameter();
         setVSLGUI(false);
         setGUIEnable();
-        initResult();
+//        initResult();
         initSTAType();
     }
     
@@ -2294,20 +2294,20 @@ public class SimulationGUI extends javax.swing.JPanel implements Simulation.ISim
     /**
      * about VSL Result Tab
      */
-    private void initResult() {
-        loadVSLResults();
-    }
-    
-    private void loadVSLResults(){
-        new Timer().schedule(new TimerTask(){
-            @Override
-            public void run() {
-                loadVSLSimulationResults();
-            }
-        },5);
-    }
-    
-    private void loadVSLSimulationResults() {
+//    private void initResult() {
+//        loadVSLResults();
+//    }
+//    
+//    private void loadVSLResults(){
+//        new Timer().schedule(new TimerTask(){
+//            @Override
+//            public void run() {
+//                loadVSLSimulationResults();
+//            }
+//        },5);
+//    }
+//    
+//    private void loadVSLSimulationResults() {
 //        setChartEnable(false);
 //        this.cbxSavedResult.setEnabled(false);
 //        if(this.cbxSavedResult != null)
@@ -2332,7 +2332,7 @@ public class SimulationGUI extends javax.swing.JPanel implements Simulation.ISim
 //        }           
 //        this.cbxSavedResult.setEnabled(true);
 //        setChartEnable(true);
-    }
+//    }
 
     private void extractExcel() {
 //        final VSLResults res = (VSLResults)cbxSavedResult.getSelectedItem();

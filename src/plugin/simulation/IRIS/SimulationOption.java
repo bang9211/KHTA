@@ -23,7 +23,7 @@ import infra.simobjects.SimObjects;
 import infra.simulation.SimInterval;
 import infra.simulation.Simulation;
 import plugin.metering.MeteringSim;
-import plugin.simulation.VSL.VSLSim;
+//import plugin.simulation.VSL.VSLSim;
 import plugin.simulation.VSL.algorithm.VSLVersion;
 import vissimcom.VISSIMVersion;
 
