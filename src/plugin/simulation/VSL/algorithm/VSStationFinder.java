@@ -73,21 +73,21 @@ public class VSStationFinder {
         ma = m;
     }
     
-    public boolean check(Double m, VSLStationState s){
-        if(m < ma){
-            su = s;
-            mu = m;
-        }else if(md == null || md > m){
-            sd = s;
-            md = m;
-        }
-        
-        if((vss_mp == null || vss_mp > m) && s.isBottleneckFor(m - ma)){
-            vss = s;
-            vss_mp = m;
-        }
-        return false;
-    }
+//    public boolean check(Double m, VSLStationState s){
+//        if(m < ma){
+//            su = s;
+//            mu = m;
+//        }else if(md == null || md > m){
+//            sd = s;
+//            md = m;
+//        }
+//        
+//        if((vss_mp == null || vss_mp > m) && s.isBottleneckFor(m - ma)){
+//            vss = s;
+//            vss_mp = m;
+//        }
+//        return false;
+//    }
     
 //    public boolean isDownStreamVSS(){
 //        if(vss != null && sd != null){
@@ -99,30 +99,30 @@ public class VSStationFinder {
 //            return false;
 //    }
     
-    public VSLStationState getNearStation(){
-        if(su != null && sd != null){
-            System.out.print("mu("+su.getID()+"):"+mu+", md("+sd.getID()+"):"+md+", ");
-            System.out.print("ma-mu:"+Math.abs(ma-mu)+", ma-md:"+Math.abs(ma-md));
-            if(Math.abs(ma-mu) <= Math.abs(ma-md)){
-                System.out.print(", S"+su.getID()+"-"+su.getAggregateRollingSpeed(simGroup)+" : "+getSpeedLimit());
-                return su;
-            }
-            else{
-                System.out.print(", S"+sd.getID()+"-"+sd.getAggregateRollingSpeed(simGroup)+" : "+getSpeedLimit());
-                return sd;
-            }
-        }else if(su != null){
-            System.out.print("mu("+su.getID()+"):"+mu);
-            System.out.print(", S"+su.getID()+"-"+su.getAggregateRollingSpeed(simGroup)+" : "+getSpeedLimit());
-            return su;
-        }else if(sd != null){
-            System.out.print("mu("+sd.getID()+"):"+md);
-            System.out.print(", S"+sd.getID()+"-"+sd.getAggregateRollingSpeed(simGroup)+" : "+getSpeedLimit());
-            return sd;
-        }else{
-            return null;
-        }
-    }
+//    public VSLStationState getNearStation(){
+//        if(su != null && sd != null){
+//            System.out.print("mu("+su.getID()+"):"+mu+", md("+sd.getID()+"):"+md+", ");
+//            System.out.print("ma-mu:"+Math.abs(ma-mu)+", ma-md:"+Math.abs(ma-md));
+//            if(Math.abs(ma-mu) <= Math.abs(ma-md)){
+//                System.out.print(", S"+su.getID()+"-"+su.getAggregateRollingSpeed(simGroup)+" : "+getSpeedLimit());
+//                return su;
+//            }
+//            else{
+//                System.out.print(", S"+sd.getID()+"-"+sd.getAggregateRollingSpeed(simGroup)+" : "+getSpeedLimit());
+//                return sd;
+//            }
+//        }else if(su != null){
+//            System.out.print("mu("+su.getID()+"):"+mu);
+//            System.out.print(", S"+su.getID()+"-"+su.getAggregateRollingSpeed(simGroup)+" : "+getSpeedLimit());
+//            return su;
+//        }else if(sd != null){
+//            System.out.print("mu("+sd.getID()+"):"+md);
+//            System.out.print(", S"+sd.getID()+"-"+sd.getAggregateRollingSpeed(simGroup)+" : "+getSpeedLimit());
+//            return sd;
+//        }else{
+//            return null;
+//        }
+//    }
     
     /** Check if a valid VSS was found */
     public boolean foundVSS() {
@@ -134,20 +134,20 @@ public class VSStationFinder {
     }
     
     /** Get the speed limit */
-    public Integer getSpeedLimit() {
-            if(su != null && sd != null){
-                    return Math.min(su.getSpeedLimit(), sd.getSpeedLimit());
-            }
-            else if(su != null){
-                    return su.getSpeedLimit();
-            }
-            else if(sd != null){
-                    return sd.getSpeedLimit();
-            }
-            else{
-                    return null;
-            }
-    }
+//    public Integer getSpeedLimit() {
+//            if(su != null && sd != null){
+//                    return Math.min(su.getSpeedLimit(), sd.getSpeedLimit());
+//            }
+//            else if(su != null){
+//                    return su.getSpeedLimit();
+//            }
+//            else if(sd != null){
+//                    return sd.getSpeedLimit();
+//            }
+//            else{
+//                    return null;
+//            }
+//    }
     
     /** Calculate the advisory speed */
     public Double calculateSpeedAdvisory() {
@@ -180,15 +180,15 @@ public class VSStationFinder {
     }
     
     /** Debug the finder */
-    public void debug() {
-            double a = calculateSpeedAdvisory();
-            System.out.println("adv: " + a +
-                        ", upstream: " + su +
-                        ", downstream: " + sd +
-                        ", vss: " + vss +
-                        ", speed: " + getSpeed() +
-                        ", limit: " + getSpeedLimit());
-    }
+//    public void debug() {
+//            double a = calculateSpeedAdvisory();
+//            System.out.println("adv: " + a +
+//                        ", upstream: " + su +
+//                        ", downstream: " + sd +
+//                        ", vss: " + vss +
+//                        ", speed: " + getSpeed() +
+//                        ", limit: " + getSpeedLimit());
+//    }
     
     /** Get the speed*/
     protected Double getSpeed(){

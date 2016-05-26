@@ -52,11 +52,14 @@ public enum VSLVersion {
             case 1 :
                 return new VSLStationState(cs);
             case 2 :
-                return new VSLStationStateNew(cs);
+                return new VSLStationState(cs);
+//                return new VSLStationStateNew(cs);
             case 3 : 
-                return new VSLStationStateFullSearch(cs);
+                return new VSLStationState(cs);
+//                return new VSLStationStateFullSearch(cs);
             case 4 : 
-                return new VSLStationStateFullSearch_pro(cs);
+                return new VSLStationState(cs);
+//                return new VSLStationStateFullSearch_pro(cs);
             default :
                 return new VSLStationState(cs);
         }
@@ -67,11 +70,14 @@ public enum VSLVersion {
             case 1 :
                 return new VSStationFinder(mpoint);
             case 2 :
-                return new VSStationFinderNew(mpoint);
+                return new VSStationFinder(mpoint);
+//                return new VSStationFinderNew(mpoint);
             case 3 :
-                return new VSStationFinderNew(mpoint);
+                return new VSStationFinder(mpoint);
+//                return new VSStationFinderNew(mpoint);
             case 4 :
-                return new VSStationFinderNew(mpoint);
+                return new VSStationFinder(mpoint);
+//                return new VSStationFinderNew(mpoint);
             default :
                 return new VSStationFinder(mpoint);
         }

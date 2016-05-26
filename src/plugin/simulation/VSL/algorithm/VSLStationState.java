@@ -15,23 +15,23 @@
 // * You should have received a copy of the GNU General Public License
 // * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // */
-//package plugin.simulation.VSL.algorithm;
-//
-//import infra.Section;
-//import infra.infraobject.Station;
-//import infra.simobjects.SimObjects;
-//import infra.simulation.SimInterval;
-//import infra.simulation.SimulationGroup;
-//import infra.simulation.StationState;
-//import infra.simulation.vsl.algorithm.VSLConfig;
-//import java.util.NavigableMap;
-//import util.DistanceUtil;
-//
-///**
-// *
-// * @author Soobin Jeon <j.soobin@gmail.com>
-// */
-//public class VSLStationState extends StationState{
+package plugin.simulation.VSL.algorithm;
+
+import infra.Section;
+import infra.infraobject.Station;
+import infra.simobjects.SimObjects;
+import infra.simulation.SimInterval;
+import infra.simulation.SimulationGroup;
+import infra.simulation.StationState;
+import infra.simulation.vsl.algorithm.VSLConfig;
+import java.util.NavigableMap;
+import util.DistanceUtil;
+
+/**
+ *
+ * @author Soobin Jeon <j.soobin@gmail.com>
+ */
+public class VSLStationState extends StationState{
 //    protected Double acceleration = null; //Acceleration
 //    
 //    /** Count of iterations where station was a bottleneck */
@@ -51,19 +51,19 @@
 //    
 //    protected SimulationGroup simGroup = SimulationGroup.VSL;
 //    
-//    public VSLStationState(Station _station, Section _section, SimObjects simObjects){
-//        super(_station, _section, simObjects, null);
-//    }
-//    
-//    public VSLStationState(Station _station, Section _section, SimObjects simObjects, SimInterval sitv){
-//            super(_station,_section,simObjects,sitv);
-//    }
-//
-//    public VSLStationState(StationState s) {
-//        this(s.getStation(),s.getSection(),s.getSimObject());
-//        this.setUpstreamStationState(s.getUpstreamStationState());
-//        this.setDownStreamStationState(s.getDownStreamStationState());
-//    }
+    public VSLStationState(Station _station, Section _section, SimObjects simObjects){
+        super(_station, _section, simObjects, null);
+    }
+    
+    public VSLStationState(Station _station, Section _section, SimObjects simObjects, SimInterval sitv){
+            super(_station,_section,simObjects,sitv);
+    }
+
+    public VSLStationState(StationState s) {
+        this(s.getStation(),s.getSection(),s.getSimObject());
+        this.setUpstreamStationState(s.getUpstreamStationState());
+        this.setDownStreamStationState(s.getDownStreamStationState());
+    }
 //
 //    public void calculateBottleneck(double m, NavigableMap<Double, VSLStationState> upstream){
 //        
@@ -316,4 +316,4 @@
 //    public int getVSSControlThreshold(){
 //        return VSLCONTROLTHRESHOLD;
 //    }
-//}
+}
